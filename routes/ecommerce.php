@@ -4,16 +4,21 @@ use App\Http\Controllers\EcommerceController;
 use Illuminate\Support\Facades\Route;
 
 // * Ecommerce Routes
-Route::get('/ecommerce', [EcommerceController::class, 'index'])->name('ecommerce.index')->middleware(['auth', 'verified']);
 
-Route::get('/ecommerce/show/{ecommerce}', [EcommerceController::class, 'show'])->middleware(['auth', 'verified']);
+Route::middleware(['auth', 'verified'])->prefix('ecommerces')->group(function () {
+    Route::get('/', [EcommerceController::class, 'index'])->name('ecommerce.index');
 
-Route::get('/ecommerce/create', [EcommerceController::class, 'create'])->middleware(['auth', 'verified']);
+    Route::get('/show/{ecommerce}', [EcommerceController::class, 'show']);
 
-Route::post('/ecommerce/create', [EcommerceController::class, 'store'])->middleware(['auth', 'verified'])->name('ecommerce.create');
+    Route::get('/create', [EcommerceController::class, 'create']);
 
-Route::get('/ecommerce/edit/{ecommerce}', [EcommerceController::class, 'edit'])->middleware(['auth'])->name('ecommerce.edit');
+    Route::post('/create', [EcommerceController::class, 'store'])->name('ecommerce.create');
 
-Route::put('/ecommerce/update/{ecommerce}', [EcommerceController::class, 'update'])->middleware(['auth'])->name('ecommerce.update');
+    Route::get('/edit/{ecommerce}', [EcommerceController::class, 'edit'])->name('ecommerce.edit');
 
-Route::delete('/ecommerce/delete/{ecommerce}', [EcommerceController::class, 'destroy'])->middleware(['auth', 'verified', 'admin'])->name('ecommerce.delete');
+    Route::put('/update/{ecommerce}', [EcommerceController::class, 'update'])->name('ecommerce.update');
+});
+
+
+
+Route::delete('/ecommerces/delete/{ecommerce}', [EcommerceController::class, 'destroy'])->middleware(['auth', 'verified', 'admin'])->name('ecommerce.delete');

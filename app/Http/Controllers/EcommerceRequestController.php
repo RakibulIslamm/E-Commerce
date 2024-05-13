@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\EcommerceRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
 
 class EcommerceRequestController extends Controller
 {
@@ -15,12 +14,12 @@ class EcommerceRequestController extends Controller
     public function index()
     {
         $user = request()->user();
+        if ($user->role == 2) {
+            return redirect('/dashboard');
+        }
+        $requested_ecommerces = ($user->role == 1  || $user->role == 3) ? EcommerceRequest::all() : EcommerceRequest::where('user_id', $user->id)->orderBy("created_at", "desc")->get();
 
-        // dd($user->id);
-        // $requested_ecommerces = EcommerceRequest::all();
-        $requested_ecommerces = $user->role == 1 ? EcommerceRequest::all() : EcommerceRequest::where('user_id', $user->id)->orderBy("created_at", "desc")->get();
-
-        return Inertia::render("EcommerceRequest/EcommerceRequest", ["requested_ecommerces" => $requested_ecommerces]);
+        return view("ecommerce-request.index", ["requested_ecommerces" => $requested_ecommerces]);
     }
 
     /**
@@ -29,9 +28,9 @@ class EcommerceRequestController extends Controller
     public function create()
     {
         if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3) {
-            redirect('/ecommerce/requests');
+            return redirect('/ecommerce/requests');
         }
-        return Inertia::render("EcommerceRequest/RequestForm");
+        return view("ecommerce-request.request-form");
     }
 
     /**
@@ -52,15 +51,21 @@ class EcommerceRequestController extends Controller
             'business_type' => 'required|in:B2C,B2B,B2B Plus',
         ]);
 
+        // dd($validatedData);
+
         try {
             $validatedData['user_id'] = auth()->user()->id;
             EcommerceRequest::create($validatedData);
-            return redirect()->route('home')->with('success', 'Request for an e-commerce posted successfully');
+            return redirect()->route('request.index')->with('success', 'Ecommerce requested successfully');
         } catch (ValidationException $error) {
-            return Inertia::render('EcommerceRequest/RequestForm', [
+            // return Inertia::render('EcommerceRequest/RequestForm', [
+            //     'errors' => $error->errors(),
+            //     'input' => $request->all(),
+            // ])->withInput();
+            return view("ecommerce-request.request-form", [
                 'errors' => $error->errors(),
                 'input' => $request->all(),
-            ])->withInput();
+            ]);
         }
     }
 
@@ -70,8 +75,8 @@ class EcommerceRequestController extends Controller
     public function show(EcommerceRequest $ecommerceRequest)
     {
         $user = request()->user();
-        if ($user->id == 1 || $user->id == $ecommerceRequest->user_id) {
-            return Inertia::render('EcommerceRequest/Show', ['ecommerceRequest' => $ecommerceRequest]);
+        if ($user->role == 1 || $user->role == 3 || $user->id == $ecommerceRequest->user_id) {
+            return view("ecommerce-request.show", ['ecommerceRequest' => $ecommerceRequest]);
         } else {
             abort(404);
             // return redirect()->route('home');

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Ecommerce;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
 class EcommerceController extends Controller
 {
@@ -20,7 +19,8 @@ class EcommerceController extends Controller
         foreach ($ecommerces as $ecommerce) {
             $ecommerce->accepted_payments = json_decode($ecommerce->accepted_payments, true);
         }
-        return Inertia::render("Ecommerces/Ecommerces", ['ecommerces' => $ecommerces]);
+        // return Inertia::render("Ecommerces/Ecommerces", ['ecommerces' => $ecommerces]);
+        return view("ecommerces.index", ['ecommerces' => $ecommerces]);
     }
 
     /**
@@ -31,7 +31,7 @@ class EcommerceController extends Controller
         if (auth()->user()->role != 1 && auth()->user()->role != 3) {
             abort(403, "Unauthorized access");
         }
-        return Inertia::render('Ecommerces/Form', ['mode' => 'create']);
+        return view("ecommerces.create", ['mode' => 'create']);
     }
 
     /**
@@ -64,7 +64,16 @@ class EcommerceController extends Controller
             'offer_display' => 'required|in:View cut price,Do not display the cut price',
         ]);
 
-        // dd($validatedData);
+        if (isset($validatedData['price_with_vat'])) {
+            $validatedData['price_with_vat'] = true;
+        } else {
+            $validatedData['price_with_vat'] = false;
+        }
+        if (isset($validatedData['size_color_options'])) {
+            $validatedData['size_color_options'] = true;
+        } else {
+            $validatedData['size_color_options'] = false;
+        }
         $validatedData['accepted_payments'] = json_encode($validatedData['accepted_payments']);
 
         Ecommerce::create($validatedData);
@@ -81,7 +90,8 @@ class EcommerceController extends Controller
             abort(404);
         }
         $ecommerce->accepted_payments = json_decode($ecommerce->accepted_payments, true);
-        return Inertia::render('Ecommerces/Form', ['ecommerce' => $ecommerce, 'mode' => 'view']);
+        // return Inertia::render('Ecommerces/Form', ['ecommerce' => $ecommerce, 'mode' => 'view']);
+        return view("ecommerces.show", ['ecommerce' => $ecommerce, 'mode' => 'view']);
     }
 
     /* public function getSingleEcommerce($id)
@@ -100,7 +110,8 @@ class EcommerceController extends Controller
             abort(403, "Unauthorize access");
         }
         $ecommerce->accepted_payments = json_decode($ecommerce->accepted_payments, true);
-        return Inertia::render('Ecommerces/Form', ['mode' => 'edit', 'ecommerce' => $ecommerce]);
+        // return Inertia::render('Ecommerces/Form', ['mode' => 'edit', 'ecommerce' => $ecommerce]);
+        return view("ecommerces.edit", ['mode' => 'edit', 'ecommerce' => $ecommerce]);
     }
 
     /**
@@ -129,8 +140,19 @@ class EcommerceController extends Controller
             'accepted_payments' => 'required|array',
             'offer_display' => 'required|in:View cut price,Do not display the cut price',
         ]);
-        // dd($validatedData);
+
+        if (isset($validatedData['price_with_vat'])) {
+            $validatedData['price_with_vat'] = true;
+        } else {
+            $validatedData['price_with_vat'] = false;
+        }
+        if (isset($validatedData['size_color_options'])) {
+            $validatedData['size_color_options'] = true;
+        } else {
+            $validatedData['size_color_options'] = false;
+        }
         $validatedData['accepted_payments'] = json_encode($validatedData['accepted_payments']);
+
         $ecommerce->update($validatedData);
         return redirect()->route('ecommerce.index')->with('success', 'eCommerce updated successfully');
     }
@@ -147,4 +169,25 @@ class EcommerceController extends Controller
         return redirect()->route('ecommerce.index')
             ->with('success', 'ecommerce deleted successfully');
     }
+
+    // public function destroy($id)
+    // {
+    //     // Find the item by ID
+
+    //     $user = auth()->user();
+    //     dd($user->role);
+
+    //     $ecommerce = Ecommerce::find($id);
+    //     // Check if the item exists
+    //     if (!$ecommerce) {
+    //         // Item not found, return error response
+    //         return response()->json(['message' => 'Item not found'], 404);
+    //     }
+
+    //     // Delete the item
+    //     $ecommerce->delete();
+
+    //     // Return success response
+    //     return response()->json(['message' => 'Item deleted successfully']);
+    // }
 }

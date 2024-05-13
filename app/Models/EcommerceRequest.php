@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class EcommerceRequest extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         "domain",
         "user_id",
