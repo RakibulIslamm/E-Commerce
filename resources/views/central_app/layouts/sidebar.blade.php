@@ -2,7 +2,7 @@
     <div class="flex flex-col justify-between h-full">
         <div>
             <div class="px-4 flex items-center justify-start border-b h-[60px]">
-                <h1 class="text-xl font-bold">e-Commerce</h1>
+                <h1 class="text-xl font-bold">Aster</h1>
             </div>
             <div class="p-3 space-y-1">
                 <a href="/dashboard"

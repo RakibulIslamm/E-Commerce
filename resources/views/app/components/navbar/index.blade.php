@@ -21,7 +21,7 @@
 
                     <!-- Logo -->
                     <div class="ml-4 flex lg:ml-0">
-                        <a href="#">
+                        <a href="/">
                             <span class="sr-only">Your Company</span>
                             <img class="h-12 w-auto object-cover" src="/images/logo.png" alt="">
                         </a>
@@ -180,13 +180,23 @@
 
                     {{-- Right --}}
                     <div class="ml-auto flex items-center">
-                        <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                            <a href="#" class="text-sm font-medium text-gray-700 hover:text-gray-800">Sign
-                                in</a>
-                            <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
-                            <a href="#" class="text-sm font-medium text-gray-700 hover:text-gray-800">Create
-                                account</a>
-                        </div>
+                        @if (!$user)
+                            <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                                <a href="/login" class="text-sm font-medium text-gray-700 hover:text-gray-800">Sign
+                                    in</a>
+                                <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
+                                <a href="/register"
+                                    class="text-sm font-medium text-gray-700 hover:text-gray-800">Create
+                                    account</a>
+                            </div>
+                        @endif
+                        @if ($user)
+                            <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                                <a href="/dashboard"
+                                    class="text-sm font-medium text-gray-700 hover:text-gray-800">Dashboard</a>
+                                <span class="h-6 w-px bg-gray-200" aria-hidden="true"></span>
+                            </div>
+                        @endif
 
                         {{-- <div class="hidden lg:ml-8 lg:flex">
                             <a href="#" class="flex items-center text-gray-700 hover:text-gray-800">

@@ -11,12 +11,12 @@ export default {
 
     theme: {
         extend: {
-            screens: {
+            /* screens: {
                 xs: { max: "480px" },
                 sm: { max: "599px" },
                 md: { min: "600px", max: "1024px" },
                 lg: { min: "1025px" },
-            },
+            }, */
             fontFamily: {
                 sans: ["Poppins", ...defaultTheme.fontFamily.sans],
                 lora: ["Lora", "serif"],
@@ -27,5 +27,5 @@ export default {
         },
     },
 
-    plugins: [forms, require("tailwind-scrollbar"), "@tailwindcss/forms"],
+    plugins: [forms, require("tailwind-scrollbar")],
 };

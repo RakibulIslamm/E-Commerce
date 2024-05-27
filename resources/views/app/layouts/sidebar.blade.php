@@ -3,7 +3,7 @@
     <div class="w-full">
         <div class="hidden xl:flex justify-start py-5 px-4 items-center space-x-3">
             <x-bx-store-alt class="w-6 h-6 text-gray-700" />
-            <p class="text-xl leading-6 text-gray-700 font-semibold">Ecommerce</p>
+            <a href="/" class="text-xl leading-6 text-gray-700 font-semibold">Ecommerce</a>
         </div>
         <div class="mt-6 flex flex-col justify-start items-center w-full space-y-5 px-4">
             <button
