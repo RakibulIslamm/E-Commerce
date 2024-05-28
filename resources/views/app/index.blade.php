@@ -5,7 +5,5 @@
     @include('app.components.products.index')
     @include('app.components.blogs.index')
     @include('app.components.contact.index')
-    <div class="px-20 py-5">
-        Footer Section
-    </div>
+    @include('app.components.footer.index')
 </x-app-guest-layout>
