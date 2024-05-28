@@ -26,7 +26,7 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
     Route::get('/', [TestController::class, 'index']);
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('app.dashboard')->middleware(['auth']);
+    Route::get('/dashboardTest', [DashboardController::class, 'index'])->name('app.dashboard')->middleware(['auth']);
 });
 
 require __DIR__ . '/app/ecommerce-api/settings-api.php';
