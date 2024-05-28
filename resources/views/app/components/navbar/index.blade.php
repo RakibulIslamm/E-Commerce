@@ -1,4 +1,5 @@
-<p class="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+<p
+    class="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8 relative z-50">
     Get free delivery on orders over $100</p>
 <div class="bg-white sticky top-0 z-50">
     <!--Mobile menu Goes here-->
