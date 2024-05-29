@@ -17,11 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
         then: function () {
-            foreach (config('tenancy.central_domains') as $domain) {
-                Route::domain($domain)->group(function () {
-                    Route::middleware('web')
-                        ->group(base_path('routes/web.php'));
-                });
+            foreach (config('tenancy.central_domains', []) as $domain) {
+                Route::middleware('web')
+                    ->domain($domain)
+                    ->group(base_path('routes/web.php'));
             }
         }
     )

@@ -11,7 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased h-screen flex items-start justify-start bg-gray-100">
+<body class="font-sans antialiased flex items-start justify-start bg-gray-100">
     @include('app.layouts.sidebar')
     <main class="w-full h-full">
         {{-- <div class="px-10 py-5 bg-slate-800 rounded-xl mx-5 text-gray-100 sticky top-0">

@@ -18,7 +18,7 @@ class User
     {
         if (!Auth::check()) {
             dd('.....');
-            return redirect()->route('login');
+            return redirect()->route('central.login');
         }
 
         return $next($request);
