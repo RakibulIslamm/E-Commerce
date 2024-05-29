@@ -1,0 +1,93 @@
+
+Warning: Module "grpc" is already loaded in Unknown on line 0
+
+  GET|HEAD  135.125.203.209/ ................................................................................................. 
+  GET|HEAD  aster.ecommerce.eforge.it/ ....................................................................................... 
+  GET|HEAD  / ....................................................................................... App\TestController@index
+  POST      _ignition/execute-solution ......... ignition.executeSolution › Spatie\LaravelIgnition › ExecuteSolutionController
+  GET|HEAD  _ignition/health-check ..................... ignition.healthCheck › Spatie\LaravelIgnition › HealthCheckController
+  POST      _ignition/update-config .................. ignition.updateConfig › Spatie\LaravelIgnition › UpdateConfigController
+  GET|HEAD  api/settings ........................................................................ App\SettingsController@index
+  GET|HEAD  135.125.203.209/confirm-password ........... password.confirm › CentralApp\Auth\ConfirmablePasswordController@show
+  POST      135.125.203.209/confirm-password ............................. CentralApp\Auth\ConfirmablePasswordController@store
+  GET|HEAD  aster.ecommerce.eforge.it/confirm-password . password.confirm › CentralApp\Auth\ConfirmablePasswordController@show
+  POST      aster.ecommerce.eforge.it/confirm-password ................... CentralApp\Auth\ConfirmablePasswordController@store
+  GET|HEAD  confirm-password .................................. password.confirm › App\Auth\ConfirmablePasswordController@show
+  POST      confirm-password .................................................... App\Auth\ConfirmablePasswordController@store
+  GET|HEAD  135.125.203.209/dashboard ....................................... dashboard › CentralApp\DashboardController@index
+  GET|HEAD  aster.ecommerce.eforge.it/dashboard ............................. dashboard › CentralApp\DashboardController@index
+  GET|HEAD  dashboard .......................................................... app.dashboard › App\DashboardController@index
+  GET|HEAD  135.125.203.209/ecommerce/requests ................... request.index › CentralApp\EcommerceRequestController@index
+  GET|HEAD  aster.ecommerce.eforge.it/ecommerce/requests ......... request.index › CentralApp\EcommerceRequestController@index
+  GET|HEAD  135.125.203.209/ecommerce/requests/{ecommerceRequest} .. request.show › CentralApp\EcommerceRequestController@show
+  GET|HEAD  aster.ecommerce.eforge.it/ecommerce/requests/{ecommerceRequest} request.show › CentralApp\EcommerceRequestControl…
+  GET|HEAD  135.125.203.209/ecommerces ................................ ecommerce.index › CentralApp\EcommerceController@index
+  GET|HEAD  aster.ecommerce.eforge.it/ecommerces ...................... ecommerce.index › CentralApp\EcommerceController@index
+  GET|HEAD  135.125.203.209/ecommerces/create .......................................... CentralApp\EcommerceController@create
+  POST      135.125.203.209/ecommerces/create ........................ ecommerce.create › CentralApp\EcommerceController@store
+  GET|HEAD  aster.ecommerce.eforge.it/ecommerces/create ................................ CentralApp\EcommerceController@create
+  POST      aster.ecommerce.eforge.it/ecommerces/create .............. ecommerce.create › CentralApp\EcommerceController@store
+  DELETE    135.125.203.209/ecommerces/delete/{ecommerce} .......... ecommerce.delete › CentralApp\EcommerceController@destroy
+  DELETE    aster.ecommerce.eforge.it/ecommerces/delete/{ecommerce} ecommerce.delete › CentralApp\EcommerceController@destroy
+  GET|HEAD  135.125.203.209/ecommerces/edit/{ecommerce} ................. ecommerce.edit › CentralApp\EcommerceController@edit
+  GET|HEAD  aster.ecommerce.eforge.it/ecommerces/edit/{ecommerce} ....... ecommerce.edit › CentralApp\EcommerceController@edit
+  GET|HEAD  135.125.203.209/ecommerces/show/{ecommerce} .................................. CentralApp\EcommerceController@show
+  GET|HEAD  aster.ecommerce.eforge.it/ecommerces/show/{ecommerce} ........................ CentralApp\EcommerceController@show
+  PUT       135.125.203.209/ecommerces/update/{ecommerce} ........... ecommerce.update › CentralApp\EcommerceController@update
+  PUT       aster.ecommerce.eforge.it/ecommerces/update/{ecommerce} . ecommerce.update › CentralApp\EcommerceController@update
+  POST      135.125.203.209/email/verification-notification verification.send › CentralApp\Auth\EmailVerificationNotification…
+  POST      aster.ecommerce.eforge.it/email/verification-notification verification.send › CentralApp\Auth\EmailVerificationNo…
+  POST      email/verification-notification ....... verification.send › App\Auth\EmailVerificationNotificationController@store
+  GET|HEAD  135.125.203.209/forgot-password ............ password.request › CentralApp\Auth\PasswordResetLinkController@create
+  POST      135.125.203.209/forgot-password ............... password.email › CentralApp\Auth\PasswordResetLinkController@store
+  GET|HEAD  aster.ecommerce.eforge.it/forgot-password .. password.request › CentralApp\Auth\PasswordResetLinkController@create
+  POST      aster.ecommerce.eforge.it/forgot-password ..... password.email › CentralApp\Auth\PasswordResetLinkController@store
+  GET|HEAD  forgot-password ................................... password.request › App\Auth\PasswordResetLinkController@create
+  POST      forgot-password ...................................... password.email › App\Auth\PasswordResetLinkController@store
+  GET|HEAD  135.125.203.209/login .............................. login › CentralApp\Auth\AuthenticatedSessionController@create
+  POST      135.125.203.209/login ....................................... CentralApp\Auth\AuthenticatedSessionController@store
+  GET|HEAD  aster.ecommerce.eforge.it/login .................... login › CentralApp\Auth\AuthenticatedSessionController@create
+  POST      aster.ecommerce.eforge.it/login ............................. CentralApp\Auth\AuthenticatedSessionController@store
+  GET|HEAD  login ..................................................... login › App\Auth\AuthenticatedSessionController@create
+  POST      login .............................................................. App\Auth\AuthenticatedSessionController@store
+  POST      135.125.203.209/logout ........................... logout › CentralApp\Auth\AuthenticatedSessionController@destroy
+  POST      aster.ecommerce.eforge.it/logout ................. logout › CentralApp\Auth\AuthenticatedSessionController@destroy
+  POST      logout .................................................. logout › App\Auth\AuthenticatedSessionController@destroy
+  PUT       135.125.203.209/password ............................. password.update › CentralApp\Auth\PasswordController@update
+  PUT       aster.ecommerce.eforge.it/password ................... password.update › CentralApp\Auth\PasswordController@update
+  PUT       password .................................................... password.update › App\Auth\PasswordController@update
+  GET|HEAD  135.125.203.209/profile ......................................... profile.edit › CentralApp\ProfileController@edit
+  PATCH     135.125.203.209/profile ..................................... profile.update › CentralApp\ProfileController@update
+  DELETE    135.125.203.209/profile ................................... profile.destroy › CentralApp\ProfileController@destroy
+  GET|HEAD  aster.ecommerce.eforge.it/profile ............................... profile.edit › CentralApp\ProfileController@edit
+  PATCH     aster.ecommerce.eforge.it/profile ........................... profile.update › CentralApp\ProfileController@update
+  DELETE    aster.ecommerce.eforge.it/profile ......................... profile.destroy › CentralApp\ProfileController@destroy
+  GET|HEAD  135.125.203.209/register .............................. register › CentralApp\Auth\RegisteredUserController@create
+  POST      135.125.203.209/register .......................................... CentralApp\Auth\RegisteredUserController@store
+  GET|HEAD  aster.ecommerce.eforge.it/register .................... register › CentralApp\Auth\RegisteredUserController@create
+  POST      aster.ecommerce.eforge.it/register ................................ CentralApp\Auth\RegisteredUserController@store
+  GET|HEAD  register ..................................................... register › App\Auth\RegisteredUserController@create
+  POST      register ................................................................. App\Auth\RegisteredUserController@store
+  GET|HEAD  135.125.203.209/request-an-ecommerce ............... request.create › CentralApp\EcommerceRequestController@create
+  POST      135.125.203.209/request-an-ecommerce ................. request.store › CentralApp\EcommerceRequestController@store
+  GET|HEAD  aster.ecommerce.eforge.it/request-an-ecommerce ..... request.create › CentralApp\EcommerceRequestController@create
+  POST      aster.ecommerce.eforge.it/request-an-ecommerce ....... request.store › CentralApp\EcommerceRequestController@store
+  POST      135.125.203.209/reset-password ...................... password.store › CentralApp\Auth\NewPasswordController@store
+  POST      aster.ecommerce.eforge.it/reset-password ............ password.store › CentralApp\Auth\NewPasswordController@store
+  POST      reset-password ............................................. password.store › App\Auth\NewPasswordController@store
+  GET|HEAD  135.125.203.209/reset-password/{token} ............. password.reset › CentralApp\Auth\NewPasswordController@create
+  GET|HEAD  aster.ecommerce.eforge.it/reset-password/{token} ... password.reset › CentralApp\Auth\NewPasswordController@create
+  GET|HEAD  reset-password/{token} .................................... password.reset › App\Auth\NewPasswordController@create
+  PUT       settings/update .................................................................... App\SettingsController@update
+  GET|HEAD  tenancy/assets/{path?} ...................... stancl.tenancy.asset › Stancl\Tenancy › TenantAssetsController@asset
+  GET|HEAD  up ............................................................................................................... 
+  GET|HEAD  135.125.203.209/verify-email ............. verification.notice › CentralApp\Auth\EmailVerificationPromptController
+  GET|HEAD  aster.ecommerce.eforge.it/verify-email ... verification.notice › CentralApp\Auth\EmailVerificationPromptController
+  GET|HEAD  verify-email .................................... verification.notice › App\Auth\EmailVerificationPromptController
+  GET|HEAD  135.125.203.209/verify-email/{id}/{hash} ............. verification.verify › CentralApp\Auth\VerifyEmailController
+  GET|HEAD  aster.ecommerce.eforge.it/verify-email/{id}/{hash} ... verification.verify › CentralApp\Auth\VerifyEmailController
+  GET|HEAD  verify-email/{id}/{hash} .................................... verification.verify › App\Auth\VerifyEmailController
+
+                                                                                                           Showing [86] routes
+
+
