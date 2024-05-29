@@ -26,7 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
-
+    
         $middleware->alias([
             'admin' => Admin::class,
             'editor' => Editor::class,
@@ -35,11 +35,18 @@ return Application::configure(basePath: dirname(__DIR__))
             'central_domain' => CheckCentralDomain::class,
         ]);
 
-        $middleware->redirectUsersTo(function(){
-            if(Auth::check() && tenant()){
+        $middleware->redirectUsersTo(function () {
+            if (Auth::check() && tenant()) {
                 return route('app.dashboard');
             }
             return route('dashboard');
+        });
+
+        $middleware->redirectGuestsTo(function () {
+            if (!Auth::check() && tenant()) {
+                return route('app.login');
+            }
+            return route('central.login');
         });
     })
     ->withExceptions(function (Exceptions $exceptions) {

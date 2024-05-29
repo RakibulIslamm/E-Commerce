@@ -19,6 +19,7 @@
             speed: 800,
             spaceBetween: 100,
             // mousewheel: true,
+            // effect: "fade",
             parallax: true,
             autoplay: {
                 delay: 5500,

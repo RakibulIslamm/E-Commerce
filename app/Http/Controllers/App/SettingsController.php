@@ -12,11 +12,16 @@ class SettingsController extends Controller
      */
     public function index(Request $request)
     {
-
-        // if (!auth()->user()) abort(404);
-
         $tenant = tenant();
-        if(!$tenant) abort(404);
+        return view('app.settings.index', ['settings' => $tenant]);
+    }
+    public function settings_api(Request $request)
+    {
+        // if (auth()->user()->role != 'admin')
+        //     abort(404);
+        $tenant = tenant();
+        if (!$tenant)
+            abort(404);
         $this->matchDomain($request, $tenant);
         $tenant->accepted_payments = json_decode($tenant->accepted_payments, true);
         return response()->json($tenant);
@@ -57,11 +62,12 @@ class SettingsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update()
+    public function update_settings_api()
     {
         // dd("Hello from update");
 
-        if (auth()->user()->role != 'admin') abort(404);
+        if (auth()->user()->role != 'admin')
+            abort(404);
         $tenant = tenant();
         // $tenant->update();
         return response()->json($tenant);
