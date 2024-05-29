@@ -5,39 +5,41 @@
             <x-bx-store-alt class="w-6 h-6 text-gray-700" />
             <a href="/" class="text-xl leading-6 text-gray-700 font-semibold">Ecommerce</a>
         </div>
-        <div class="mt-6 flex flex-col justify-start items-center w-full space-y-5 px-4">
-            <button
-                class="flex jusitfy-start items-center space-x-3 w-full focus:outline-none focus:text-gray-400 text-gray-700 rounded">
+        <div class="mt-6 flex flex-col justify-start items-center w-full space-y-2 px-4">
+            <a href="/dashboard"
+                class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('dashboard*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
                 <x-bx-store class="w-5 h-5" />
                 <p class="text-base leading-4">Dashboard</p>
-            </button>
-            <button
-                class="flex jusitfy-start items-center w-full space-x-3 focus:outline-none text-gray-700 focus:text-gray-400 rounded">
+            </a>
+            <a href="#"
+                class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('#') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
                 <x-bx-user class="w-5 h-5" />
                 <p class="text-base leading-4">Customers</p>
-            </button>
+            </a>
         </div>
-        <div class="w-full h-px my-5 bg-transparent bg-gradient-to-r from-transparent via-gray-500/40 to-transparent">
+        <div
+            class="w-full h-px mt-5 mb-2 bg-transparent bg-gradient-to-r from-transparent via-gray-500/40 to-transparent">
         </div>
         <div class="flex flex-col justify-start items-center border-gray-600 px-4">
             <button onclick="showMenu1(true)"
-                class="focus:outline-none focus:text-gray-400 text-left text-gray-700 flex justify-between items-center w-full py-5 space-x-14">
+                class="focus:outline-none focus:text-gray-900 focus:font-semibold text-left text-gray-700 flex justify-between items-center w-full space-x-14">
                 <p class="text-sm leading-5 uppercase">Product</p>
                 <x-bx-caret-down id="icon1" class="transform w-6 h-6" />
             </button>
-            <div id="menu1" class="flex justify-start flex-col w-full items-start pb-4">
+            <div id="menu1" class="flex justify-start flex-col w-full items-start">
                 <button
-                    class="flex justify-start items-center gap-2 hover:text-gray-700 focus:bg-gray-700 focus:text-gray-700 hover:bg-gray-700 text-gray-400 rounded px-3 py-2 w-full">
+                    class="flex justify-start items-center gap-2 hover:text-gray-100 focus:bg-gray-700 focus:text-gray-100 hover:bg-gray-700 text-gray-400 rounded px-3 py-2 w-full my-2">
                     <x-bx-list-ul class="w-6 h-6" />
                     <p class="text-base leading-4">Porduct list</p>
                 </button>
             </div>
         </div>
-        <div class="block h-px my-5 bg-transparent bg-gradient-to-r from-transparent via-gray-500/40 to-transparent">
+        <div
+            class="block h-px mb-5 mt-2 bg-transparent bg-gradient-to-r from-transparent via-gray-500/40 to-transparent">
         </div>
         <div class="px-4">
-            <a href="/" {{-- {{ route('app.settings') }} --}}
-                class="flex jusitfy-start items-center space-x-3 w-full focus:outline-none focus:text-gray-400 text-gray-700 rounded">
+            <a href="/settings" {{-- {{ route('app.settings') }} --}}
+                class="flex jusitfy-start items-center space-x-3 hover:text-gray-100 hover:bg-gray-700 {{ Request::is('settings*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
                 <x-lucide-settings class="w-5 h-5" />
                 <p class="text-base leading-4">Settings</p>
             </a>

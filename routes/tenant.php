@@ -39,3 +39,4 @@ Route::middleware([
 
 require __DIR__ . '/app/ecommerce-api/settings-api.php';
 require __DIR__ . '/app/auth.php';
+require __DIR__ . '/app/settings.php';
