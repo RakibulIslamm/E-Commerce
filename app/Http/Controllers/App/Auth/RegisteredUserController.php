@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
 
-        // dd("Hello");
+        // dd(tenant()->toArray());
         return view('app.auth.register');
     }
 
@@ -37,16 +37,19 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(route('app.dashboard', absolute: false));
+        try {
+            return tenant()->run(function () use ($request) {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+                event(new Registered($user));
+                Auth::login($user);
+                return redirect(route('app.dashboard', absolute: false));
+            });
+        } catch (\Exception $exception) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Registration failed. Please try again.']);
+        }
     }
 }

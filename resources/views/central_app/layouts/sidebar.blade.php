@@ -30,7 +30,7 @@
                 {{-- Add more conditions similarly for other links --}}
             </div>
         </div>
-        <form action="{{ route('logout') }}" method="post">
+        <form action="{{ route('central.logout') }}" method="post">
             @csrf
             <button type="submit"
                 class="w-full inline-flex items-center justify-center h-9 px-4 bg-gray-900 text-gray-300 hover:text-white text-sm font-semibold transition">

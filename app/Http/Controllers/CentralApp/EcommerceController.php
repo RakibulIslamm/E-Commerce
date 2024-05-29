@@ -85,11 +85,11 @@ class EcommerceController extends Controller
 
         // Ecommerce::create($validatedData);
 
-        $tenant = Tenant::create($validatedData);
-
+        
         $full_domain = $validatedData['domain'];
         $domain_name = strtok($full_domain, ".");
-
+        $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
+        
         $tenant->domains()->create([
             'domain' => $domain_name . '.' . config('app.domain')
         ]);
@@ -179,7 +179,7 @@ class EcommerceController extends Controller
 
     private function checkCentralDomain(Request $request)
     {
-        $allowedDomains = config('tenancy.central_domains');
+        $allowedDomains = config('tenancy.central_domains', []);
         $requestDomain = $request->getHost();
 
         if (!in_array($requestDomain, $allowedDomains)) {

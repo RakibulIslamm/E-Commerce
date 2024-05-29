@@ -58,7 +58,7 @@
                 </p>
             </div>
         </div>
-        <form action="{{ route('logout') }}" method="post">
+        <form action="{{ route('app.logout') }}" method="post">
             @csrf
             <button type="submit">
                 <x-bx-exit class="w-6 h-6 text-gray-700" />

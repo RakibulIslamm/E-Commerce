@@ -15,7 +15,7 @@ class CheckCentralDomain
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $allowedDomains = config('tenancy.central_domains');
+        $allowedDomains = config('tenancy.central_domains', []);
         $requestDomain = $request->getHost();
 
         if (!in_array($requestDomain, $allowedDomains)) {
