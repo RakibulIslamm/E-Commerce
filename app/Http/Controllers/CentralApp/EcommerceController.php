@@ -101,7 +101,7 @@ class EcommerceController extends Controller
         // Creating plesk db for tenant
         try {
             $res = $this->plesk->createDatabase($full_domain, 'mysql', 'aster.ecommerce.eforge.it', 1, 1);
-            dd($res);
+            // dd($res);
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
