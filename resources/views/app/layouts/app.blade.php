@@ -12,16 +12,16 @@
 </head>
 
 <body class="font-sans antialiased flex items-start justify-start bg-gray-100">
-    @include('app.layouts.sidebar')
-    <main class="w-full h-full">
-        {{-- <div class="px-10 py-5 bg-slate-800 rounded-xl mx-5 text-gray-100 sticky top-0">
-            header goes here
-        </div> --}}
-        <div class="mx-8 my-4">
+    @include('app.layouts.Partials.sidebar')
+    <main class="w-[calc(100%_-_320px)] h-full">
+        {{-- px-10 bg-white border shadow-sm rounded-xl sticky top-0 --}}
+        <div class="py-4 mx-8 border-b">
+            @include('app.layouts.Partials.header')
+        </div>
+        <div class="mx-8 my-4 relative">
             {{ $slot }}
         </div>
     </main>
 </body>
-
 
 </html>

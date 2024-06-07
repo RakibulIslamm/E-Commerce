@@ -13,6 +13,7 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
+    @include('app.components.top-bar.index')
     @include('app.components.navbar.index')
     <main>
         {{ $slot }}

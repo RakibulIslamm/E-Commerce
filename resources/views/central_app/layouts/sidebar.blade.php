@@ -1,4 +1,4 @@
-<aside class="w-[350px] shadow h-screen bg-white sticky top-0 left-0">
+<aside class="w-[260px] hidden shadow h-screen bg-white sticky top-0 left-0">
     <div class="flex flex-col justify-between h-full">
         <div>
             <div class="px-4 flex items-center justify-start border-b h-[60px]">

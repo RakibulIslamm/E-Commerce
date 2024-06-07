@@ -14,10 +14,19 @@
 </head>
 
 <body class="font-sans antialiased">
-    <div class="bg-gray-100 min-h-screen flex items-start relative">
-        @include('central_app.layouts.sidebar')
-        <main class="w-full h-full">
-            <div
+    <div class="bg-gray-100 min-h-screen relative">
+        {{-- @include('central_app.layouts.sidebar') --}}
+        @include('central_app.layouts.navigation')
+        <!-- Page Heading -->
+        @if (isset($header))
+            <header class="bg-white shadow">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $header }}
+                </div>
+            </header>
+        @endif
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {{-- <div
                 class="w-full h-[60px] shadow-sm flex justify-between items-center bg-white border-b border-l sticky top-0 px-5">
                 @if ($user->role == 5)
                     <div>
@@ -25,7 +34,7 @@
                     </div>
                 @endif
                 <h3 class="text-2xl font-bold">{{ $user->name }}</h3>
-            </div>
+            </div> --}}
             <div class="w-full h-full flex justify-center items-center">
                 {{ $slot }}
             </div>

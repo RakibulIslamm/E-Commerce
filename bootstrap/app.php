@@ -27,6 +27,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
     
+        $middleware->validateCsrfTokens(except: [
+            'api/settings/*',
+        ]);
+
         $middleware->alias([
             'admin' => Admin::class,
             'editor' => Editor::class,

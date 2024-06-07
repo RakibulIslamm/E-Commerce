@@ -1,44 +1,64 @@
 @section('title', 'Ecommerces')
 
+
+
 <x-central-app-layout>
-    <section class="py-1 bg-blueGray-50 w-full">
-        <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-24">
+    <x-slot name="header">
+        <div class="w-full flex items-center justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Ecommerces') }}
+            </h2>
+            @if ($user->role == 1 || $user->role == 3)
+                <div class="relative w-full max-w-full flex-grow flex-1 text-right">
+                    <a href="/ecommerces/create"
+                        class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold  px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+                        Add New
+                    </a>
+                </div>
+            @endif
+        </div>
+    </x-slot>
+
+    <section class="py-1  w-full">
+        <div class="w-full mb-12 xl:mb-0 mx-auto mt-5">
             @if (session()->has('success'))
-                <p class="px-10 py-3 bg-green-300 text-gray-950">{{ session('success') }}</p>
+                <div class="px-10 py-2 bg-green-500 text-white font-semibold flex items-center justify-between"
+                    id="session_status">
+                    <p>{{ session('success') }}</p>
+                    <x-lucide-x-circle class="w-4 h-4 cursor-pointer" id="icon" />
+                </div>
             @endif
             <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-                <div class="rounded-t mb-0 px-4 py-3 border-0">
-                    <div class="flex flex-wrap items-center">
-                        <div class="relative w-full px-2 max-w-full flex-grow flex-1">
-                            <h3 class="font-semibold text-xl text-blueGray-700">
-                                Ecommerces
-                            </h3>
-                        </div>
-                        @if ($user->role == 1 || $user->role == 3)
-                            <div class="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-                                <a href="/ecommerces/create"
-                                    class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
-                                    Add New
-                                </a>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-
                 <div class="block w-full overflow-x-auto">
                     <table class="items-center bg-transparent w-full border-collapse">
                         <thead>
                             <tr>
                                 <th
-                                    class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Business Name
+                                </th>
+                                <th
+                                    class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                     Domain
                                 </th>
                                 <th
-                                    class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3text-[14px]s uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Email
+                                    class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Vat Number
                                 </th>
                                 <th
-                                    class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    No. orders
+                                </th>
+                                <th
+                                    class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Contacts
+                                </th>
+                                <th
+                                    class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase  border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Business Type
+                                </th>
+                                <th
+                                    class="px-6 align-middle border border-solid py-3 text-[14px] uppercase  border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                 </th>
                             </tr>
                         </thead>
@@ -50,7 +70,7 @@
                                 ])
                             @empty
                                 <tr>
-                                    <td colspan="3" class="px-6 py-4 whitespace-nowrap text-sm text-blueGray-500">
+                                    <td colspan="3" class="px-6 py-4 whitespace-nowrap text-sm ">
                                         No ecommerces found.
                                     </td>
                                 </tr>
@@ -62,3 +82,11 @@
         </div>
     </section>
 </x-central-app-layout>
+
+<script>
+    const session = document.getElementById('session_status');
+    document.getElementById('icon').addEventListener('click', () => {
+        session.classList.add('hidden');
+        session.classList.remove('flex');
+    })
+</script>

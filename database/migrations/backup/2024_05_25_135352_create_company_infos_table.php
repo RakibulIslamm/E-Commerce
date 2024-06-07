@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,6 +13,7 @@ return new class extends Migration
         Schema::create('company_infos', function (Blueprint $table) {
             $table->id();
             $table->string('name')->default('XYZ Company');
+            $table->string('tenant_id');
             $table->string('img')->default('https://placeholderlogo.com/img/placeholder-logo-4.png');
             $table->integer('logo_height')->default(30);
             $table->text('description')->nullable();

@@ -20,29 +20,55 @@
         <div
             class="w-full h-px mt-5 mb-2 bg-transparent bg-gradient-to-r from-transparent via-gray-500/40 to-transparent">
         </div>
-        <div class="flex flex-col justify-start items-center border-gray-600 px-4">
+        <div class="flex flex-col items-start border-gray-600 px-4">
             <button onclick="showMenu1(true)"
                 class="focus:outline-none focus:text-gray-900 focus:font-semibold text-left text-gray-700 flex justify-between items-center w-full space-x-14">
                 <p class="text-sm leading-5 uppercase">Product</p>
-                <x-bx-caret-down id="icon1" class="transform w-6 h-6" />
+                <x-bx-caret-down id="icon1" class="transform w-3 h-3" />
             </button>
-            <div id="menu1" class="flex justify-start flex-col w-full items-start">
+            <div id="menu1" class="hidden w-full">
                 <button
                     class="flex justify-start items-center gap-2 hover:text-gray-100 focus:bg-gray-700 focus:text-gray-100 hover:bg-gray-700 text-gray-400 rounded px-3 py-2 w-full my-2">
-                    <x-bx-list-ul class="w-6 h-6" />
-                    <p class="text-base leading-4">Porduct list</p>
+                    <x-bx-list-ul class="w-5 h-5" />
+                    <p class="text-sm leading-4">Porduct list</p>
                 </button>
             </div>
         </div>
         <div
             class="block h-px mb-5 mt-2 bg-transparent bg-gradient-to-r from-transparent via-gray-500/40 to-transparent">
         </div>
-        <div class="px-4">
-            <a href="/settings" {{-- {{ route('app.settings') }} --}}
-                class="flex jusitfy-start items-center space-x-3 hover:text-gray-100 hover:bg-gray-700 {{ Request::is('settings*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
-                <x-lucide-settings class="w-5 h-5" />
-                <p class="text-base leading-4">Settings</p>
-            </a>
+
+
+        <div
+            class="w-full h-px mt-5 mb-2 bg-transparent bg-gradient-to-r from-transparent via-gray-500/40 to-transparent">
+        </div>
+        <div class="flex flex-col items-start border-gray-600 px-4">
+            <button onclick="showMenu2(true)"
+                class="focus:outline-none focus:text-gray-900 focus:font-semibold text-left text-gray-700 flex justify-between items-center w-full space-x-14">
+                <p class="leading-5 uppercase">Settings</p>
+                <x-bx-caret-down id="icon2"
+                    class="transform w-3 h-3 {{ Request::is('settings*') ? 'rotate-180' : '' }}" />
+            </button>
+            <div id="menu2" class="{{ Request::is('settings*') ? 'block' : 'hidden' }} w-full">
+                <a href="{{ route('app.settings.general') }}"
+                    class="flex justify-start items-center gap-2 {{ Request::is('settings/general') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
+                    <x-lucide-settings class="w-5 h-5" />
+                    <p class="text-sm leading-4">General</p>
+                </a>
+                <a href="{{ route('app.settings.ecommerce') }}"
+                    class="flex justify-start items-center gap-2 hover:text-gray-100 {{ Request::is('settings/ecommerce') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 rounded px-3 py-2 w-full my-2">
+                    <x-lucide-settings-2 class="w-5 h-5" />
+                    <p class="text-sm leading-4">Ecommerce</p>
+                </a>
+                <a href="{{ route('app.settings.account') }}"
+                    class="flex justify-start items-center gap-2 hover:text-gray-100 {{ Request::is('settings/account') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 rounded px-3 py-2 w-full my-2">
+                    <x-lucide-user-cog class="w-5 h-5" />
+                    <p class="text-sm leading-4">Account</p>
+                </a>
+            </div>
+        </div>
+        <div
+            class="block h-px mb-5 mt-2 bg-transparent bg-gradient-to-r from-transparent via-gray-500/40 to-transparent">
         </div>
     </div>
 
@@ -71,11 +97,19 @@
 
 <script>
     let icon1 = document.getElementById("icon1");
+    let icon2 = document.getElementById("icon2");
     let menu1 = document.getElementById("menu1");
+    let menu2 = document.getElementById("menu2");
     const showMenu1 = (flag) => {
         if (flag) {
             icon1.classList.toggle("rotate-180");
             menu1.classList.toggle("hidden");
+        }
+    };
+    const showMenu2 = (flag) => {
+        if (flag) {
+            icon2.classList.toggle("rotate-180");
+            menu2.classList.toggle("hidden");
         }
     };
 

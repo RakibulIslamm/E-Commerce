@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers\App;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\Models\Tenant;
 
-class SettingsController extends Controller
+class SettingsApiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $tenant = tenant();
-        return view('app.settings.index', ['settings' => $tenant]);
-    }
-    public function settings_api(Request $request)
     {
         // if (auth()->user()->role != 'admin')
         //     abort(404);
@@ -62,12 +58,14 @@ class SettingsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update_settings_api()
+    public function update(Request $request)
     {
-        // dd("Hello from update");
+        // if (!Auth::check())
+        //     abort(404);
 
-        if (auth()->user()->role != 'admin')
-            abort(404);
+        // if (auth()->user()->role != 1)
+        //     abort(404);
+
         $tenant = tenant();
         // $tenant->update();
         return response()->json($tenant);

@@ -17,6 +17,7 @@ class CreateTenantsTable extends Migration
     {
         Schema::create('tenants', function (Blueprint $table) {
             $table->string('id')->primary();
+            $table->string('business_name');
             $table->string('domain');
             $table->string('auth_username');
             $table->string('auth_password');
