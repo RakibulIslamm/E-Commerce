@@ -82,11 +82,3 @@
         </div>
     </section>
 </x-central-app-layout>
-
-<script>
-    const session = document.getElementById('session_status');
-    document.getElementById('icon').addEventListener('click', () => {
-        session.classList.add('hidden');
-        session.classList.remove('flex');
-    })
-</script>

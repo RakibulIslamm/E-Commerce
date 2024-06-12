@@ -21,7 +21,24 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            $view->with('user', auth()->user());
+            $requestDomain = request()->getHost();
+            $centralDomains = config('tenancy.central_domains', []);
+
+            if (in_array($requestDomain, $centralDomains)) {
+                $view->with([
+                    'user' => auth()->user()
+                ]);
+            } else {
+                $tenant = tenant();
+                if ($tenant->data != null) {
+                    $tenant->data = json_decode($tenant->data);
+                }
+                $view->with([
+                    'user' => auth()->user(),
+                    'site_settings' =>
+                        $tenant,
+                ]);
+            }
         });
     }
 }

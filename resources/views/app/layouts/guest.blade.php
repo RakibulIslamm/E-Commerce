@@ -13,11 +13,12 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    @include('app.components.top-bar.index')
-    @include('app.components.navbar.index')
+    @include('app.components.shared.top-bar.index')
+    @include('app.components.shared.navbar.index')
     <main>
         {{ $slot }}
     </main>
+    @include('app.components.shared.footer.index')
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 

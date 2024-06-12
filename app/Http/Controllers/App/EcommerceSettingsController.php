@@ -18,7 +18,7 @@ class EcommerceSettingsController extends Controller
 
         $tenant = tenant();
         $tenant->accepted_payments = json_decode($tenant->accepted_payments, true);
-        return view('app.settings.ecommerce.index', ['settings' => $tenant]);
+        return view('app.pages.corporate-content.ecommerce.index', ['settings' => $tenant]);
     }
 
     /**
@@ -52,7 +52,7 @@ class EcommerceSettingsController extends Controller
     {
         $tenant = tenant();
         $tenant->accepted_payments = json_decode($tenant->accepted_payments, true);
-        return view('app.settings.ecommerce.edit', ['settings' => $tenant]);
+        return view('app.pages.corporate-content.ecommerce.edit', ['settings' => $tenant]);
     }
 
     /**
@@ -89,10 +89,9 @@ class EcommerceSettingsController extends Controller
 
         if (!Auth::check() || auth()->user()->role != 1)
             abort(404);
-        dd($validatedData);
         $tenant = tenant();
         $tenant->update($validatedData);
-        return redirect()->route('app.settings.ecommerce');
+        return redirect()->route('app.corporate-content.ecommerce');
     }
 
     /**

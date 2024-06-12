@@ -34,8 +34,8 @@ class CreateTenantsTable extends Migration
             $table->enum('registration_process', ['Optional', 'Mandatory', 'Mandatory with confirmation'])->default('Optional');
             $table->json('accepted_payments')->default(json_encode(["PayPal", "Bank Transfer", "Cash on Delivery", "Collection and payment on site"]));
             $table->enum('offer_display', ['View cut price', 'Do not display the cut price'])->default('View cut price');
-            $table->timestamps();
             $table->json('data')->nullable();
+            $table->timestamps();
         });
     }
 
