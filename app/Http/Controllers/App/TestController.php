@@ -11,9 +11,9 @@ class TestController extends Controller
      */
     public function index()
     {
-        $tenant = tenant();
-        // dd($tenant);
-        return view('app.index', ['tenant' => $tenant]);
+        // $tenant = tenant();
+        // // dd($tenant);
+        // return view('app.pages.index', ['tenant' => $tenant]);
     }
 
     /**

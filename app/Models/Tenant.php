@@ -15,6 +15,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     {
         return [
             'id',
+            'business_name',
             'domain',
             'auth_username',
             'auth_password',

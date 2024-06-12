@@ -16,7 +16,7 @@
                     <div class="absolute inset-y-0 left-0 flex items-center">
                         <label for="country" class="sr-only">Country</label>
                         <select id="country" name="country"
-                            class="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm">
+                            class="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm custom-select">
                             <option>US</option>
                             <option>CA</option>
                             <option>EU</option>

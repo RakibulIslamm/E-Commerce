@@ -6,26 +6,57 @@
     <fieldset class="w-full space-y-3" {{ $mode == 'view' ? 'disabled' : '' }}>
         <div class="w-full flex justify-between items-start gap-3">
             <div class="w-full">
-                <label for="domain" class="block text-gray-700 text-sm font-bold mb-2">Domain</label>
-                <input id="domain" name="domain" type="text" value="{{ old('domain', $ecommerce->domain ?? '') }}"
-                    required placeholder="Domain"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <label for="domain" class="block text-gray-700 text-sm font-bold mb-2">Business Name</label>
+                <input id="business_name" name="business_name" type="text"
+                    value="{{ old('business_name', $ecommerce->business_name ?? '') }}" required
+                    placeholder="Business Name"
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline">
             </div>
-
+            <div class="w-full">
+                <label for="domain" class="block text-gray-700 text-sm font-bold mb-2">Domain</label>
+                @if ($mode == 'create')
+                    <input id="domain" name="domain" type="text"
+                        value="{{ old('domain', $ecommerce->domain ?? '') }}" required placeholder="Domain"
+                        class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline">
+                @else
+                    <input id="domain" name="domain" type="text"
+                        value="{{ old('domain', $ecommerce->domain ?? '') }}" required placeholder="Domain" disabled
+                        class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline">
+                @endif
+            </div>
+        </div>
+        <div class="w-full flex justify-between items-start gap-3">
             <div class="w-full">
                 <label for="auth_username" class="block text-gray-700 text-sm font-bold mb-2">Auth Username</label>
-                <input id="auth_username" name="auth_username" type="text"
-                    value="{{ old('auth_username', $ecommerce->auth_username ?? '') }}"
-                    placeholder="Basic Auth Username"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                @if ($mode == 'create')
+                    <input id="auth_username" name="auth_username" type="text"
+                        value="{{ old('auth_username', $ecommerce->auth_username ?? '') }}"
+                        placeholder="Basic Auth Username"
+                        class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline">
+                @else
+                    <input id="auth_username" name="auth_username" type="text"
+                        value="{{ old('auth_username', $ecommerce->auth_username ?? '') }}"
+                        placeholder="Basic Auth Username" disabled
+                        class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline">
+                @endif
             </div>
 
             <div class="w-full">
                 <label for="auth_password" class="block text-gray-700 text-sm font-bold mb-2">Auth Password</label>
-                <input id="auth_password" name="auth_password" type="password"
+                <input id="auth_password" name="auth_password" type="text"
                     value="{{ old('auth_password', $ecommerce->auth_password ?? '') }}"
                     placeholder="Basic Auth Password"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="w-full">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                    Email
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+                    onChange="(e) => setData('email', e.target.value)"
+                    value="{{ old('email', $ecommerce['email'] ?? '') }}" id="email" type="email"
+                    placeholder="Email" name="email" required>
             </div>
         </div>
 
@@ -34,22 +65,11 @@
         {{-- part 2 --}}
         <div class="w-full flex justify-between items-start gap-3">
             <div class="w-full">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-                    Email
-                </label>
-                <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    onChange="(e) => setData('email', e.target.value)"
-                    value="{{ old('email', $ecommerce['email'] ?? '') }}" id="email" type="email"
-                    placeholder="Email" name="email" required>
-            </div>
-
-            <div class="w-full">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="tax_code">
                     Tax Code
                 </label>
                 <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                     onChange="(e) => setData('tax_code', e.target.value)"
                     value="{{ old('tax_code', $ecommerce['tax_code'] ?? '') }}" id="tax_code" type="text"
                     placeholder="Tax Code" name="tax_code" required>
@@ -60,7 +80,7 @@
                     Phone
                 </label>
                 <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                     onChange="(e) => setData('phone', e.target.value)"
                     value="{{ old('phone', $ecommerce['phone'] ?? '') }}" id="phone" type="text"
                     placeholder="Phone" name="phone" required>
@@ -75,7 +95,7 @@
                     Rest API User
                 </label>
                 <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                     onChange="(e) => setData('rest_api_user', e.target.value)"
                     value="{{ old('rest_api_user', $ecommerce['rest_api_user'] ?? '') }}" id="rest_api_user"
                     type="text" name="rest_api_user" placeholder="Rest API User" required>
@@ -86,10 +106,11 @@
                     Rest API Password
                 </label>
                 <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                     onChange="(e) => setData('rest_api_password', e.target.value)"
-                    value="{{ old('rest_api_password', $ecommerce['rest_api_password'] ?? '') }}" id="rest_api_password"
-                    type="password" name="rest_api_password" placeholder="Rest API Password" required>
+                    value="{{ old('rest_api_password', $ecommerce['rest_api_password'] ?? '') }}"
+                    id="rest_api_password" type="text" name="rest_api_password" placeholder="Rest API Password"
+                    required>
             </div>
 
             <div class="w-6/12">
@@ -97,7 +118,7 @@
                     Business Type
                 </label>
                 <select
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                     id="business_type" name="business_type" required>
                     <option value="B2C"
                         {{ old('business_type', $ecommerce['business_type'] ?? '') == 'B2C' ? 'selected' : '' }}>
@@ -123,7 +144,7 @@
                     Product Stock Display
                 </label>
                 <select
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                     id="product_stock_display" name="product_stock_display" required>
                     <option value="Text Only"
                         {{ old('product_stock_display', $ecommerce['product_stock_display'] ?? '') == 'Text Only' ? 'selected' : '' }}>
@@ -145,7 +166,7 @@
                     Registration Process
                 </label>
                 <select
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                     name="registration_process" id="registration_process" required>
                     <option value="Optional"
                         {{ old('registration_process', $ecommerce['registration_process'] ?? '') == 'Optional' ? 'selected' : '' }}>
@@ -167,7 +188,7 @@
                     Offer Display
                 </label>
                 <select
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                     name="offer_display" id="offer_display" required>
                     <option value="View cut price"
                         {{ old('offer_display', $ecommerce['offer_display'] ?? '') == 'View cut price' ? 'selected' : '' }}>
@@ -185,7 +206,7 @@
                     Decimal Places
                 </label>
                 <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                     value="{{ old('decimal_places', $ecommerce['decimal_places'] ?? '') }}" id="decimal_places"
                     type="number" name="decimal_places" placeholder="Decimal Places" min="0" required>
             </div>
@@ -218,8 +239,8 @@
                     <label class="text-sm" for="cash_on_delivery">Cash on Delivery</label>
                 </div>
                 <div>
-                    <input type="checkbox" class="mr-2 leading-tight" value="collection_and_payment_on_site"
-                        {{ in_array('collection_and_payment_on_site', $ecommerce['accepted_payments'] ?? []) ? 'checked' : '' }}
+                    <input type="checkbox" class="mr-2 leading-tight" value="Collection and Payment on Site"
+                        {{ in_array('Collection and Payment on Site', $ecommerce['accepted_payments'] ?? []) ? 'checked' : '' }}
                         name="accepted_payments[]" id="collection_and_payment_on_site" />
                     <label class="text-sm" for="collection_and_payment_on_site">Collection and payment on site</label>
                 </div>

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\App\ContactController;
+use App\Http\Controllers\App\IndexController;
 use App\Http\Controllers\App\ProfileController;
-use App\Http\Controllers\App\TestController;
 use App\Http\Controllers\App\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -26,7 +27,8 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::get('/', [TestController::class, 'index']);
+    Route::get('/', [IndexController::class, 'index']);
+    Route::get('/contact', [ContactController::class, 'index'])->name('app.contact');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('app.dashboard')->middleware(['auth']);
 
     Route::middleware('auth')->group(function () {
@@ -39,4 +41,6 @@ Route::middleware([
 
 require __DIR__ . '/app/ecommerce-api/settings-api.php';
 require __DIR__ . '/app/auth.php';
-require __DIR__ . '/app/settings.php';
+require __DIR__ . '/app/corporate-content.php';
+require __DIR__ . '/app/slider.php';
+require __DIR__ . '/app/category.php';

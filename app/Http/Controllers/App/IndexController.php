@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\App;
 
-use App\Models\Tenant;
+use App\Models\ContentSlider;
 use Illuminate\Http\Request;
 
 class IndexController
 {
     public function index(Request $request)
     {
-        return view("app.index");
+        $sliders = ContentSlider::orderBy('position')->get();
+        return view("app.pages.index", ['sliders' => $sliders]);
     }
 }

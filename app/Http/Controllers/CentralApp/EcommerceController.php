@@ -62,6 +62,7 @@ class EcommerceController extends Controller
         }
 
         $validatedData = $request->validate([
+            'business_name' => 'required|string',
             'domain' => 'required|string|unique:domains,domain',
             'auth_username' => 'required|string',
             'auth_password' => 'required|string',
@@ -148,8 +149,9 @@ class EcommerceController extends Controller
             abort(403, "Unauthorize access");
         }
         $validatedData = $request->validate([
-            'domain' => 'required|string',
-            'auth_username' => 'required|string',
+            'business_name' => 'nullable|string',
+            'domain' => 'nullable|string',
+            'auth_username' => 'nullable|string',
             'auth_password' => 'required|string',
             'email' => 'required|email',
             'tax_code' => 'required|string',
