@@ -4,13 +4,23 @@ namespace App\Http\Controllers\CentralApp;
 
 use App\Models\Ecommerce;
 use App\Models\Tenant;
+use App\Services\PleskAPI;
+use Exception;
 use Illuminate\Http\Request;
+use Stancl\Tenancy\Database\DatabaseManager;
 
 class EcommerceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    protected $plesk;
+    // protected $databaseManager;
+
+    public function __construct(PleskAPI $plesk, DatabaseManager $databaseManager)
+    {
+        $this->plesk = $plesk;
+        // $this->databaseManager = $databaseManager;
+    }
+
     public function index(Request $request)
     {
         $this->checkCentralDomain($request);
@@ -83,13 +93,21 @@ class EcommerceController extends Controller
         }
         $validatedData['accepted_payments'] = json_encode($validatedData['accepted_payments']);
 
-        // Ecommerce::create($validatedData);
 
-        
+
         $full_domain = $validatedData['domain'];
         $domain_name = strtok($full_domain, ".");
+
+        // Creating plesk db for tenant
+        try {
+            $res = $this->plesk->createDatabase($full_domain, 'mysql', 'aster.ecommerce.eforge.it', 1, 1);
+            // dd($res);
+        } catch (Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+
         $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
-        
+
         $tenant->domains()->create([
             'domain' => $domain_name . '.' . config('app.domain')
         ]);
