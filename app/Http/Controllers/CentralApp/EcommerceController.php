@@ -103,19 +103,20 @@ class EcommerceController extends Controller
         try {
             $res = $this->plesk->createDatabase($full_domain, 'mysql', 'aster.ecommerce.eforge.it', 1, 1);
             // dd($res);
-            $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
-
-            $tenant->domains()->create([
-                'domain' => $domain_name . '.' . config('app.domain')
-            ]);
-            $tenant->domains()->create([
-                'domain' => $full_domain
-            ]);
-    
-            return redirect()->route('ecommerce.index')->with('success', 'New eCommerce created successfully');
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
+        
+        $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
+
+        $tenant->domains()->create([
+            'domain' => $domain_name . '.' . config('app.domain')
+        ]);
+        $tenant->domains()->create([
+            'domain' => $full_domain
+        ]);
+
+        return redirect()->route('ecommerce.index')->with('success', 'New eCommerce created successfully');
     }
 
     /**
