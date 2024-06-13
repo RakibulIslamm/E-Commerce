@@ -32,7 +32,11 @@ class PleskAPI
             $headers[] = 'Content-Length: ' . strlen($dataString);
         }
 
-        dd(''. $method .''. $url .''. $headers);
+        print_r($curl);
+        print_r($headers);
+        print_r($data);
+
+        echo $this->username . ':' . $this->password;
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
