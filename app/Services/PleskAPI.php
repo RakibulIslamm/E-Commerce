@@ -32,6 +32,8 @@ class PleskAPI
             $headers[] = 'Content-Length: ' . strlen($dataString);
         }
 
+        dd(''. $method .''. $url .''. $headers);
+
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
