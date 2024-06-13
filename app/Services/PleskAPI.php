@@ -32,7 +32,7 @@ class PleskAPI
             $headers[] = 'Content-Length: ' . strlen($dataString);
         }
 
-        print_r($curl);
+        print_r($url);
         print_r($headers);
         print_r($data);
 
