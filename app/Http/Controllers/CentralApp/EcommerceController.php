@@ -107,8 +107,8 @@ class EcommerceController extends Controller
             echo 'Error: ' . $e->getMessage();
         }
         
-        // $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
-        $tenant = Tenant::where('domain', $full_domain)->firstOrFail();
+        $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
+        // $tenant = Tenant::where('domain', $full_domain)->firstOrFail();
 
         $tenant->domains()->create([
             'domain' => $domain_name . '.' . config('app.domain')
