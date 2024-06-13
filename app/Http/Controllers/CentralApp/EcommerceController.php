@@ -106,7 +106,7 @@ class EcommerceController extends Controller
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
-
+        die();
         $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
 
         $tenant->domains()->create([
