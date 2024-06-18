@@ -103,7 +103,7 @@ class EcommerceController extends Controller
             // Creating plesk db for tenant
             $this->plesk->createDatabase($full_domain, 'mysql', 'aster.ecommerce.eforge.it', 1, 1);
 
-            $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => 'test']);
+            $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
 
             $tenant->domains()->create([
                 'domain' => $domain_name . '.' . config('app.domain')
