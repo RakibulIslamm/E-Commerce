@@ -12,3 +12,11 @@ export function toggleVisibility(showId, hideId, property) {
 export function element(id) {
     return document.getElementById(id);
 }
+
+export const sessionMessageClose = () => {
+    const session = document.getElementById("session_status");
+    document.getElementById("icon").addEventListener("click", () => {
+        session.classList.add("hidden");
+        session.classList.remove("flex");
+    });
+};

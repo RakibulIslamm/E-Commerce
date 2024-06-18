@@ -1,4 +1,4 @@
-<form method="POST" action="{{ $mode == 'edit' ? route('ecommerce.update', $ecommerce) : route('ecommerce.create') }}"
+<form method="POST" action="{{ $mode == 'edit' ? route('ecommerce.update', $ecommerce) : route('ecommerce.store') }}"
     class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full">
     @csrf
     @method($mode == 'edit' ? 'PUT' : 'POST')
@@ -23,6 +23,7 @@
                         value="{{ old('domain', $ecommerce->domain ?? '') }}" required placeholder="Domain" disabled
                         class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline">
                 @endif
+                <x-input-error :messages="$errors->get('domain')" class="mt-2" />
             </div>
         </div>
         <div class="w-full flex justify-between items-start gap-3">

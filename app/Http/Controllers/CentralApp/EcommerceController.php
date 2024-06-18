@@ -99,25 +99,23 @@ class EcommerceController extends Controller
         $full_domain = $validatedData['domain'];
         $domain_name = strtok($full_domain, ".");
 
-        // Creating plesk db for tenant
         try {
-            $res = $this->plesk->createDatabase($full_domain, 'mysql', 'aster.ecommerce.eforge.it', 1, 1);
-            // dd($res);
+            // Creating plesk db for tenant
+            $this->plesk->createDatabase($full_domain, 'mysql', 'aster.ecommerce.eforge.it', 1, 1);
+
+            $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => 'test']);
+
+            $tenant->domains()->create([
+                'domain' => $domain_name . '.' . config('app.domain')
+            ]);
+            $tenant->domains()->create([
+                'domain' => $full_domain
+            ]);
+
+            return redirect()->route('ecommerce.index')->with('success', 'New eCommerce created successfully');
         } catch (Exception $e) {
-            echo 'Error: ' . $e->getMessage();
+            return redirect()->route('ecommerces.create')->with('error', $e->getMessage());
         }
-        
-        $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
-        // $tenant = Tenant::where('domain', $full_domain)->firstOrFail();
-
-        $tenant->domains()->create([
-            'domain' => $domain_name . '.' . config('app.domain')
-        ]);
-        $tenant->domains()->create([
-            'domain' => $full_domain
-        ]);
-
-        return redirect()->route('ecommerce.index')->with('success', 'New eCommerce created successfully');
     }
 
     /**

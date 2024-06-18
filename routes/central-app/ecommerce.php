@@ -10,9 +10,9 @@ Route::middleware(['auth', 'verified'])->prefix('ecommerces')->group(function ()
 
     Route::get('/show/{ecommerce}', [EcommerceController::class, 'show']);
 
-    Route::get('/create', [EcommerceController::class, 'create']);
+    Route::get('/create', [EcommerceController::class, 'create'])->name('ecommerces.create');
 
-    Route::post('/create', [EcommerceController::class, 'store'])->name('ecommerce.create');
+    Route::post('/create', [EcommerceController::class, 'store'])->name('ecommerce.store');
 
     Route::get('/edit/{ecommerce}', [EcommerceController::class, 'edit'])->name('ecommerce.edit');
 
