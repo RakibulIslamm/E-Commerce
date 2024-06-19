@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\App\EcommerceSettingsController;
-use App\Http\Controllers\App\CorporateDataController;
+use App\Http\Controllers\App\CorporateContent\CorporateDataController;
+use App\Http\Controllers\App\CorporateContent\EcommerceSettingsController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;

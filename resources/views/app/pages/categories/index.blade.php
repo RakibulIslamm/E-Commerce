@@ -35,7 +35,7 @@
                         </thead>
 
                         <tbody>
-                            @include('app.pages.categories.Partials.category-item', [
+                            @include('app.components.dashboard.categories.category-item', [
                                 'category' => ['name' => 'Drinks'],
                             ])
                             {{-- @if (!$sliders->isEmpty())

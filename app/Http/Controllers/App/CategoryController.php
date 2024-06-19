@@ -10,4 +10,9 @@ class CategoryController
     {
         return view('app.pages.categories.index');
     }
+
+    public function edit($id)
+    {
+        return view('app.pages.categories.edit');
+    }
 }

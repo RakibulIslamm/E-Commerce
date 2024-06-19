@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\App;
+namespace App\Http\Controllers\App\CorporateContent;
 
 use App\Models\Tenant;
 use Illuminate\Http\Request;

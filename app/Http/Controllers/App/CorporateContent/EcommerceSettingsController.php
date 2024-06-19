@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\App;
+namespace App\Http\Controllers\App\CorporateContent;
 
 use Illuminate\Http\Request;
 use App\Models\Tenant;
 use Illuminate\Support\Facades\Auth;
 
-class EcommerceSettingsController extends Controller
+class EcommerceSettingsController
 {
     /**
      * Display a listing of the resource.

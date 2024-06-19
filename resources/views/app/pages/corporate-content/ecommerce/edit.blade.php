@@ -1,6 +1,6 @@
 @section('title', 'Update Ecommerce Settings')
 <x-app-layout>
 
-    @include('app.pages.corporate-content.ecommerce.Partials.form')
+    @include('app.components.dashboard.ecommerce.form')
 
 </x-app-layout>

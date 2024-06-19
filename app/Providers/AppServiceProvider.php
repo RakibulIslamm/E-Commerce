@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
                 ]);
             } else {
                 $tenant = tenant();
-                if ($tenant->data != null) {
+                if (isset($tenant->data) && $tenant->data != null) {
                     $tenant->data = json_decode($tenant->data);
                 }
                 $view->with([
