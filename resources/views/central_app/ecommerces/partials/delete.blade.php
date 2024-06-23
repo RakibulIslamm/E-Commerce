@@ -10,7 +10,7 @@
 <script>
     const handleDelete = (ecommerce) => {
         event.preventDefault();
-        if (confirm('Are you sure you want to delete this item?')) {
+        if (confirm('Are you sure you want to delete this item? Everything will be deleted for this ecommerce')) {
             document.getElementById(`delete-form-${ecommerce.id}`).submit();
         }
     }

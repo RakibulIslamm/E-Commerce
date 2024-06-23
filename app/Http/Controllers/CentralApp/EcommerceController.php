@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\CentralApp;
 
-use App\Models\Ecommerce;
 use App\Models\Tenant;
 use App\Services\PleskAPI;
 use Exception;
 use Illuminate\Http\Request;
-use Stancl\Tenancy\Database\DatabaseManager;
 
 class EcommerceController extends Controller
 {
@@ -15,7 +13,7 @@ class EcommerceController extends Controller
     protected $plesk;
     // protected $databaseManager;
 
-    public function __construct(PleskAPI $plesk, DatabaseManager $databaseManager)
+    public function __construct(PleskAPI $plesk)
     {
         $this->plesk = $plesk;
         // $this->databaseManager = $databaseManager;
@@ -101,7 +99,7 @@ class EcommerceController extends Controller
 
         try {
             // Creating plesk db for tenant
-            $this->plesk->createDatabase($full_domain, 'mysql', 'aster.ecommerce.eforge.it', 1, 1);
+            // $this->plesk->createDatabase($full_domain, 'mysql', 'aster.ecommerce.eforge.it', 1, 1);
 
             $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
 
@@ -186,14 +184,23 @@ class EcommerceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ecommerce $ecommerce)
+    public function destroy(Tenant $ecommerce)
     {
         if (auth()->user()->role != 1) {
             abort(403, "Unauthorize access");
         }
-        // $ecommerce->delete();
-        // return redirect()->route('ecommerce.index')
-        //     ->with('success', 'ecommerce deleted successfully');
+
+
+        try {
+            // Go to app/Services/PleskAPI and set delete logic of plesk api
+            // $this->plesk->deleteDatabase();
+            $ecommerce->delete();
+            return redirect()->route('ecommerce.index')
+                ->with('success', 'ecommerce deleted successfully');
+
+        } catch (Exception $e) {
+            return redirect()->route('ecommerce.index')->with('error', $e->getMessage());
+        }
     }
 
     private function checkCentralDomain(Request $request)

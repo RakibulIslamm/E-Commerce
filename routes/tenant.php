@@ -43,6 +43,7 @@ Route::middleware([
 
         // dd('inside');
     });
+    require __DIR__ . '/app/dashboard.php';
 });
 
 require __DIR__ . '/app/ecommerce-api/settings-api.php';
@@ -50,3 +51,4 @@ require __DIR__ . '/app/auth.php';
 require __DIR__ . '/app/corporate-content.php';
 require __DIR__ . '/app/slider.php';
 require __DIR__ . '/app/category.php';
+require __DIR__ . '/app/options.php';

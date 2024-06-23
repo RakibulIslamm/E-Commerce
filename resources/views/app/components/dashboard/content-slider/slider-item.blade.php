@@ -15,7 +15,7 @@
         <img src="{{ $img ?? 'http://ecommerce.astersoftware.it/uploads/img_slider/122.jpg' }}" class="max-w-20 h-auto"
             alt="">
     </td>
-    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
+    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4  break-all">
         {{ $link }}
     </td>
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">

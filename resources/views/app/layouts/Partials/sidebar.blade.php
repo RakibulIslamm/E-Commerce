@@ -8,7 +8,7 @@
         </div>
         <div class="mt-6 flex flex-col justify-start items-center w-full space-y-2 px-2">
             <a href="/dashboard"
-                class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('dashboard*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
+                class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('dashboard') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
                 <x-bx-store class="w-5 h-5" />
                 <p class="text-base leading-4">Dashboard</p>
             </a>
@@ -17,8 +17,8 @@
                 <x-bx-slideshow class="w-5 h-5" />
                 <p class="text-base leading-4">Content Slider</p>
             </a>
-            <a href="#"
-                class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('#') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
+            <a href="{{ route('app.dashboard.articles') }}"
+                class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('dashboard/articles*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
                 <x-bx-news class="w-5 h-5" />
                 <p class="text-base leading-4">Articles</p>
             </a>
@@ -69,23 +69,23 @@
             </button>
             <div id="menu2" class="{{ Request::is('corporate-content*') ? 'block' : 'hidden' }} w-full">
                 <a href="{{ route('app.corporate-data') }}"
-                    class="flex justify-start items-center gap-2 {{ Request::is('corporate-content/corporate-data') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
+                    class="flex justify-start items-center gap-2 {{ Request::is('corporate-content/corporate-data*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
                     <x-lucide-settings class="w-5 h-5" />
                     <p class="text-sm leading-4">Corporate Data</p>
                 </a>
                 <a href="{{ route('app.corporate-content.ecommerce') }}"
-                    class="flex justify-start items-center gap-2 hover:text-gray-100 {{ Request::is('settings/ecommerce') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 rounded px-3 py-2 w-full my-2">
+                    class="flex justify-start items-center gap-2 hover:text-gray-100 {{ Request::is('corporate-content/ecommerce*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 rounded px-3 py-2 w-full my-2">
                     <x-lucide-settings-2 class="w-5 h-5" />
                     <p class="text-sm leading-4">Ecommerce</p>
                 </a>
-                <a href="{{ route('app.corporate-content.account') }}"
-                    class="flex justify-start items-center gap-2 hover:text-gray-100 {{ Request::is('settings/account') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 rounded px-3 py-2 w-full my-2">
-                    <x-lucide-user-cog class="w-5 h-5" />
+                <a href="{{ route('app.corporate-content.company-profile') }}"
+                    class="flex justify-start items-center gap-2 hover:text-gray-100 {{ Request::is('corporate-content/company-profile*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 rounded px-3 py-2 w-full my-2">
+                    <x-lucide-info class="w-5 h-5" />
                     <p class="text-sm leading-4">Company Profile</p>
                 </a>
-                <a href="{{ route('app.corporate-content.account') }}"
-                    class="flex justify-start items-center gap-2 hover:text-gray-100 {{ Request::is('settings/account') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 rounded px-3 py-2 w-full my-2">
-                    <x-lucide-user-cog class="w-5 h-5" />
+                <a href="{{ route('app.corporate-content.condition-for-sale') }}"
+                    class="flex justify-start items-center gap-2 hover:text-gray-100 {{ Request::is('corporate-content/condition-for-sale*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 rounded px-3 py-2 w-full my-2">
+                    <x-heroicon-o-document-text class="w-5 h-5" />
                     <p class="text-sm leading-4">Conditions of sale</p>
                 </a>
             </div>
@@ -124,13 +124,13 @@
                 </a>
 
                 <a href="#"
-                    class="flex justify-start items-center gap-2 {{ Request::is('corporate-content/corporate-data') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
+                    class="flex justify-start items-center gap-2 {{ Request::is('options/discount') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
                     <x-lucide-ticket-percent class="w-5 h-5" />
                     <p class="text-sm leading-4">Discount management</p>
                 </a>
 
-                <a href="#"
-                    class="flex justify-start items-center gap-2 {{ Request::is('corporate-content/corporate-data') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
+                <a href="{{ route('app.promotions') }}"
+                    class="flex justify-start items-center gap-2 {{ Request::is('options/promotions') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
                     <x-hugeicons-promotion class="w-5 h-5" />
                     <p class="text-sm leading-4">Promotions</p>
                 </a>
