@@ -1,4 +1,5 @@
-<form method="POST" action="{{ $mode == 'create' ? route('app.slider.store') : route('app.slider.update', $slider) }}"
+<form method="POST"
+    action="{{ $mode == 'create' ? route('app.dashboard.slider.store') : route('app.dashboard.slider.update', $slider) }}"
     id="logo-edit" enctype="multipart/form-data"
     class="w-full flex flex-col justify-start items-start gap-2 p-5 bg-white rounded-lg shadow border">
     @method($mode == 'edit' ? 'PUT' : 'POST')

@@ -13,8 +13,8 @@ class EcommerceSettingsController
      */
     public function index(Request $request)
     {
-        if (!Auth::check() || auth()->user()->role != 1)
-            abort(404);
+        // if (!Auth::check() || auth()->user()->role != 1)
+        //     abort(404);
 
         $tenant = tenant();
         $tenant->accepted_payments = json_decode($tenant->accepted_payments, true);
@@ -50,6 +50,8 @@ class EcommerceSettingsController
      */
     public function edit()
     {
+        // if (!Auth::check() || auth()->user()->role != 1)
+        //     abort(404);
         $tenant = tenant();
         $tenant->accepted_payments = json_decode($tenant->accepted_payments, true);
         return view('app.pages.corporate-content.ecommerce.edit', ['settings' => $tenant]);
@@ -60,6 +62,10 @@ class EcommerceSettingsController
      */
     public function update(Request $request)
     {
+
+        // if (!Auth::check() || auth()->user()->role != 1)
+        //     abort(404);
+
         $validatedData = $request->validate([
             'email' => 'required|email',
             'tax_code' => 'required|string',
@@ -87,8 +93,6 @@ class EcommerceSettingsController
         $validatedData['accepted_payments'] = json_encode($validatedData['accepted_payments']);
 
 
-        if (!Auth::check() || auth()->user()->role != 1)
-            abort(404);
         $tenant = tenant();
         $tenant->update($validatedData);
         return redirect()->route('app.corporate-content.ecommerce');
