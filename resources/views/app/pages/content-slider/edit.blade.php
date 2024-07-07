@@ -2,7 +2,7 @@
 <x-app-layout>
 
     <div>
-        @include('app.pages.content-slider.Partials.slider-form')
+        @include('app.components.dashboard.content-slider.slider-form')
     </div>
 
 

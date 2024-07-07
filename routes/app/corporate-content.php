@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\App\EcommerceSettingsController;
-use App\Http\Controllers\App\CorporateDataController;
+use App\Http\Controllers\App\CorporateContent\CompanyProfileController;
+use App\Http\Controllers\App\CorporateContent\ConditionForSaleController;
+use App\Http\Controllers\App\CorporateContent\CorporateDataController;
+use App\Http\Controllers\App\CorporateContent\EcommerceSettingsController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -28,6 +30,22 @@ Route::middleware([
         Route::get('/update', [EcommerceSettingsController::class, 'edit'])->name('app.corporate-content.ecommerce.edit');
 
         Route::put('/update', [EcommerceSettingsController::class, 'update'])->name('app.corporate-content.ecommerce.update');
+    });
+
+    Route::prefix('company-profile')->group(function () {
+        Route::get('', [CompanyProfileController::class, 'index'])->name('app.corporate-content.company-profile');
+
+        Route::get('/edit', [CompanyProfileController::class, 'edit'])->name('app.corporate-content.company-profile.edit');
+
+        Route::put('/edit', [CompanyProfileController::class, 'update'])->name('app.corporate-content.company-profile.update');
+    });
+
+    Route::prefix('condition-for-sale')->group(function () {
+        Route::get('', [ConditionForSaleController::class, 'index'])->name('app.corporate-content.condition-for-sale');
+
+        Route::get('/edit', [ConditionForSaleController::class, 'edit'])->name('app.corporate-content.condition-for-sale.edit');
+
+        Route::put('/edit', [ConditionForSaleController::class, 'update'])->name('app.corporate-content.condition-for-sale.update');
     });
 
     Route::get('/account', [EcommerceSettingsController::class, 'index'])->name('app.corporate-content.account');

@@ -1,10 +1,8 @@
 @section('title', 'Corporate Data')
 <x-app-layout>
     {{-- {{ dd($settings->domain) }} --}}
-    @include('app.pages.corporate-content.corporate-data.Partials.brand')
-
-
-    @include('app.pages.corporate-content.corporate-data.Partials.address')
-    @include('app.pages.corporate-content.corporate-data.Partials.social')
+    @include('app.components.dashboard.corporate-data.brand')
+    @include('app.components.dashboard.corporate-data.address')
+    @include('app.components.dashboard.corporate-data.social')
 
 </x-app-layout>

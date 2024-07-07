@@ -58,7 +58,7 @@
                         <tbody>
                             @if (!$sliders->isEmpty())
                                 @foreach ($sliders as $item)
-                                    @include('app.pages.content-slider.Partials.slider-item', [
+                                    @include('app.components.dashboard.content-slider.slider-item', [
                                         'slider' => $item,
                                     ])
                                 @endforeach
@@ -74,3 +74,7 @@
         </div>
     </section>
 </x-app-layout>
+
+<script>
+    commonUtils.sessionMessageClose();
+</script>

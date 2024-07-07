@@ -72,4 +72,9 @@ class PleskAPI
             throw new Exception('Error creating database: ' . json_encode($result['response']));
         }
     }
+
+    public function deleteDatabase()
+    {
+
+    }
 }

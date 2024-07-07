@@ -1,4 +1,4 @@
 @section('title', 'Ecommerce Settings')
 <x-app-layout>
-    @include('app.pages.corporate-content.ecommerce.Partials.show')
+    @include('app.components.dashboard.ecommerce.show')
 </x-app-layout>
