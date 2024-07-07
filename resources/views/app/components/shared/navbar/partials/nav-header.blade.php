@@ -30,9 +30,10 @@ if (isset($site_settings->brand_info)) {
                 <select id="search-categories" name="search-categories"
                     class="relative rounded-l-md py-2 pl-2 pr-7 text-gray-900 border border-r-0 border-gray-200 outline-none
                       focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10 appearance-none">
-                    <option>All</option>
-                    <option>Category 1</option>
-                    <option>Category 1</option>
+                    <option class="px-2 py-1">All</option>
+                    @foreach ($categories as $item)
+                        <option class="px-2 py-1">{{ $item->nome }}</option>
+                    @endforeach
                 </select>
                 {{-- <svg class="pointer-events-none absolute right-1 top-0 h-full w-5 text-gray-400 z-50"
                     viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

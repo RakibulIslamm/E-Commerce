@@ -1,9 +1,16 @@
 <?php
+use App\Http\Controllers\App\Dashboard\DashboardController;
 
 
-Route::prefix('dashboard')->group(function () {
+Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
-    require __DIR__ . '/article.php';
+
+    Route::get('', [DashboardController::class, 'index'])->name('app.dashboard');
+
+    require __DIR__ . '/news.php';
+    require __DIR__ . '/product.php';
+    require __DIR__ . '/category.php';
+    require __DIR__ . '/slider.php';
 });
 
 

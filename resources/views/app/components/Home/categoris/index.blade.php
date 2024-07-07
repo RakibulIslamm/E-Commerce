@@ -1,11 +1,11 @@
-<div class="w-[calc(100%_-_160px)] mx-auto py-10 swiper-category overflow-hidden">
+<div class="w-[calc(100%_-_160px)] mx-auto py-10 overflow-hidden">
     @include('app.components.Home.categoris.Partials.header')
-    <div class="mt-4 swiper-wrapper">
-        @include('app.components.Home.categoris.Partials.category-item', ['title' => 'Fish'])
-        @include('app.components.Home.categoris.Partials.category-item', ['title' => 'Pasta'])
-        @include('app.components.Home.categoris.Partials.category-item', ['title' => 'Boxes'])
-        @include('app.components.Home.categoris.Partials.category-item', ['title' => 'Egg'])
-        @include('app.components.Home.categoris.Partials.category-item', ['title' => 'Vegetables'])
+    <div class="swiper-category">
+        <div class="mt-4 swiper-wrapper">
+            @foreach ($categories as $item)
+                @include('app.components.Home.categoris.Partials.category-item', ['category' => $item])
+            @endforeach
+        </div>
     </div>
 </div>
 
@@ -51,7 +51,7 @@
                     spaceBetween: 10,
                 },
                 1376: {
-                    slidesPerView: 5,
+                    slidesPerView: 4,
                     spaceBetween: 10,
                 },
             },

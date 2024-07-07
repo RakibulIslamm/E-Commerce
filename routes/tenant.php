@@ -30,7 +30,6 @@ Route::middleware([
 ])->group(function () {
     Route::get('/', [IndexController::class, 'index']);
     Route::get('/contact', [ContactController::class, 'index'])->name('app.contact');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('app.dashboard')->middleware(['auth']);
 
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile.edit');
@@ -46,9 +45,7 @@ Route::middleware([
     require __DIR__ . '/app/dashboard.php';
 });
 
-require __DIR__ . '/app/ecommerce-api/settings-api.php';
+require __DIR__ . '/app/api/api.php';
 require __DIR__ . '/app/auth.php';
 require __DIR__ . '/app/corporate-content.php';
-require __DIR__ . '/app/slider.php';
-require __DIR__ . '/app/category.php';
 require __DIR__ . '/app/options.php';

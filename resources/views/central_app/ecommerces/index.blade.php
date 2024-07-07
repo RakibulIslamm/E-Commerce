@@ -82,6 +82,3 @@
         </div>
     </section>
 </x-central-app-layout>
-<script type="module">
-    commonUtils.sessionMessageClose();
-</script>
