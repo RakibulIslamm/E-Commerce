@@ -99,7 +99,7 @@ class EcommerceController extends Controller
 
         try {
             // Creating plesk db for tenant
-            $this->plesk->createDatabase($full_domain, 'mysql', 'asefecommerce.space', 1, 1);
+            $this->plesk->createDatabase($full_domain, 'mysql', 'asefecommerce.space', 40, 1);
 
             $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
 
