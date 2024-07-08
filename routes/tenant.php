@@ -6,7 +6,6 @@ use App\Http\Controllers\App\Auth\PasswordController;
 use App\Http\Controllers\App\ContactController;
 use App\Http\Controllers\App\IndexController;
 use App\Http\Controllers\App\ProfileController;
-use App\Http\Controllers\App\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
