@@ -12,15 +12,15 @@
                 <x-bx-store class="w-5 h-5" />
                 <p class="text-base leading-4">Dashboard</p>
             </a>
-            <a href="{{ route('app.slider') }}"
+            <a href="{{ route('app.dashboard.slider') }}"
                 class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('slider') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
                 <x-bx-slideshow class="w-5 h-5" />
                 <p class="text-base leading-4">Content Slider</p>
             </a>
-            <a href="{{ route('app.dashboard.articles') }}"
-                class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('dashboard/articles*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
+            <a href="{{ route('app.dashboard.news') }}"
+                class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('dashboard/news*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
                 <x-bx-news class="w-5 h-5" />
-                <p class="text-base leading-4">Articles</p>
+                <p class="text-base leading-4">News</p>
             </a>
             <a href="#"
                 class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('#') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
@@ -39,14 +39,14 @@
                 <x-bx-caret-down id="icon1"
                     class="transform w-3 h-3 {{ Request::is('products*') ? 'rotate-180' : '' }}" />
             </button>
-            <div id="menu1" class="{{ Request::is('products*') ? 'block' : 'hidden' }} w-full">
-                <button
-                    class="flex justify-start items-center gap-2 hover:text-gray-100 focus:bg-gray-700 focus:text-gray-100 hover:bg-gray-700 text-gray-400 rounded px-3 py-2 w-full my-2">
+            <div id="menu1" class="{{ Request::is('dashboard/products*') ? 'block' : 'hidden' }} w-full">
+                <a href="{{ route('app.dashboard.products') }}"
+                    class="flex justify-start items-center gap-2 hover:text-gray-100 hover:bg-gray-700 {{ Request::is('dashboard/products') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full my-2">
                     <x-bx-list-ul class="w-5 h-5" />
                     <p class="text-sm leading-4">Porduct list</p>
-                </button>
-                <a href="{{ route('app.categories') }}"
-                    class="flex justify-start items-center gap-2 hover:text-gray-100 hover:bg-gray-700 {{ Request::is('products/categories*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full my-2">
+                </a>
+                <a href="{{ route('app.dashboard.categories') }}"
+                    class="flex justify-start items-center gap-2 hover:text-gray-100 hover:bg-gray-700 {{ Request::is('dashboard/products/categories') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full my-2">
                     <x-bx-list-ul class="w-5 h-5" />
                     <p class="text-sm leading-4">Categories</p>
                 </a>

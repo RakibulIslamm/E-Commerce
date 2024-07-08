@@ -14,18 +14,10 @@
                                 <div class="absolute top-[70px] invisible opacity-0 left-0 text-sm text-gray-500 overflow-hidden transition-all ease-in-out duration-300 shadow rounded-md"
                                     id="category-list">
                                     <div class="p-3 bg-white rounded-md space-y-2 min-w-[200px]">
-                                        <a href="#"
-                                            class="px-4 py-2 hover:bg-gray-200 rounded text-lg block">Category
-                                            1</a>
-                                        <a href="#"
-                                            class="px-4 py-2 hover:bg-gray-200 rounded text-lg block">Category
-                                            2</a>
-                                        <a href="#"
-                                            class="px-4 py-2 hover:bg-gray-200 rounded text-lg block">Category
-                                            3</a>
-                                        <a href="#"
-                                            class="px-4 py-2 hover:bg-gray-200 rounded text-lg block">Category
-                                            4</a>
+                                        @foreach ($categories as $item)
+                                            <a href="#"
+                                                class="px-4 py-2 hover:bg-gray-200 rounded text-lg block">{{ $item->nome }}</a>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
