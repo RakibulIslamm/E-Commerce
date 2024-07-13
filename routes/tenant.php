@@ -6,7 +6,6 @@ use App\Http\Controllers\App\Auth\PasswordController;
 use App\Http\Controllers\App\ContactController;
 use App\Http\Controllers\App\IndexController;
 use App\Http\Controllers\App\ProfileController;
-use App\Http\Controllers\App\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -43,9 +42,11 @@ Route::middleware([
         // dd('inside');
     });
     require __DIR__ . '/app/dashboard.php';
+    require __DIR__ . '/app/api/api.php';
+    require __DIR__ . '/app/common.php';
+    require __DIR__ . '/app/cart.php';
 });
 
-require __DIR__ . '/app/api/api.php';
 require __DIR__ . '/app/auth.php';
 require __DIR__ . '/app/corporate-content.php';
 require __DIR__ . '/app/options.php';

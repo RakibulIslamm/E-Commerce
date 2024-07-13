@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->onDelete('cascade');
-            $table->string('product');
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained();
             $table->integer('qta')->default(0);
             $table->decimal('imponibile', 8, 2);
             $table->decimal('ivato', 8, 2);

@@ -19,10 +19,16 @@
             </div>
             <div
                 class="flex flex-col items-center gap-2 invisible opacity-0 group-hover/product:opacity-100 group-hover/product:visible transition-all ease-in-out">
-                <button
-                    class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2"><x-lucide-shopping-cart
-                        class="w-5 h-5" /> Add</button>
-                <button class="px-5 py-1 text-sm bg-blue-700 active:bg-blue-500 text-white rounded">Buy Now</button>
+                @if ($product->GIACENZA > 0)
+                    <button onclick="addToCart({{ $product->id }}, {{ $product }})"
+                        class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"><x-lucide-shopping-cart
+                            class="w-5 h-5" /> Add</button>
+                @else
+                    <button
+                        class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"
+                        disabled><x-lucide-shopping-cart class="w-5 h-5" />Stock out</button>
+                @endif
+                {{-- <button class="px-5 py-1 text-sm bg-blue-700 active:bg-blue-500 text-white rounded">Buy Now</button> --}}
             </div>
             <div class="w-full flex items-center justify-between">
                 <div class="px-4 mb-3">
@@ -41,14 +47,73 @@
                         <x-heroicon-m-star class="w-4 h-4" />
                     </div>
                 </div>
-                <h3 class="font-semibold text-slate-100 group-hover/product:text-white drop-shadow-xl px-4">
-                    {{ $product['PRE1IMP'] }}</h3>
+                <div class="px-4 text-right">
+                    <h3 class="font-semibold text-slate-100 group-hover/product:text-white drop-shadow-xl">
+                        {{ $product['PRE1IMP'] }}</h3>
+                    @if ($product->GIACENZA > 0)
+                        <p class="text-xs text-yellow-400">In stock</p>
+                    @else
+                        <p class="text-xs text-red-300">Stock out</p>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-{{-- <div class="group relative max-w-[280] h-[300px] bg-slate-400">
-    <img src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-        class="w-full h-full object-cover object-center" alt="">
-</div> --}}
+<script>
+    function addToCart(productId, product, quantity = 1) {
+        if (!isUserLoggedIn()) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let item = cart.find(item => item.product_id === productId);
+
+            if (item) {
+                item.quantity += quantity;
+            } else {
+                cart.push({
+                    product_id: productId,
+                    product: product,
+                    quantity: quantity
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            window.all_cart = cart;
+            renderSidebarCart();
+            renderSidebarSubtotal();
+            setCartItemCount();
+            alert('Product added to cart');
+        } else {
+            fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: quantity
+                    })
+                }).then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Product added to cart');
+                        const exist_item = window.all_cart.find(item => item.id == data.cart_item.id);
+                        if (exist_item) {
+                            exist_item.quantity += 1;
+                        } else {
+                            window.all_cart.push(data.cart_item)
+                        }
+                    }
+                    renderSidebarCart();
+                    renderSidebarSubtotal();
+                    setCartItemCount();
+                });
+
+        }
+    }
+
+    function isUserLoggedIn() {
+        return {{ Auth::check() ? 'true' : 'false' }};
+    }
+</script>

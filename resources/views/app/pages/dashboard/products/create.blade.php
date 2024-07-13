@@ -9,7 +9,6 @@
             @csrf
 
             <div class="mb-4">
-                {{-- <label for="DESCRIZIONEBREVE" class="block text-gray-700">DESCRIZIONEBREVE</label> --}}
                 <input type="text" name="DESCRIZIONEBREVE" id="DESCRIZIONEBREVE" value="{{ old('DESCRIZIONEBREVE') }}"
                     class="px-5 py-2 outline-none focus:ring-0 bg-transparent text-3xl font-bold text-gray-700 border-0 w-full"
                     required placeholder="Product Title">
@@ -17,7 +16,6 @@
             </div>
 
             <div class="w-full">
-                {{-- <label for="DESCRIZIONEESTESA" class="block text-gray-700">DESCRIZIONEESTESA</label> --}}
                 <div id="editor" class="h-[400px] overflow-hidden overflow-y-auto bg-white">
                     {!! old('DESCRIZIONEESTESA') !!}
                 </div>
@@ -99,24 +97,6 @@
                 </div>
             </div>
 
-
-
-            {{-- <div class="mb-4">
-                <label for="ARTICOLIALTERNATIVI" class="block text-gray-700">ARTICOLIALTERNATIVI</label>
-                <input type="text" name="ARTICOLIALTERNATIVI" id="ARTICOLIALTERNATIVI"
-                    value="{{ old('ARTICOLIALTERNATIVI') }}"
-                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
-                <x-input-error :messages="$errors->get('ARTICOLIALTERNATIVI')" class="my-2" />
-            </div>
-
-            <div class="mb-4">
-                <label for="ARTICOLICORRELATI" class="block text-gray-700">ARTICOLICORRELATI</label>
-                <input type="text" name="ARTICOLICORRELATI" id="ARTICOLICORRELATI"
-                    value="{{ old('ARTICOLICORRELATI') }}"
-                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
-                <x-input-error :messages="$errors->get('ARTICOLICORRELATI')" class="my-2" />
-            </div> --}}
-
             <div class="flex items-start gap-5 w-full">
                 <div class="w-full">
                     <label for="GIACENZA" class="block text-gray-700">GIACENZA</label>
@@ -137,14 +117,14 @@
 
                 <div class="flex items-center gap-2">
                     <input type="checkbox" name="NOVITA" id="NOVITA" value="1"
-                        {{ old('NOVITA') ? 'checked' : '' }}>
+                        {{ old('NOVITA', true) ? 'checked' : '' }}>
                     <label for="NOVITA" class="block text-gray-700">NOVITA</label>
                     <x-input-error :messages="$errors->get('NOVITA')" class="my-2" />
                 </div>
 
                 <div class="flex items-center gap-2">
                     <input type="checkbox" name="PIUVENDUTI" id="PIUVENDUTI" value="1"
-                        {{ old('PIUVENDUTI') ? 'checked' : '' }}">
+                        {{ old('PIUVENDUTI') ? 'checked' : '' }}>
                     <label for="PIUVENDUTI" class="block text-gray-700">PIUVENDUTI</label>
                     <x-input-error :messages="$errors->get('PIUVENDUTI')" class="my-2" />
                 </div>

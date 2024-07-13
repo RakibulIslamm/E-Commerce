@@ -35,14 +35,8 @@ if (isset($site_settings->brand_info)) {
                         <option class="px-2 py-1">{{ $item->nome }}</option>
                     @endforeach
                 </select>
-                {{-- <svg class="pointer-events-none absolute right-1 top-0 h-full w-5 text-gray-400 z-50"
-                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                        clip-rule="evenodd" />
-                </svg> --}}
             </div>
-            <input type="text" name="search" id="search" {{--  --}}
+            <input type="text" name="search" id="search"
                 class="relative grow rounded-r-md py-2 pl-3 pr-8 text-gray-900 border border-gray-200 outline-none
                       focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10"
                 placeholder="Search Product...">
@@ -53,10 +47,10 @@ if (isset($site_settings->brand_info)) {
         </div>
 
         <div class="flex items-center gap-8">
-            <button class="group -m-2 flex items-center p-2 relative text-gray-500">
+            <button class="group -m-2 flex items-center p-2 relative text-gray-500" onclick="openCart()">
                 <x-lucide-shopping-cart class="w-7 h-7" />
                 <span
-                    class=" absolute top-0 right-0 text-xs group-hover:text-gray-800 bg-yellow-500 text-white rounded-full w-5 h-5 flex items-center justify-center">9+</span>
+                    class=" absolute top-0 right-0 text-xs group-hover:text-gray-800 bg-yellow-500 text-white rounded-full w-5 h-5 flex items-center justify-center cart-count">0</span>
                 <span class="sr-only">items in cart, view bag</span>
             </button>
             <div class="flex items-center gap-3">

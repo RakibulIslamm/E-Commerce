@@ -4,7 +4,6 @@ use App\Http\Middleware\Admin;
 use App\Http\Middleware\CheckCentralDomain;
 use App\Http\Middleware\Creator;
 use App\Http\Middleware\Editor;
-use App\Http\Middleware\IdentifyTenant;
 use App\Http\Middleware\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -27,8 +26,15 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
     
+        $middleware->use([
+            \Illuminate\Http\Middleware\HandleCors::class,
+
+        ]);
+        $middleware->web([
+            // 
+        ]);
         $middleware->validateCsrfTokens(except: [
-            'api/settings/*',
+            'api/*',
         ]);
 
         $middleware->alias([
@@ -54,5 +60,5 @@ return Application::configure(basePath: dirname(__DIR__))
         });
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // dd($exceptions);
     })->create();

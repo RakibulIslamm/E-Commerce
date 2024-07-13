@@ -1,5 +1,6 @@
 @section('title', 'Home')
 <x-app-guest-layout>
+
     @include('app.components.Home.banner.banner')
     @include('app.components.Home.categoris.index')
     @include('app.components.Home.new-arrivals.new-arrivals')
