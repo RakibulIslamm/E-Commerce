@@ -47,6 +47,11 @@ Route::middleware([
     require __DIR__ . '/app/cart.php';
 });
 
+
 require __DIR__ . '/app/auth.php';
 require __DIR__ . '/app/corporate-content.php';
 require __DIR__ . '/app/options.php';
+
+Route::fallback(function () {
+    abort(404);
+});

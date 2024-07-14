@@ -30,8 +30,13 @@
     const cartContainer = document.getElementById('cart-container');
     const sidebarSubtotal = document.getElementById('sidebar-subtotal');
     const cartCountElements = document.getElementsByClassName('cart-count');
+    const cartPageContainer = document.getElementById('cart-page-container');
+    const subTotalElement = document.getElementById('sub-total');
+    const shippingElement = document.getElementById('shipping');
+    const totalElement = document.getElementById('total');
 
-    async function getCart(renderableFunctions, loadingId = '') {
+    async function getCart(loadingId = '') {
+        window.all_cart = [];
         const loadingElement = document.getElementById(loadingId);
         if (isUserLoggedIn()) {
             loadingElement && loadingElement.classList.remove('hidden')
@@ -44,7 +49,7 @@
             });
             const data = await res.json();
             loadingElement && loadingElement.classList.remove('hidden')
-            window.all_cart = data.cart_items;
+            window.all_cart = data.cart_items || [];
 
         } else {
             const cartData = localStorage.getItem('cart');
@@ -62,14 +67,10 @@
                 });
                 const data = await res.json();
                 loadingElement && loadingElement.classList.remove('hidden')
-                window.all_cart = data.cart_items;
+                window.all_cart = data.cart_items
             }
         }
-        if (renderableFunctions?.length) {
-            for (const func of renderableFunctions) {
-                func();
-            }
-        }
+        render()
         setCartItemCount();
     }
 
@@ -96,28 +97,44 @@
                 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png'
 
             cartItem.innerHTML = `
-            <li class="flex py-6">
-                <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+            <li class="py-6">
+                <div class="flex items-start gap-3">
+                    <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                     <img src="${FOTO}"
                         alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
                         class="h-full w-full object-cover object-center">
-                </div>
-
-                <div class="ml-4 flex flex-1 flex-col">
-                    <div>
-                        <h3>
-                            <a href="#">${item?.product?.DESCRIZIONEBREVE}</a>
-                        </h3>
-                        <p>$${item?.product?.PRE1IMP}</p>
                     </div>
-                    <div class="flex flex-1 items-end justify-between text-sm">
-                        <p class="text-gray-500">Qty ${item?.quantity}</p>
+                    <div class="w-full">
+                        <div>
+                            <h3>
+                                <a href="#">${item?.product?.DESCRIZIONEBREVE}</a>
+                            </h3>
+                            <p>$${item?.product?.PRE1IMP}</p>    
+                        </div>
+                        <div class="flex items-center justify-between mt-3">
+                            <div class="flex items-center gap-1 border-gray-100">
+                                <button onclick="cartDecreaseSidebar(${item?.product_id})"
+                                    class="flex items-center justify-center cursor-pointer rounded-l bg-gray-100 h-4 w-6 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                                    - </button>
+                                <input class="h-4 w-10 text-center text-xs" id="cart-sidebar-quantity-input-${item?.product_id}"
+                                    type="number" value="${item?.quantity}" min="1" />
+                                <button onclick="cartIncreaseSidebar(${item?.product_id})"
+                                    class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 h-4 w-6 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                                    + </button>
 
-                        <div class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-3 h-3 animate-spin mr-3 invisible update-quantity-spin-${item.product_id}"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+                                    <path fill-rule="evenodd"
+                                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+                                </svg>
+                            </div>
+            
                             <button onclick="handleDeleteCart(${item?.product_id})" type="button"
                                 class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
                         </div>
-                    </div>
+                    </div>    
                 </div>
             </li>
             `
@@ -125,7 +142,7 @@
             cartContainer.appendChild(cartItem.firstElementChild);
         }
     }
-
+    // <p class="text-gray-500">Qty ${item?.quantity}</p>
     function renderSidebarSubtotal() {
         const data = window.all_cart;
         const subtotal = data.reduce((total, item) => {
@@ -142,12 +159,109 @@
         sidebarSubtotal.innerText = subtotal;
     }
 
+    function renderCartItems() {
+        if (!cartPageContainer) return
+        cartPageContainer.innerHTML = '';
+        window.all_cart.forEach(item => {
+            const foto = item?.product?.FOTO ? isUserLoggedIn() ?
+                'data:image/png;base64,' + JSON.parse(item?.product?.FOTO)[0] : 'data:image/png;base64,' + item
+                ?.product
+                ?.FOTO :
+                'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png'
+            const cartItemHtml = `
+                    <div class="rounded-lg">
+                        <div class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start border">
+                            <img src="${foto}"
+                                alt="product-image" class="w-full rounded-lg sm:w-40 border" />
+                            <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
+                                <div class="mt-5 sm:mt-0">
+                                    <h2 class="text-lg font-bold text-gray-900">${item?.product?.DESCRIZIONEBREVE}</h2>
+                                    <p class="mt-1 text-xs ${item?.product?.GIACENZA > 5 ? 'text-green-500':'text-red-500'}">Stock available ${item?.product?.GIACENZA}</p>
+                                </div>
+                                <div class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
+                                    <div class="flex items-center gap-1 border-gray-100">
+                                        
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5 animate-spin mr-3 invisible update-quantity-spin-${item.product_id}"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+                                            <path fill-rule="evenodd"
+                                                d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+                                        </svg>
+
+                                        <button onclick="cartDecrease(${item?.product_id})"
+                                            class="flex items-center justify-center cursor-pointer rounded-l bg-gray-100 h-8 w-10 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                                            - </button>
+                                        <input class="h-8 w-14 text-center" id="cart-page-quantity-input-${item?.product_id}"
+                                            type="number" value="${item?.quantity}" min="1" />
+                                        <button onclick="cartIncrease(${item?.product_id})"
+                                            class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 h-8 w-10 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                                            + </button>
+                                    </div>
+                                    <div class="flex items-center justify-end space-x-4">
+                                        <p id="itemPrice" class="text-sm">
+                                            ${item?.product?.PRE1IMP ?? 0} $</p>
+                                        <button onclick="handleDeleteCart(${item.product_id}, 'cart_page')" class="mb-1">
+                                            <x-lucide-trash-2 class="w-5 h-5 text-red-500" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            `;
+            cartPageContainer.innerHTML += cartItemHtml;
+        });
+    }
+
+    function renderSubtotal() {
+        if (!subTotalElement || !shippingElement || !totalElement) return
+        const data = window.all_cart;
+        const shipping = 30;
+        const subtotal = data.reduce((total, item) => {
+            const price = item.product.PRE1IMP;
+            const quantity = item.quantity;
+            if (price) {
+                return total + (price * quantity);
+            } else {
+                return 0;
+            }
+
+        }, 0);
+        const grandTotal = subtotal + shipping;
+
+        subTotalElement.innerText = subtotal;
+        shippingElement.innerText = shipping;
+        totalElement.innerText = grandTotal;
+    }
+
+
+    function render() {
+        renderCartItems();
+        renderSubtotal();
+        renderSidebarCart();
+        renderSidebarSubtotal();
+    }
+
     function setCartItemCount() {
         const count = window?.all_cart?.length;
         for (const element of cartCountElements) {
             element.innerText = count > 9 ? "9+" : count;
         }
     }
+
+
+
+
+
+
+    const debouncedUpdateServerSidebarCart = debounce(updateQuantitySidebar, 1000);
+
+
+
+
+
 
 
     // console.log(cartSidebar)
@@ -197,12 +311,7 @@
                 .then(data => {
                     if (data.success) {
                         window.all_cart = window?.all_cart?.filter(item => item.product_id != id);
-                        if (from == 'cart_page') {
-                            render();
-                        } else {
-                            renderSidebarCart();
-                            renderSidebarSubtotal();
-                        }
+                        render()
                         setCartItemCount();
                         const addToCartButtons = document.getElementsByClassName(`add-to-cart-${id}`);
 
@@ -225,12 +334,7 @@
             const filteredCart = cartItems?.filter(item => item?.product_id != id);
             localStorage.setItem('cart', JSON.stringify(filteredCart));
             window.all_cart = filteredCart;
-            if (from == 'cart_page') {
-                render();
-            } else {
-                renderSidebarCart();
-                renderSidebarSubtotal();
-            }
+            render();
             setCartItemCount();
             const addToCartButtons = document.getElementsByClassName(`add-to-cart-${id}`);
 
@@ -241,6 +345,26 @@
                 }
             }
         }
+    }
+
+    // Cart updating spin
+    function quantitySpinUpdate(id, status) {
+        const quantitySpinElement = document.getElementsByClassName('update-quantity-spin-' + id);
+        if (quantitySpinElement) {
+            for (const elem of quantitySpinElement) {
+                elem.classList.toggle(status)
+            }
+        }
+    }
+
+    function debounce(func, delay, id) {
+        let timeout;
+        return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), delay);
+        };
     }
 
     // Checking user logged in or not

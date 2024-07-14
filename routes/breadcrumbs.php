@@ -12,9 +12,9 @@ Breadcrumbs::for('products', function (BreadcrumbTrail $trail) {
     $trail->push('Products', route('app.products'));
 });
 
-Breadcrumbs::for('product', function (BreadcrumbTrail $trail) {
+Breadcrumbs::for('product', function (BreadcrumbTrail $trail, $product) {
     $trail->parent('products');
-    $trail->push('Product', route('app.products.show'));
+    $trail->push($product->DESCRIZIONEBREVE, route('app.products.show', $product));
 });
 
 Breadcrumbs::for('cart', function (BreadcrumbTrail $trail) {

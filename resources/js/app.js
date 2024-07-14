@@ -1,4 +1,5 @@
 import "./bootstrap";
+import "./cart";
 
 import Alpine from "alpinejs";
 import * as commonUtils from "./utils/common";

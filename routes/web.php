@@ -24,3 +24,8 @@ Route::middleware([
     require __DIR__ . '/central-app/user.php';
     require __DIR__ . '/central-app/ecommerce.php';
 });
+
+
+Route::fallback(function () {
+    abort(404);
+});

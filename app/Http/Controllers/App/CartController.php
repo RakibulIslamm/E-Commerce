@@ -84,7 +84,7 @@ class CartController
             $product = Product::findOrFail($request->product_id);
             if (Auth::check()) {
                 if ($product->GIACENZA < $request->quantity) {
-                    return response()->json(['success' => false, "message" => 'Product is not available']);
+                    return response()->json(['success' => false, "message" => 'Items current not available in the requested quantity']);
                 }
 
                 $cart = Cart::updateOrCreate(
@@ -105,7 +105,7 @@ class CartController
                 return response()->json(['success' => true, 'cart_item' => $cart]);
             } else {
                 if ($product->GIACENZA < $request->quantity) {
-                    return response()->json(['success' => false, "message" => 'Product is not available']);
+                    return response()->json(['success' => false, "message" => 'Items current not available in the requested quantity']);
                 }
                 return response()->json(['success' => true]);
             }

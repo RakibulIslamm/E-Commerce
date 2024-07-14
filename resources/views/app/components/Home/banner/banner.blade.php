@@ -2,7 +2,7 @@
     // @dd($sliders);
 @endphp
 
-<div {{-- bg-gradient-to-b from-[#25365E] from-85% to-[#687083] --}} class="w-full h-[530px] min-h-[450px] relative overflow-hidden swiper">
+<div class="w-full h-[530px] min-h-[450px] relative overflow-hidden swiper">
     <div class="swiper-wrapper">
         @if (!$sliders->isEmpty())
             @foreach ($sliders as $item)

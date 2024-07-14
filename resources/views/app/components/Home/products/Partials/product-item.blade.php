@@ -1,15 +1,31 @@
 <div class="group/product relative">
-    <div class="aspect-h-1 aspect-w-1 w-full min-h-[250px] overflow-hidden bg-gray-200 relative rounded-md">
+    <div
+        class="aspect-h-1 aspect-w-1 w-full min-h-[300px] max-h-[350px] overflow-hidden bg-gray-200 relative rounded-md">
         <div
             class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent to-70% opacity-60 group-hover/product:opacity-100 group-hover/product:to-[#00000049] transition-opacity ease-in-out duration-300">
         </div>
         <img src="{{ $product->FOTO ? 'data:image/png;base64,' . $product->FOTO : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
-            alt="" class="h-full w-full object-cover object-center">
+            alt="" class="min-h-[300px] max-h-[350px] w-full object-cover object-center">
         <div class=" absolute top-0 left-0 w-full h-full flex flex-col justify-between items-center">
             <div class="w-full flex items-center justify-between mt-3">
-                <p
-                    class="px-4 py-1 rounded-r bg-yellow-700 text-white text-xs group-hover/product:border group-hover/product:border-l-0">
-                    New arrieval</p>
+                @if ($product->PIUVENDUTI and $product->NOVITA)
+                    <p
+                        class="px-4 py-1 rounded-r bg-yellow-700 text-white text-xs group-hover/product:border group-hover/product:border-l-0">
+                        Best seller</p>
+                @endif
+
+                @if ($product->PIUVENDUTI and !$product->NOVITA)
+                    <p
+                        class="px-4 py-1 rounded-r bg-yellow-700 text-white text-xs group-hover/product:border group-hover/product:border-l-0">
+                        Best seller</p>
+                @endif
+
+                @if (!$product->PIUVENDUTI and $product->NOVITA)
+                    <p
+                        class="px-4 py-1 rounded-r bg-yellow-700 text-white text-xs group-hover/product:border group-hover/product:border-l-0">
+                        New arrieval</p>
+                @endif
+
                 @if (isset($section))
                 @endif
                 <button class="px-4 py-1 group/wish-list text-red-500 cursor-pointer ml-auto" title="Add to wishlist">
@@ -33,7 +49,7 @@
             <div class="w-full flex items-center justify-between">
                 <div class="px-4 mb-3">
                     {{-- @dd($product['DESCRIZIONEBREVE']) --}}
-                    <a href="#">
+                    <a href="{{ route('app.products.show', $product) }}">
                         <h3
                             class="font-semibold text-slate-100 group-hover/product:text-white drop-shadow-xl line-clamp-1 flex-1">
                             {{ $product['DESCRIZIONEBREVE'] }}

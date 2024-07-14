@@ -5,7 +5,7 @@ use App\Http\Controllers\App\ShowProductController;
 
 Route::prefix("products")->group(function () {
     Route::get('', [ShowProductController::class, 'index'])->name('app.products');
-    Route::get('/details/{id}', [ShowProductController::class, 'show'])->name('app.products.show');
+    Route::get('/details/{product}', [ShowProductController::class, 'show'])->name('app.products.show');
 });
 
 Route::prefix("news")->group(function () {

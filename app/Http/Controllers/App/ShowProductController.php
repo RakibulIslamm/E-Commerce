@@ -15,31 +15,62 @@ class ShowProductController
     {
         $products_breadcrumbs = Breadcrumbs::generate('products');
         $query = Product::query();
+
+        // Filter by category
         if (request()->filled('category')) {
             $query->where('CATEGORIEESOTTOCATEGORIE', request()->category);
         }
 
-        if (request()->filled('order_by') && (request()->order_by == 'acs' || request()->order_by == 'desc')) {
+        // Order by specified column or default to created_at
+        if (request()->filled('order_by') && (request()->order_by == 'asc' || request()->order_by == 'desc')) {
             $query->orderBy('DESCRIZIONEBREVE', request()->order_by);
+        } else {
+            $query->orderBy('created_at', 'desc');
         }
 
+        // Apply search filter if provided
+        if (request()->filled('search')) {
+            $searchTerm = request()->search;
+            $query->where('DESCRIZIONEBREVE', 'LIKE', '%' . $searchTerm . '%');
+        }
+
+        // Filter by best sellers or new arrivals
         if (request()->filled('best') && request()->best == 1) {
             $query->where('PIUVENDUTI', true);
         } elseif (request()->filled('new') && request()->new_arrivals == 1) {
             $query->where('NOVITA', true);
         }
 
-        $products = $query->get();
+        // Set the number of items per page, default to 10 if not provided
+        $perPage = request()->input('limit', 12);
 
-        // dd($products);
+        // Get paginated results
+        $products = $query->paginate($perPage);
 
-        return view("app.pages.products.index", ["products" => $products, "breadcrumbs" => $products_breadcrumbs]);
+        // Append query parameters to the pagination links
+        $products->appends(request()->all());
+
+
+        // dd($products->links());
+
+        // Process product images
+        foreach ($products as $product) {
+            $product['FOTO'] = json_decode($product['FOTO'], true);
+            if (isset($product['FOTO'])) {
+                $product['FOTO'] = $product['FOTO'][0];
+            }
+        }
+
+        return view("app.pages.products.index", [
+            "products" => $products,
+            "breadcrumbs" => $products_breadcrumbs
+        ]);
     }
 
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::find($id);
-        // dd($product);
-        return view("app.pages.products.show", ["product" => $product]);
+        $product_breadcrumbs = Breadcrumbs::generate('product', $product);
+        $product['FOTO'] = json_decode($product['FOTO'], true);
+        return view("app.pages.products.show", ["product" => $product, "breadcrumbs" => $product_breadcrumbs]);
     }
 }

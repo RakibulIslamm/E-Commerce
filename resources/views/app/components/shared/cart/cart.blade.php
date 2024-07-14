@@ -35,3 +35,109 @@
         </div>
     </div>
 </div>
+<script>
+    function updateQuantitySidebar(id, quantity) {
+        console.log(`Updating server with quantity ${quantity} for product ${id}`);
+        // Simulate server request delay (replace with AJAX call or other server interaction)
+        quantitySpinUpdate(id, 'invisible');
+
+        if (isUserLoggedIn()) {
+            setTimeout(() => {
+                fetch('/cart/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            product_id: id,
+                            quantity: quantity
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.success) {
+                            const exist_item = window.all_cart.find(item => item.product_id ==
+                                id);
+                            if (exist_item) {
+                                exist_item.quantity = quantity;
+                            } else {
+                                alert('Something went wrong in updateQuantity')
+                            }
+                        }
+                        quantitySpinUpdate(id, 'invisible');
+                        render()
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        quantitySpinUpdate(id, 'invisible');
+                    });
+                console.log(`Server updated with quantity ${quantity} for product ${id}`);
+            }, 1000);
+        } else {
+            setTimeout(() => {
+                fetch('/cart/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            product_id: id,
+                            quantity: quantity
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const exist_item = window.all_cart.find(item => item.product_id ==
+                                id);
+
+                            if (exist_item) {
+                                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                                let item = cart.find(item => item.product_id === exist_item
+                                    .product_id);
+                                if (item) {
+                                    item.quantity = quantity;
+                                }
+                                localStorage.setItem('cart', JSON.stringify(cart));
+                                exist_item.quantity = quantity;
+                            } else {
+                                alert('Something went wrong in updateQuantity')
+                            }
+                        }
+                        quantitySpinUpdate(id, 'invisible');
+                        render()
+                    })
+                    .catch(error => {
+                        quantitySpinUpdate(id, 'invisible');
+                        console.log(error);
+                    });
+                console.log(`Server updated with quantity ${quantity} for product ${id}`);
+            }, 1000);
+        }
+    }
+
+    function updateQuantityDisplaySidebar(quantity, id) {
+        document.getElementById(`cart-sidebar-quantity-input-${id}`).value = quantity;
+    }
+
+    function cartIncreaseSidebar(id) {
+        let quantity = parseInt(document.getElementById(`cart-sidebar-quantity-input-${id}`).value, 10) ||
+            1;
+        quantity++;
+        updateQuantityDisplaySidebar(quantity, id);
+        debouncedUpdateServerSidebarCart(id, quantity);
+    }
+
+    function cartDecreaseSidebar(id) {
+        let quantity = parseInt(document.getElementById(`cart-sidebar-quantity-input-${id}`).value, 10) ||
+            1;
+        if (quantity > 1) {
+            quantity--;
+            updateQuantityDisplaySidebar(quantity, id);
+            debouncedUpdateServerSidebarCart(id, quantity);
+        }
+    }
+</script>

@@ -3,7 +3,141 @@
     {{-- @dd($breadcrumbs) --}}
     <x-page-layout :props="['breadcrumbs' => $breadcrumbs, 'title' => 'Shop']">
         <div class="w-full">
-            <p>Products goes here</p>
+
+            <div class="py-2 flex items-center justify-end gap-5">
+                <div class="flex items-center gap-4">
+                    <x-ri-layout-grid-fill class="w-5 h-5 text-gray-900" />
+                    <x-ri-list-check-2 class="w-5 h-5 text-gray-600" />
+                </div>
+                <span>|</span>
+                <div class="flex items-center gap-2">
+                    <label for="order_by" class="text-sm">Order by</label>
+                    <select name="" id="order_by" class="text-sm py-1 rounded-md">
+                        <option value="default">default</option>
+                        <option value="asc">nome (A-Z)</option>
+                        <option value="desc">nome (Z-A)</option>
+                        {{-- <option value="price_low">Low to high (price)</option>
+                        <option value="price_high">High to low (price)</option> --}}
+                    </select>
+                </div>
+                <span>|</span>
+                <div class="flex items-center gap-2">
+                    <label for="items_per_page" class="text-sm">Per page</label>
+                    <select name="" id="items_per_page" class="text-sm py-1 rounded-md">
+                        <option value="12">12</option>
+                        <option value="2">2 (Test)</option>
+                        <option value="20">20</option>
+                        <option value="28">28</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                @if (!$products->isEmpty())
+                    @foreach ($products as $item)
+                        @include('app.components.Home.products.Partials.product-item', [
+                            'product' => $item,
+                        ])
+                    @endforeach
+                @else
+                    <h2 class="text-gray-300 font-bold text-2xl">No product found!</h2>
+                @endif
+            </div>
+
+            <div class="py-5 space-y-3">
+                @if ($products->total() > 0)
+                    <p>
+                        Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }}
+                        items
+                    </p>
+                @endif
+
+                @if ($products->hasPages())
+                    <ul class="flex items-center gap-3 m-0 p-0">
+                        {{-- Previous Page Link --}}
+                        @if ($products->onFirstPage())
+                            <li class="py-1 px-3">
+                                <x-ri-arrow-left-double-fill class="w-5 h-5 text-gray-400" />
+                            </li>
+                        @else
+                            <li><a class="" href="{{ $products->appends(request()->all())->previousPageUrl() }}"
+                                    rel="prev"><x-ri-arrow-left-double-fill class="w-5 h-5" /></a></li>
+                        @endif
+
+                        {{-- Pagination Elements --}}
+                        @foreach ($products->links()->elements as $element)
+                            {{-- "Three Dots" Separator --}}
+                            {{-- @if (is_string($element))
+                            <li class="disabled"><span>{{ $element }}</span></li>
+                        @endif --}}
+
+                            {{-- Array Of Links --}}
+                            @if (is_array($element))
+                                @foreach ($element as $page => $url)
+                                    @if ($page == $products->currentPage())
+                                        <li class="text-gray-400 py-1 px-1"><span>{{ $page }}</span></li>
+                                    @else
+                                        <li class="text-gray-900"><a class="py-1 px-3 border"
+                                                href="{{ $products->appends(request()->all())->url($page) }}">{{ $page }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @endforeach
+
+
+                        @if ($products->hasMorePages())
+                            <li class=" text-gray-900"><a
+                                    href="{{ $products->appends(request()->all())->nextPageUrl() }}" rel="next">
+                                    <x-ri-arrow-right-double-fill class="w-5 h-5" />
+                                </a></li>
+                        @else
+                            <li class="">
+                                <x-ri-arrow-right-double-fill class="w-5 h-5 text-gray-400" />
+                            </li>
+                        @endif
+                    </ul>
+                @endif
+            </div>
         </div>
     </x-page-layout>
 </x-app-guest-layout>
+
+<script>
+    const orderByElement = document.getElementById('order_by');
+    const itemPerPageElement = document.getElementById('items_per_page');
+
+    orderByElement.addEventListener('change', () => {
+        const category = categoryElement?.value;
+        const searchText = searchTextElement?.value;
+        const orderBy = orderByElement?.value;
+        urlHref += category ? "category=" + category + '&' : "";
+        urlHref += searchText ? "search=" + searchText + '&' : "";
+        urlHref += limit ? "limit=" + limit + '&' : "";
+        if (orderBy != 'default') {
+            urlHref += orderBy ? "order_by=" + orderBy + '&' : "";
+            window.location.href = urlHref.slice(0, -1);
+        } else {
+            window.location.href = urlHref.slice(0, -1);
+        }
+    })
+    itemPerPageElement.addEventListener('change', () => {
+        const category = categoryElement?.value;
+        const searchText = searchTextElement?.value;
+        const itemPerPage = itemPerPageElement?.value;
+        urlHref += category ? "category=" + category + '&' : "";
+        urlHref += searchText ? "search=" + searchText + '&' : "";
+        urlHref += order_by ? "order_by=" + order_by + '&' : "";
+
+        if (itemPerPage != '12') {
+            urlHref += itemPerPage ? "limit=" + itemPerPage + '&' : "";
+            window.location.href = urlHref.slice(0, -1);
+        } else {
+            window.location.href = urlHref.slice(0, -1);
+        }
+
+    })
+
+    if (order_by) orderByElement.value = order_by;
+    if (limit) itemPerPageElement.value = limit;
+</script>

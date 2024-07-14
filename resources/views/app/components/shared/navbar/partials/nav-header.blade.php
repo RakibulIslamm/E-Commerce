@@ -30,20 +30,22 @@ if (isset($site_settings->brand_info)) {
                 <select id="search-categories" name="search-categories"
                     class="relative rounded-l-md py-2 pl-2 pr-7 text-gray-900 border border-r-0 border-gray-200 outline-none
                       focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10 appearance-none">
-                    <option class="px-2 py-1">All</option>
+                    <option value="" class="px-2 py-1">All</option>
                     @foreach ($categories as $item)
-                        <option class="px-2 py-1">{{ $item->nome }}</option>
+                        <option value="{{ $item->id }}" class="px-2 py-1">{{ $item->nome }}</option>
                     @endforeach
                 </select>
             </div>
-            <input type="text" name="search" id="search"
+            <input type="text" name="search" id="search-text"
                 class="relative grow rounded-r-md py-2 pl-3 pr-8 text-gray-900 border border-gray-200 outline-none
                       focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10"
                 placeholder="Search Product...">
 
-            <x-lucide-search
-                class="w-7 h-7 absolute right-2 top-1/2 -translate-y-1/2 z-50 text-gray-500 cursor-pointer transition-all ease-in-out duration-100"
-                id="search-icon-show" />
+            <button onclick="handleSearch()">
+                <x-lucide-search
+                    class="w-7 h-7 absolute right-2 top-1/2 -translate-y-1/2 z-50 text-gray-500 cursor-pointer transition-all ease-in-out duration-100"
+                    id="search-icon-show" />
+            </button>
         </div>
 
         <div class="flex items-center gap-8">
@@ -72,3 +74,40 @@ if (isset($site_settings->brand_info)) {
         </div>
     </div>
 </div>
+
+
+<script>
+    const categoryElement = document.getElementById('search-categories');
+    const searchTextElement = document.getElementById('search-text');
+
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    const category = params.get('category');
+    const search = params.get('search');
+    const order_by = params.get('order_by');
+    const limit = params.get('limit');
+    let urlHref = '/products?';
+
+    function handleSearch() {
+        const category = categoryElement?.value;
+        const searchText = searchTextElement?.value;
+
+        urlHref += category ? "category=" + category + '&' : "";
+        urlHref += searchText ? "search=" + searchText + '&' : "";
+        urlHref += order_by ? "order_by=" + order_by + '&' : "";
+        urlHref += limit ? "limit=" + limit + '&' : "";
+
+        window.location.href = urlHref.slice(0, -1);
+
+        // if (category || searchText) {
+        //     window.location.href = (searchText && category) ?
+        //         `/products?category=${category ? category : ''}&search=${searchText ? searchText : ''}` : search ?
+        //         `/products?search=${searchText ? searchText : ''}` : `/products?category=${category ? category : ''}`;
+        // } else {
+        //     window.location.href = "/products";
+        // }
+    }
+
+    if (category) categoryElement.value = category;
+    if (search) searchTextElement.value = search;
+</script>
