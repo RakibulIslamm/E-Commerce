@@ -42,9 +42,16 @@ Route::middleware([
         // dd('inside');
     });
     require __DIR__ . '/app/dashboard.php';
+    require __DIR__ . '/app/api/api.php';
+    require __DIR__ . '/app/common.php';
+    require __DIR__ . '/app/cart.php';
 });
 
-require __DIR__ . '/app/api/api.php';
+
 require __DIR__ . '/app/auth.php';
 require __DIR__ . '/app/corporate-content.php';
 require __DIR__ . '/app/options.php';
+
+Route::fallback(function () {
+    abort(404);
+});

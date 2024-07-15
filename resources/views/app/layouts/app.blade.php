@@ -27,6 +27,28 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
     <script type="module">
         commonUtils.sessionMessageClose();
+
+        if (localStorage.getItem('cart') && isUserLoggedIn()) {
+            fetch('/set-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        cart: localStorage.getItem('cart')
+                    })
+                }).then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        localStorage.removeItem('cart');
+                    }
+                });
+        }
+
+        function isUserLoggedIn() {
+            return {{ Auth::check() ? 'true' : 'false' }};
+        }
     </script>
 </body>
 

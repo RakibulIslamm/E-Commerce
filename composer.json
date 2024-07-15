@@ -15,6 +15,7 @@
         "blade-ui-kit/blade-icons": "^1.6",
         "codeat3/blade-ant-design-icons": "^2.0",
         "diglactic/laravel-breadcrumbs": "^9.0",
+        "doctrine/dbal": "^4.0",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "mallardduck/blade-boxicons": "^2.4",

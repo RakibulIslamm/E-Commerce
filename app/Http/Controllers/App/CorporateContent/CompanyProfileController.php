@@ -17,6 +17,13 @@ class CompanyProfileController
         return view('app.pages.corporate-content.company-profile.index', ['about_us' => $about]);
     }
 
+    public function show_profile(Request $request)
+    {
+        $tenant = tenant();
+        $about = $tenant['about_us'] ?? '';
+        return view('app.pages.agency.index', ['about_us' => $about]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

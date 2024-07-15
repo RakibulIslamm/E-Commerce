@@ -9,6 +9,7 @@ class DashboardController
     public function index()
     {
         $dashboard = Breadcrumbs::generate('dashboard');
+
         // dd($dashboard);
         return view("app.pages.dashboard.index");
     }

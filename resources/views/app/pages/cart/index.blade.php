@@ -1,0 +1,158 @@
+@section('title', 'Shopping Cart')
+<x-app-guest-layout>
+    {{-- @dd($cart_items); --}}
+    <x-page-layout :props="['title' => 'Shopping Cart', 'breadcrumbs' => $breadcrumbs]">
+        <div class="flex items-start gap-4">
+            <div class="flex-1" id="cart-page-container">
+                <p class="hidden text-3xl font-bold text-gray-300" id="cart-page-loading">Loading...</p>
+            </div>
+            <!-- Sub total -->
+            <div class="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
+                <div class="mb-2 flex justify-between">
+                    <p class="text-gray-700">Subtotal</p>
+                    <p class="text-gray-700">$
+                        <span id="sub-total">0.00</span>
+                    </p>
+                </div>
+                <div class="flex justify-between">
+                    <p class="text-gray-700">Shipping</p>
+                    <p class="text-gray-700">$
+                        <span id="shipping">0.00</span>
+                    </p>
+                </div>
+                <hr class="my-4" />
+                <div class="flex justify-between">
+                    <p class="text-lg font-bold">Total</p>
+                    <div class=" flex flex-col items-end">
+                        <p class="mb-1 text-lg font-bold">$
+                            <span id="total">0.00</span>
+                        </p>
+                        {{-- <p class="text-sm text-gray-700">including VAT</p> --}}
+                    </div>
+                </div>
+                <form action="" id="selected-item-list">
+                    <button
+                        class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Check
+                        out</button>
+                </form>
+            </div>
+        </div>
+    </x-page-layout>
+</x-app-guest-layout>
+<script>
+    getCart('cart-page-loading')
+
+    function updateQuantity(id, quantity) {
+        console.log(`Updating server with quantity ${quantity} for product ${id}`);
+        // Simulate server request delay (replace with AJAX call or other server interaction)
+        quantitySpinUpdate(id, 'invisible');
+
+        if (isUserLoggedIn()) {
+            setTimeout(() => {
+                fetch('/cart/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            product_id: id,
+                            quantity: quantity
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        if (data.success) {
+                            const exist_item = window.all_cart.find(item => item.product_id == id);
+                            if (exist_item) {
+                                exist_item.quantity = quantity;
+                            } else {
+                                alert('Something went wrong in updateQuantity')
+                            }
+                        }
+                        quantitySpinUpdate(id, 'invisible');
+                        render()
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        quantitySpinUpdate(id, 'invisible');
+                    });
+                console.log(`Server updated with quantity ${quantity} for product ${id}`);
+            }, 1000);
+        } else {
+            setTimeout(() => {
+                fetch('/cart/add', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            product_id: id,
+                            quantity: quantity
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            const exist_item = window.all_cart.find(item => item.product_id == id);
+
+                            if (exist_item) {
+                                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                                let item = cart.find(item => item.product_id === exist_item.product_id);
+                                if (item) {
+                                    item.quantity = quantity;
+                                }
+                                localStorage.setItem('cart', JSON.stringify(cart));
+                                exist_item.quantity = quantity;
+                            } else {
+                                alert('Something went wrong in updateQuantity')
+                            }
+                        }
+                        quantitySpinUpdate(id, 'invisible');
+                        render()
+                    })
+                    .catch(error => {
+                        quantitySpinUpdate(id, 'invisible');
+                        console.log(error);
+                    });
+                console.log(`Server updated with quantity ${quantity} for product ${id}`);
+            }, 1000);
+        }
+    }
+
+    const debouncedUpdateServer = debounce(updateQuantity, 1000);
+
+    function updateQuantityDisplay(quantity, id) {
+        document.getElementById(`cart-page-quantity-input-${id}`).value = quantity;
+    }
+
+    function cartIncrease(id) {
+        let quantity = parseInt(document.getElementById(`cart-page-quantity-input-${id}`).value, 10) || 1;
+        quantity++;
+        updateQuantityDisplay(quantity, id);
+        debouncedUpdateServer(id, quantity);
+    }
+
+    function cartDecrease(id) {
+        let quantity = parseInt(document.getElementById(`cart-page-quantity-input-${id}`).value, 10) || 1;
+        if (quantity > 1) {
+            quantity--;
+            updateQuantityDisplay(quantity, id);
+            debouncedUpdateServer(id, quantity);
+        }
+    }
+</script>
+
+
+
+{{-- 
+@if (isset($cart_items) && !$cart_items->isEmpty())
+                    @foreach ($cart_items as $item)
+                    @endforeach
+                @else
+                    <p>No item found</p>
+                @endif
+
+--}}

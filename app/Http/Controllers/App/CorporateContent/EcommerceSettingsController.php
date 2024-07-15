@@ -79,7 +79,7 @@ class EcommerceSettingsController
             'accepted_payments' => 'required|array',
             'offer_display' => 'required|in:View cut price,Do not display the cut price',
         ]);
-
+        // $validated['NOVITA'] = $request->input('NOVITA', false) ? true : false;
         if (isset($validatedData['price_with_vat'])) {
             $validatedData['price_with_vat'] = true;
         } else {

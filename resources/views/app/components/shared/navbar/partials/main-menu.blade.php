@@ -2,8 +2,8 @@
     <header class="relative">
         <nav aria-label="Top">
             <div class="bg-white w-full px-20 text-gray-700 border-b">
-                <div class="flex h-16 items-center gap-10">
-                    <div class="self-stretch">
+                <div class="flex h-16 items-center justify-between gap-10">
+                    <div class="flex-1">
                         <div class="flex items-center h-full">
                             <div class="relative mr-10">
                                 <button type="button" id="categories-btn"
@@ -14,25 +14,37 @@
                                 <div class="absolute top-[70px] invisible opacity-0 left-0 text-sm text-gray-500 overflow-hidden transition-all ease-in-out duration-300 shadow rounded-md"
                                     id="category-list">
                                     <div class="p-3 bg-white rounded-md space-y-2 min-w-[200px]">
-                                        @foreach ($categories as $item)
-                                            <a href="#"
-                                                class="px-4 py-2 hover:bg-gray-200 rounded text-lg block">{{ $item->nome }}</a>
-                                        @endforeach
+                                        @if (!$categories->isEmpty())
+                                            @foreach ($categories as $item)
+                                                <a href="#"
+                                                    class="px-4 py-2 hover:bg-gray-200 rounded text-lg block">{{ $item->nome }}</a>
+                                            @endforeach
+                                        @else
+                                            <p>Category Not found</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
                             <div class="flex items-center h-full space-x-8">
                                 <a href="/" class="flex items-center text-sm font-medium">Home</a>
-                                <a href="#" class="flex items-center text-sm font-medium">Products</a>
-                                <a href="#" class="flex items-center text-sm font-medium">Agency</a>
-                                <a href="#" class="flex items-center text-sm font-medium">News</a>
+                                <a href="{{ route('app.products') }}"
+                                    class="flex items-center text-sm font-medium">Products</a>
+                                <a href="/agency" class="flex items-center text-sm font-medium">Agency</a>
+                                <a href="/news" class="flex items-center text-sm font-medium">News</a>
                                 <a href="{{ route('app.contact') }}"
                                     class="flex items-center text-sm font-medium">Contact</a>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Right --}}
+                    <div id="main-menu-cart-button" class="hidden">
+                        <button class="group -m-2 flex items-center p-2 relative text-gray-500" onclick="openCart()">
+                            <x-lucide-shopping-cart class="w-7 h-7" />
+                            <span
+                                class=" absolute top-0 right-0 text-xs group-hover:text-gray-800 bg-yellow-500 text-white rounded-full w-5 h-5 flex items-center justify-center cart-count">0</span>
+                            <span class="sr-only">items in cart, view bag</span>
+                        </button>
+                    </div>
 
                 </div>
             </div>
@@ -61,4 +73,12 @@
             categoryList.classList.remove('top-[55px]', 'visible', 'opacity-1')
         }
     });
+
+    document.addEventListener('scroll', function() {
+        if (window.pageYOffset > 105) {
+            document.getElementById('main-menu-cart-button').classList.remove('hidden')
+        } else {
+            document.getElementById('main-menu-cart-button').classList.add('hidden')
+        }
+    })
 </script>
