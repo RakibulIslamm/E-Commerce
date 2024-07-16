@@ -67,7 +67,7 @@ if (isset($site_settings->corporate_data)) {
             <div class="w-8/12">
                 <label for="street" class="block text-gray-700 text-sm font-bold mb-2">Street</label>
                 <input id="street" name="street" type="text" value="{{ old('street', $street ?? '') }}" required
-                    placeholder="Ex: 12/A Danmondi, Road 24, Dhaka"
+                    placeholder="Ex: Piazza Uditore, 18 90145 Palermo (ITALY)"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="w-4/12">
