@@ -45,21 +45,21 @@ if (isset($site_settings->corporate_data)) {
             <div class="w-full">
                 <label for="city" class="block text-gray-700 text-sm font-bold mb-2">City</label>
                 <input id="city" name="city" type="text" value="{{ old('city', $city ?? '') }}" required
-                    placeholder="Ex: Dhaka"
+                    placeholder="Ex: Palermo"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="w-full">
                 <label for="state" class="block text-gray-700 text-sm font-bold mb-2">State</label>
                 <input id="state" name="state" type="text" value="{{ old('state', $state ?? '') }}"
-                    placeholder="Ex: Dhaka"
+                    placeholder="Ex: Sicily (Sicilia)"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
 
             <div class="w-full">
                 <label for="country" class="block text-gray-700 text-sm font-bold mb-2">Country</label>
                 <input id="country" name="country" type="text" value="{{ old('country', $country ?? '') }}"
-                    placeholder="Ex: Bangladesh"
+                    placeholder="Ex: Italy (Italia)"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
         </div>
