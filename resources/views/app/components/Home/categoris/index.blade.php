@@ -1,4 +1,4 @@
-<div class="w-[calc(100%_-_160px)] mx-auto py-10 overflow-hidden">
+<div class="lg:w-[calc(100%_-_160px)] w-[calc(100%_-_40px)] mx-auto py-10 overflow-hidden">
     @include('app.components.Home.categoris.Partials.header')
     <div class="swiper-category">
         <div class="mt-4 swiper-wrapper">

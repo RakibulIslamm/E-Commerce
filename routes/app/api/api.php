@@ -1,7 +1,5 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 Route::prefix('api')->group(function () {
 
@@ -13,4 +11,5 @@ Route::prefix('api')->group(function () {
     require __DIR__ . '/settings-api.php';
     require __DIR__ . '/order-api.php';
     require __DIR__ . '/category-api.php';
+    require __DIR__ . '/common-api.php';
 });

@@ -17,7 +17,7 @@ class EcommerceRequestController extends Controller
         if ($user->role == 2) {
             return redirect('/dashboard');
         }
-        $requested_ecommerces = ($user->role == 1  || $user->role == 3) ? EcommerceRequest::all() : EcommerceRequest::where('user_id', $user->id)->orderBy("created_at", "desc")->get();
+        $requested_ecommerces = ($user->role == 1 || $user->role == 3) ? EcommerceRequest::all() : EcommerceRequest::where('user_id', $user->id)->orderBy("created_at", "desc")->get();
 
         return view("central_app.ecommerce-request.index", ["requested_ecommerces" => $requested_ecommerces]);
     }

@@ -4,12 +4,14 @@
     <x-page-layout :props="['breadcrumbs' => $breadcrumbs, 'title' => 'Shop']">
         <div class="w-full">
 
-            <div class="py-2 flex items-center justify-end gap-5">
-                <div class="flex items-center gap-4">
-                    <x-ri-layout-grid-fill class="w-5 h-5 text-gray-900" />
-                    <x-ri-list-check-2 class="w-5 h-5 text-gray-600" />
+            <div
+                class="py-2 flex sm:items-center items-start sm:justify-end justify-center flex-col sm:flex-row sm:gap-5 gap-2">
+                <div class="sm:flex items-center gap-4 hidden">
+                    <button onclick="setProductView('grid')"><x-ri-layout-grid-fill
+                            class="w-5 h-5 text-gray-900" /></button>
+                    <button onclick="setProductView('list')"><x-ri-list-check-2 class="w-5 h-5 text-gray-600" /></button>
                 </div>
-                <span>|</span>
+                <span class="hidden sm:block">|</span>
                 <div class="flex items-center gap-2">
                     <label for="order_by" class="text-sm">Order by</label>
                     <select name="" id="order_by" class="text-sm py-1 rounded-md">
@@ -20,7 +22,7 @@
                         <option value="price_high">High to low (price)</option> --}}
                     </select>
                 </div>
-                <span>|</span>
+                <span class="hidden sm:block">|</span>
                 <div class="flex items-center gap-2">
                     <label for="items_per_page" class="text-sm">Per page</label>
                     <select name="" id="items_per_page" class="text-sm py-1 rounded-md">
@@ -32,16 +34,32 @@
                 </div>
             </div>
 
-            <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                @if (!$products->isEmpty())
-                    @foreach ($products as $item)
-                        @include('app.components.Home.products.Partials.product-item', [
-                            'product' => $item,
-                        ])
-                    @endforeach
-                @else
-                    <h2 class="text-gray-300 font-bold text-2xl">No product found!</h2>
-                @endif
+            <div class="w-full block" id="grid">
+                <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                    @if (!$products->isEmpty())
+                        @foreach ($products as $item)
+                            @include('app.components.Home.products.Partials.product-item', [
+                                'product' => $item,
+                            ])
+                        @endforeach
+                    @else
+                        <h2 class="text-gray-300 font-bold text-2xl">No product found!</h2>
+                    @endif
+                </div>
+            </div>
+
+            <div class="w-full hidden" id="list">
+                <div class="mt-6 space-y-4">
+                    @if (!$products->isEmpty())
+                        @foreach ($products as $item)
+                            @include('app.components.Home.products.Partials.product-item-list', [
+                                'product' => $item,
+                            ])
+                        @endforeach
+                    @else
+                        <h2 class="text-gray-300 font-bold text-2xl">No product found!</h2>
+                    @endif
+                </div>
             </div>
 
             <div class="py-5 space-y-3">
@@ -106,6 +124,32 @@
 <script>
     const orderByElement = document.getElementById('order_by');
     const itemPerPageElement = document.getElementById('items_per_page');
+
+    const gridItem = document.getElementById('grid');
+    const listItem = document.getElementById('list');
+
+    function renderProductView() {
+        const productView = localStorage.getItem('product_view');
+        // console.log(productView);
+        if (productView == 'list') {
+            gridItem.classList.remove('sm:block');
+            gridItem.classList.add('sm:hidden');
+            listItem.classList.remove('sm:hidden');
+            listItem.classList.add('sm:block');
+        } else {
+            gridItem.classList.remove('sm:hidden');
+            gridItem.classList.add('sm:block');
+            listItem.classList.remove('sm:block');
+            listItem.classList.add('sm:hidden');
+        }
+    }
+    renderProductView();
+
+    function setProductView(view) {
+        localStorage.setItem('product_view', view);
+        renderProductView();
+    }
+
 
     orderByElement.addEventListener('change', () => {
         const category = categoryElement?.value;

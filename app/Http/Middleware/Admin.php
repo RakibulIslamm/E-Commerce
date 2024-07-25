@@ -17,26 +17,15 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
-            return redirect()->route('central.login');
+            return redirect()->route('/login');
         }
-        return $next($request);
-        /* $userRole = Auth::user()->role;
+        // return $next($request);
+        $userRole = Auth::user()->role;
 
-        if($userRole == 1){
+        if ($userRole == 1) {
             return $next($request);
+        } else {
+            abort(401);
         }
-        elseif($userRole == 2){
-            return redirect()->route('editor.dashboard');
-        }
-        elseif($userRole == 3){
-            return redirect()->route('creator.dashboard');
-        }
-        elseif($userRole == 5){
-            return redirect()->route('dashboard');
-        }
-        else{
-            Auth::logout();
-            return redirect()->route('login');
-        } */
     }
 }

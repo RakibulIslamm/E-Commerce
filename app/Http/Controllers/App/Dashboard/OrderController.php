@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\App\Dashboard;
 
 use App\Models\Order;
+use App\Models\Promotion;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class OrderController
@@ -10,17 +12,12 @@ class OrderController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    public function orders_api(Request $request)
-    {
-        $query = Order::with('items');
+        $query = Order::with('order_items');
 
         if ($request->filled('NUOVI')) {
-            $query->where('downloaded', false);
+            $query->where('nuovi', false);
         }
 
         if ($request->filled('IDORDINE')) {
@@ -44,7 +41,7 @@ class OrderController
         }
 
         if ($request->filled('N_ORDINE')) {
-            $order = $query->where('n_ordine', $request->N_ORDINE)->first();
+            $order = $query->find($request->N_ORDINE);
             if (!$order) {
                 return response()->json(['error' => 'Incorrect order number'], 420);
             }
@@ -56,7 +53,67 @@ class OrderController
         }
 
         if ($request->filled('PAGATO')) {
-            $query->where('pagamento', $request->PAGATO);
+            $query->where('pagato', $request->PAGATO);
+        }
+
+        $orders = $query->get();
+
+        foreach ($orders as $order) {
+            $user = User::find($order->user_id);
+            $promotion = Promotion::find($order->promotion_id);
+            $order['user'] = $user ? $user : null;
+            $order['promotion'] = $promotion ? $promotion : null;
+        }
+
+        dd($orders);
+
+        return response()->json(['Codice' => 'OK', 'n_ordini' => $orders->count(), 'ordini' => $orders]);
+    }
+
+    public function get_orders(Request $request)
+    {
+        $query = Order::with('order_items');
+
+        // dd($request->NUOVI);
+
+        if ($request->filled('NUOVI')) {
+            $query->where('nuovi', false);
+        }
+
+        if ($request->filled('IDORDINE')) {
+            $order = $query->find($request->IDORDINE);
+            if (!$order) {
+                return response()->json(['error' => 'Incorrect order ID'], 400);
+            }
+            return response()->json(['Codice' => 'OK', 'n_ordini' => 1, 'ordini' => [$order]]);
+        }
+
+        if ($request->filled('DATAORDINE')) {
+            $query->whereDate('data_ordine', $request->DATAORDINE);
+        }
+
+        if ($request->filled('DATAORDINEDA')) {
+            $query->whereDate('data_ordine', '>=', $request->DATAORDINEDA);
+        }
+
+        if ($request->filled('DATAORDINEA')) {
+            $query->whereDate('data_ordine', '<=', $request->DATAORDINEA);
+        }
+
+        if ($request->filled('N_ORDINE')) {
+            $order = $query->find($request->N_ORDINE);
+            if (!$order) {
+                return response()->json(['error' => 'Incorrect order number'], 420);
+            }
+            return response()->json(['Codice' => 'OK', 'n_ordini' => 1, 'ordini' => [$order]]);
+        }
+
+        if ($request->filled('STATO')) {
+            $query->where('stato', $request->STATO);
+        }
+
+        if ($request->filled('PAGATO')) {
+            $query->where('pagato', $request->PAGATO);
         }
 
         $orders = $query->get();
@@ -67,8 +124,6 @@ class OrderController
     public function place_order(Request $request)
     {
         $request->validate([
-            'n_ordine' => 'required|string|unique:orders,n_ordine',
-            'data_ordine' => 'required|date',
             'promo' => 'nullable|string',
             'nominativo' => 'required|string',
             'ragione_sociale' => 'nullable|string',
@@ -96,10 +151,6 @@ class OrderController
             'note' => 'nullable|string',
             'corriere' => 'nullable|string',
             'items' => 'required|array',
-            'items.*.articolo' => 'required|string',
-            'items.*.qta' => 'required|integer',
-            'items.*.imponibile' => 'required|numeric',
-            'items.*.ivato' => 'required|numeric',
         ]);
 
         $order = new Order([
@@ -136,9 +187,10 @@ class OrderController
         $order->save();
 
         foreach ($request->items as $item) {
+            $item = json_decode($item);
             $order->items()->create([
-                'articolo' => $item['articolo'],
-                'qta' => $item['qta'],
+                'articolo' => $item->product_id,
+                'quantity' => $item->quantity,
                 'imponibile' => $item['imponibile'],
                 'ivato' => $item['ivato'],
             ]);
@@ -168,7 +220,7 @@ class OrderController
         }
 
         if ($request->filled('PAGATO')) {
-            $order->pagamento = $request->PAGATO;
+            $order->pagato = $request->PAGATO;
         }
 
         $order->save();

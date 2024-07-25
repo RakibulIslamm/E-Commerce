@@ -1,3 +1,9 @@
+<?php
+
+// $cart = session()->get('cart');
+// dd($cart);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,8 +15,437 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
-    <h1>This is checkout page</h1>
+<body class=" bg-slate-50">
+
+    @if (isset($success))
+        @dd($success)
+        @dd($order)
+    @endif
+
+    <div class="px-20 py-5 flex items-center justify-between border-b">
+        <a href="/" class="flex items-center gap-2">
+            <img class="h-12 w-auto object-cover" src="{{ '/images/logo.png' }}" alt="">
+            {{-- <h2 class="text-lg font-bold">Company Name</h2> --}}
+        </a>
+
+        <div class="flex items-center gap-5 text-sm text-gray-500">
+            <a href="{{ route('app.cart') }}">Cart</a>
+            <x-ri-arrow-drop-right-fill class="w-5 h-5" />
+            <p class="font-bold text-gray-700">Checkout</p>
+            <x-ri-arrow-drop-right-fill class="w-5 h-5" />
+            <p>Confirmation</p>
+        </div>
+    </div>
+
+    <form action="{{ route('app.place-order') }}" method="POST" class="flex items-start justify-between py-10">
+        @csrf
+        <div class="flex-1 px-10">
+            <div>
+                <h4 class="text-xl">Contact information</h4>
+                <div class="mt-4">
+                    <x-input-label for="email" :value="__('Email address')" />
+                    <x-text-input id="email" class="block w-full mt-1" type="text" name="email"
+                        value="{{ $user->email ?? '' }}" required />
+                </div>
+            </div>
+            <hr class="my-10">
+
+            <div>
+                <h4 class="text-xl">Billing information</h4>
+                <div class="mt-4 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-full">
+                            <x-input-label for="nominativo" :value="__('Nominativo')" />
+                            <x-text-input id="nominativo" class="block w-full mt-1" type="text" name="nominativo"
+                                required />
+                        </div>
+                        <div class="w-full">
+                            <x-input-label for="telefono" :value="__('Telefono')" />
+                            <x-text-input id="telefono" class="block w-full mt-1" type="text" name="telefono"
+                                required />
+                        </div>
+                    </div>
+
+                    <div>
+                        <x-input-label for="ragione_sociale" :value="__('Ragione Sociale')" />
+                        <x-text-input id="ragione_sociale" class="block w-full mt-1" type="text"
+                            name="ragione_sociale" required />
+                    </div>
+
+                    <div>
+                        <x-input-label for="indirizzo" :value="__('Indirizzo')" />
+                        <x-text-input id="indirizzo" class="block w-full mt-1" type="text" name="indirizzo"
+                            required />
+                    </div>
+                    <div class="w-full">
+                        <p class="text-red-500 italic text-sm" id="cap_error"></p>
+                        <div class="w-full flex items-center gap-3">
+                            <div class="w-full">
+                                <x-input-label for="cap" :value="__('Cap')" />
+                                <x-text-input id="cap" class="block w-full mt-1" type="text" name="cap"
+                                    required />
+                            </div>
+
+                            <div class="w-full">
+                                <label for="citta" class="block font-medium text-sm text-gray-700">Citta</label>
+                                <select name="citta" id="citta"
+                                    class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1">
+                                    <option value="">Enter post code</option>
+                                </select>
+                            </div>
+                            <div class="w-full">
+                                <x-input-label for="provincia" :value="__('Provincia')" />
+                                <x-text-input id="provincia" class="block w-full mt-1" type="text" name="provincia"
+                                    required />
+                            </div>
+
+                            {{-- <div class="sr-only">
+                            <x-input-label for="stato" :value="__('Stato')" />
+                            <x-text-input id="stato" class="block w-full mt-1" type="text" name="stato"
+                                value='1' required />
+                        </div> --}}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <hr class="my-6">
+
+
+
+            <label for="shipping" class="peer cursor-pointer flex items-center gap-2 my-2">
+                <input class="cursor-pointer" id="shipping" type="checkbox" name="" />
+                <span>Different Shipping address</span>
+            </label>
+            <div class="hidden peer-has-[:checked]:block">
+                <h4 class="text-xl">Shipping information (If differe from billing)</h4>
+                <div class="mt-4 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div>
+                            <x-input-label for="nominativo_spedizione" :value="__('Nominativo')" />
+                            <x-text-input id="nominativo_spedizione" class="block w-full mt-1" type="text"
+                                name="nominativo_spedizione" />
+                        </div>
+                        <div>
+                            <x-input-label for="telefono_spedizione" :value="__('Telefono')" />
+                            <x-text-input id="telefono_spedizione" class="block w-full mt-1" type="text"
+                                name="telefono_spedizione" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <x-input-label for="indirizzo_spedizione" :value="__('Indirizzo')" />
+                        <x-text-input id="indirizzo_spedizione" class="block w-full mt-1" type="text"
+                            name="indirizzo_spedizione" />
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div>
+                            <x-input-label for="cap_spedizione" :value="__('Cap')" />
+                            <x-text-input id="cap_spedizione" class="block w-full mt-1" type="text"
+                                name="cap_spedizione" />
+                        </div>
+
+                        <div>
+                            <label for="citta_spedizione"
+                                class="block font-medium text-sm text-gray-700">City/Place</label>
+                            <select name="citta_spedizione" id="citta_spedizione"
+                                class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1">
+                                <option value="">Enter post code</option>
+                            </select>
+                        </div>
+                        <div>
+                            <x-input-label for="provincia_spedizione" :value="__('Provincia')" />
+                            <x-text-input id="provincia_spedizione" class="block w-full mt-1" type="text"
+                                name="provincia_spedizione" />
+                        </div>
+
+                    </div>
+                    <div>
+                        <x-input-label for="note" :value="__('Note')" />
+                        <textarea class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 w-full"
+                            name="note" id="note" rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-6">
+
+            <div>
+                <label for="spedizione" class="block text-lg font-medium text-gray-900 mb-2">Delivery
+                    Method</label>
+                <div class="flex justify-between gap-3">
+                    <div class="relative w-full ">
+                        <input type="radio" name="spedizione" value="standard" id="shipping_standard"
+                            class="hidden checked:block absolute top-4 right-4 peer/standard" checked required>
+                        <div
+                            class="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition peer-checked/standard:border-blue-500 peer-checked/standard:shadow">
+
+                            <label for="shipping_standard" class="block w-full cursor-pointer">
+                                <span class="block text-lg font-semibold">Standard</span>
+                                <span class="block text-sm text-gray-500">4-10 business days</span>
+                                <span class="block mt-2 text-lg font-medium">$5.00</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="w-full relative">
+                        <input type="radio" name="spedizione" value="express" id="shipping_express"
+                            class="hidden checked:block absolute top-4 right-4 peer/express" required>
+                        <div
+                            class="w-full flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition peer-checked/express:border-blue-500 peer-checked/express:shadow">
+                            <label for="shipping_express" class="block w-full cursor-pointer">
+                                <span class="block text-lg font-semibold">Express</span>
+                                <span class="block text-sm text-gray-500">2-5 business days</span>
+                                <span class="block mt-2 text-lg font-medium">$16.00</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="flex-1 px-10">
+            <h2 class="text-xl">Order summary</h2>
+            <div class="mt-4 bg-white p-10 rounded-lg shadow-md space-y-10">
+                <div id="items-container">
+                    <div class="flex justify-between items-center">
+                        <p>Product</p>
+                        <p>Sub Total</p>
+                    </div>
+
+
+                    <hr class="my-3">
+                    @if (session('cart'))
+                        @foreach (session('cart') as $id => $details)
+                            <div class="flex items-center justify-between text-gray-500">
+                                <p>{{ $details['name'] }} x {{ $details['quantity'] }}</p>
+                                <p>${{ $details['price'] * $details['quantity'] }}</p>
+                            </div>
+                        @endforeach
+                    @else
+                        <p>Your cart is empty</p>
+                    @endif
+                    <hr class="my-3">
+                </div>
+
+                @php
+                    $total = 0;
+                    $vat = 0;
+                    // dd($details['price'] * $details['quantity'] * (15 / 100));
+                    if (session('cart')) {
+                        foreach (session('cart') as $id => $details) {
+                            $total += $details['price'] * $details['quantity'];
+                            // number/total*100 (parcentage formula)
+                            $vat += ($details['price'] * $details['quantity'] * $details['vat']) / 100;
+                        }
+                    }
+                    $total = number_format((float) $total, 2, '.', '');
+                    $vat = number_format((float) $vat, 2, '.', '');
+                    $grand_total = number_format((float) $vat + $total, 2, '.', '');
+                @endphp
+
+
+
+                <div>
+                    <div>
+                        <div class="flex justify-between items-center text-gray-600">
+                            <p>Sub Total</p>
+                            <p>${{ $total }}</p>
+                        </div>
+                        <hr class="my-3">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center text-gray-600">
+                            <p>Shipping</p>
+                            <p id="shipping_cost">5.00</p>
+                            <input type="text" name="spese_spedizione" id="shipping_cost_input" class=" sr-only"
+                                value="5">
+                        </div>
+                        <hr class="my-3">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center text-gray-600">
+                            <p>Vat</p>
+                            <p>${{ $vat }}</p>
+                        </div>
+                        <hr class="my-3">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center font-semibold text-gray-800 text-lg">
+                            <p>Grand Total</p>
+                            <p id="grand_total">${{ $grand_total }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="px-10 py-3 rounded-lg border w-full mt-4 bg-slate-800 text-white">Place Order</button>
+        </div>
+    </form>
+
 </body>
+
+<script>
+    document.querySelectorAll('input[name="spedizione"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            let shippingCost = this.value === 'express' ? 16.00 : 5.00;
+            document.getElementById('shipping_cost').innerText = `${shippingCost.toFixed(2)}`;
+            document.getElementById('shipping_cost_input').value = parseFloat(
+                `${shippingCost.toFixed(2)}`);
+            let total = {{ $grand_total }} + shippingCost;
+            document.getElementById('grand_total').innerText = `$${total.toFixed(2)}`;
+        });
+    });
+
+    // default
+    let total = {{ $grand_total }} + 5;
+    document.getElementById('grand_total').innerText = `$${total.toFixed(2)}`;
+
+
+
+    // set location
+    // const debouncedHandleLocation = debounce(handleLocation, 1000);
+
+    document.getElementById('cap').addEventListener('keypress', (e) => {
+        if (e.key == 'Enter') {
+            e.preventDefault();
+            const code = document.getElementById('cap')?.value;
+
+            if (!code) {
+                console.log("Please provide zip/post code");
+                e.target.focus();
+                return;
+            }
+
+            handleLocation(code);
+            e.target.blur()
+        }
+
+    })
+
+    document.getElementById('cap').addEventListener('change', (e) => {
+        handleLocation(e?.target?.value);
+    })
+    const city = document.getElementById('citta');
+    const province = document.getElementById('provincia');
+    const state_code = document.getElementById('stato');
+    const capError = document.getElementById('cap_error');
+
+    function handleLocation(value) {
+        capError.innerText = '';
+        fetch(`/api/location/${value}`)
+            .then(res => res.json())
+            .then(data => {
+                // console.log(data);
+                if (data?.locations?.length) {
+                    province.value = data?.locations[0]?.province;
+                    // state_code.value = data?.locations[0]?.state_code;
+                    city.innerHTML = '';
+                    data?.locations?.forEach(location => {
+                        const option = document.createElement('option');
+                        option.value = location?.place;
+                        option.innerText = location?.place;
+                        city.appendChild(option);
+                    })
+                } else {
+                    capError.innerText = 'Location not found';
+                    city.innerHTML = '';
+                    province.value = '';
+                }
+
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+
+    function debounce(func, delay, id) {
+        let timeout;
+        return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), delay);
+        };
+    }
+
+
+
+
+
+    const itemsContainer = document.getElementById('items-container');
+    // getCart()
+    async function getCart(loadingId = '') {
+        // const loadingElement = document.getElementById(loadingId);
+        if (isUserLoggedIn()) {
+            // loadingElement && loadingElement.classList.remove('hidden')
+            const res = await fetch('/get-cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+            const data = await res.json();
+
+            const container = document.createElement('div');
+            const productItem = document.createElement('div');
+            productItem.classList.add("flex", "items-center", "justify-between", "text-gray-500")
+
+            for (const item of data?.cart_items) {
+                const total = parseFloat(item.quantity * item?.product?.PRE1IMP).toFixed(2);
+                const itemStr = JSON.stringify({
+                    ...item,
+                    product: {
+                        ...item.product,
+                        FOTO: null,
+                        DESCRIZIONEESTESA: ''
+                    }
+                });
+
+                productItem.innerHTML = `
+                <p>${item?.product?.DESCRIZIONEBREVE} x ${item.quantity}</p>
+                <p>$${total}</p>
+                <input type="text" class="sr-only" name="items[]" value="${itemStr}" />
+                `
+
+                container.appendChild(productItem);
+            }
+
+            itemsContainer.appendChild(container);
+            const hr = document.createElement('hr');
+            hr.classList.add('my-3')
+            itemsContainer.appendChild(hr);
+
+            // loadingElement && loadingElement.classList.remove('hidden')
+
+        } else {
+            const cartData = localStorage.getItem('cart');
+            if (cartData) {
+                // loadingElement && loadingElement.classList.remove('hidden')
+                const res = await fetch('/get-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        cart: cartData
+                    })
+                });
+                const data = await res.json();
+                // loadingElement && loadingElement.classList.remove('hidden')
+            }
+        }
+    }
+
+    // Checking user logged in or not
+    function isUserLoggedIn() {
+        return {{ Auth::check() ? 'true' : 'false' }};
+    }
+</script>
+
 
 </html>

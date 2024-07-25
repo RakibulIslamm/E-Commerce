@@ -1,4 +1,4 @@
-<div class="sticky top-0 z-50">
+<div class="sticky top-0 z-50 hidden lg:block" id="main-menu-container">
     <header class="relative">
         <nav aria-label="Top">
             <div class="bg-white w-full px-20 text-gray-700 border-b">
@@ -11,13 +11,13 @@
                                         class="w-5 h-5" /> All
                                     Categories <x-ri-arrow-drop-down-fill class="w-5 h-5" /></button>
                                 {{-- top-[55px] visible opacity-1 --}}
-                                <div class="absolute top-[70px] invisible opacity-0 left-0 text-sm text-gray-500 overflow-hidden transition-all ease-in-out duration-300 shadow rounded-md"
+                                <div class="absolute top-[70px] invisible opacity-0 left-0 text-sm text-gray-500 overflow-hidden transition-all ease-in-out duration-300 shadow"
                                     id="category-list">
-                                    <div class="p-3 bg-white rounded-md space-y-2 min-w-[200px]">
+                                    <div class="bg-white min-w-[200px]">
                                         @if (!$categories->isEmpty())
                                             @foreach ($categories as $item)
-                                                <a href="#"
-                                                    class="px-4 py-2 hover:bg-gray-200 rounded text-lg block">{{ $item->nome }}</a>
+                                                <a href="products?category={{ $item->id }}"
+                                                    class="px-4 py-3 hover:bg-gray-200 text-lg block {{ !$loop->last ? 'border-b' : '' }}">{{ $item->nome }}</a>
                                             @endforeach
                                         @else
                                             <p>Category Not found</p>
@@ -61,7 +61,7 @@
         categoryList.classList.toggle('top-[70px]')
         categoryList.classList.toggle('invisible')
         categoryList.classList.toggle('opacity-0')
-        categoryList.classList.toggle('top-[55px]')
+        categoryList.classList.toggle('top-[53px]')
         categoryList.classList.toggle('visible')
         categoryList.classList.toggle('opacity-1')
     })
@@ -70,7 +70,7 @@
         const target = event.target;
         if (!categoryList.contains(target) && !categoriesButton.contains(target)) {
             categoryList.classList.add('top-[70px]', 'invisible', 'opacity-0')
-            categoryList.classList.remove('top-[55px]', 'visible', 'opacity-1')
+            categoryList.classList.remove('top-[53px]', 'visible', 'opacity-1')
         }
     });
 

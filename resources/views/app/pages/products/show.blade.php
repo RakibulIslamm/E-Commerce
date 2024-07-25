@@ -128,53 +128,25 @@
     });
 
     function addToCart(productId, product, quantity = 1) {
-        if (!isUserLoggedIn()) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let item = cart.find(item => item.product_id === productId);
-
-            if (item) {
-                item.quantity += quantity;
-            } else {
-                cart.push({
+        fetch('/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
                     product_id: productId,
-                    product: product,
                     quantity: quantity
-                });
-            }
-
-            localStorage.setItem('cart', JSON.stringify(cart));
-            window.all_cart = cart;
-            renderSidebarCart();
-            renderSidebarSubtotal();
-            setCartItemCount();
-            alert('Product added to cart');
-        } else {
-            fetch('/cart/add', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        product_id: productId,
-                        quantity: quantity
-                    })
-                }).then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Product added to cart');
-                        const exist_item = window.all_cart.find(item => item.id == data.cart_item.id);
-                        if (exist_item) {
-                            exist_item.quantity += 1;
-                        } else {
-                            window.all_cart.push(data.cart_item)
-                        }
-                    }
-                    renderSidebarCart();
-                    renderSidebarSubtotal();
-                    setCartItemCount();
-                });
-
-        }
+                })
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Product added to cart');
+                    window.all_cart = data.cart_items;
+                }
+                renderSidebarCart();
+                renderSidebarSubtotal();
+                setCartItemCount();
+            });
     }
 </script>
