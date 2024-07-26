@@ -13,7 +13,7 @@ if (isset($site_settings->brand_info)) {
 ?>
 
 
-<div class="px-20 bg-white w-full">
+<div class="px-20 bg-white w-full hidden lg:block">
     <div class="h-[80px] flex items-center justify-center gap-10 w-full border-b">
         <div>
             <a href="/" class="flex items-center gap-2">
@@ -28,7 +28,7 @@ if (isset($site_settings->brand_info)) {
                 class="flex items-center relative transition-all ease-in-out duration-300 delay-500">
                 <label for="search-categories" class="sr-only">Categories</label>
                 <select id="search-categories" name="search-categories"
-                    class="relative rounded-l-md py-2 pl-2 pr-7 text-gray-900 border border-r-0 border-gray-200 outline-none
+                    class="relative rounded-l-md text-gray-900 border border-r-0 border-gray-200 outline-none
                       focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10 appearance-none">
                     <option value="" class="px-2 py-1">All</option>
                     @foreach ($categories as $item)
@@ -65,7 +65,18 @@ if (isset($site_settings->brand_info)) {
                             account</a>
                     </div>
                 @endif
-                @if ($user)
+                @if ($user && $user->role != 1)
+                    <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                        <a href="/account" class="text-sm font-medium text-gray-700 hover:text-gray-800">My Account</a>
+                        <form action="{{ route('app.logout') }}" method="post">
+                            @csrf
+                            <button type="submit">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                @endif
+                @if ($user && $user->role == 1)
                     <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                         <a href="/dashboard" class="text-sm font-medium text-gray-700 hover:text-gray-800">Dashboard</a>
                     </div>
@@ -74,7 +85,6 @@ if (isset($site_settings->brand_info)) {
         </div>
     </div>
 </div>
-
 
 <script>
     const categoryElement = document.getElementById('search-categories');

@@ -37,28 +37,8 @@ class CartController
     public function get_cart(Request $request)
     {
         try {
-            if (Auth::check()) {
-                $cart_items = Cart::with('product')->where('user_id', Auth::id())->get();
-            } else {
-                $cart_items = collect(json_decode($request->cart, true))->map(function ($item) {
-                    $product = Product::find($item['product_id']);
-
-                    if ($product) {
-                        $foto = json_decode($product->FOTO, true);
-
-                        if (is_array($foto)) {
-                            $product->FOTO = $foto[0];
-                        }
-
-                        return (object) [
-                            'product' => $product,
-                            'product_id' => $item['product_id'],
-                            'quantity' => $item['quantity'],
-                        ];
-                    }
-                });
-            }
-            return response()->json(['success' => true, 'cart_items' => $cart_items]);
+            $cart = session()->get('cart', []);
+            return response()->json(['success' => true, 'cart_items' => $cart]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, '' => $e->getMessage()]);
         }
@@ -115,6 +95,64 @@ class CartController
 
     }
 
+
+    public function storeNew(Request $request)
+    {
+
+        // session()->forget('cart');
+        // return response()->json(['request' => $request->all()]);
+        try {
+            $product = Product::findOrFail($request->product_id);
+            $cart = session()->get('cart', []);
+            if ($product->GIACENZA < $request->quantity) {
+                return response()->json(['success' => false, "message" => 'Items current not available in the requested quantity']);
+            }
+            $product->FOTO = isset($product->FOTO) ? json_decode($product->FOTO)[0] : '';
+
+            if (isset($cart[$product->id])) {
+                $cart[$product->id]['quantity'] = $request->quantity;
+                foreach ($cart as $cartItem) {
+                    $product = Product::find($cartItem['product_id']);
+                    if ($product) {
+                        $cart[$product->id]['stock'] = $product->GIACENZA;
+                    }
+                }
+                session()->put('cart', $cart);
+                return response()->json(['success' => true, 'cart_items' => $cart]);
+            }
+
+            $cart[$product->id] = [
+                "product_id" => $product->id,
+                "name" => $product->DESCRIZIONEBREVE,
+                "quantity" => 1,
+                "price" => $product->PRE1IMP,
+                "photo" => $product->FOTO,
+                'stock' => $product->GIACENZA,
+                'vat' => $product->ALIQUOTAIVA,
+                'selected' => true
+            ];
+
+            session()->put('cart', $cart);
+            return response()->json(['success' => true, 'cart_items' => $cart]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()]);
+        }
+
+    }
+
+    /* 
+    $cart[$product->id]->stock = [
+        'product_id' => $product->id,
+        'name' => $product->DESCRIZIONEBREVE,
+        'quantity' => $cartItem['quantity'],
+        'price' => $product->PRE1IMP,
+        'stock' => $product->GIACENZA,
+        'vat' => $product->ALIQUOTAIVA,
+        'photo' => isset($product->FOTO) ? json_decode($product->FOTO)[0] : '',
+    ];
+    
+    */
+
     public function setCartToTable(Request $request)
     {
         $cartItems = json_decode($request->cart, true);
@@ -155,12 +193,12 @@ class CartController
      */
     public function destroy($id)
     {
-        if (Auth::check()) {
-            Cart::where('product_id', $id)
-                ->where('user_id', Auth::id())
-                ->delete();
+        $cart = session()->get('cart', []);
+        if (isset($cart)) {
+            unset($cart[$id]);
+            session()->put('cart', $cart);
             return response()->json(['success' => true]);
         }
-        return response()->json(['success' => false]);
+        return response()->json(['success' => false, "message" => 'Product not found in cart']);
     }
 }

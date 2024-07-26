@@ -8,8 +8,13 @@
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
         {{ $promotion['end_date'] }}
     </td>
+    {{-- @dd($promotion) --}}
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
-        {{ $promotion['amount'] }}
+        @if ($promotion['discount_amount'])
+            ${{ $promotion['discount_amount'] }}
+        @elseif($promotion['discount_percentage'])
+            {{ $promotion['discount_percentage'] }}%
+        @endif
     </td>
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 ">
         <div class="flex items-center gap-2">

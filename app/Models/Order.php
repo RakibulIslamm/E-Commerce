@@ -11,9 +11,9 @@ class Order extends Model
 
     protected $fillable = [
         'n_ordine',
-        'data_ordine',
-        'promo',
+        'user_id',
         'nominativo',
+        'promotion_id',
         'ragione_sociale',
         'indirizzo',
         'cap',
@@ -22,11 +22,9 @@ class Order extends Model
         'email',
         'telefono',
         'stato',
-        'pagamento',
+        'pagato',
         'totale_netto',
         'totale_iva',
-        'promo_netto',
-        'promo_iva',
         'spese_spedizione',
         'nominativo_spedizione',
         'ragione_sociale_spedizione',
@@ -34,11 +32,10 @@ class Order extends Model
         'cap_spedizione',
         'citta_spedizione',
         'provincia_spedizione',
-        'pec',
-        'sdi',
+        'spedizione',
         'note',
         'corriere',
-        'downloaded'
+        'nuovi',
     ];
 
     public function order_items()

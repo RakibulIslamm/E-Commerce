@@ -20,7 +20,17 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'date_of_birth',
+        'address',
+        'postal_code',
+        'city',
+        'province',
+        'tax_id',
+        'business_name',
+        'vat_number',
+        'pec_address',
+        'sdi_code'
     ];
 
     /**

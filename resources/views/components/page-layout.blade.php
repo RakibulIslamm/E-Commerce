@@ -1,8 +1,9 @@
-<div class="w-full h-[150px] px-20 bg-slate-200 flex items-center">
+<div
+    class="w-full lg:h-[150px] sm:h-[100px] h-[80px] lg:px-20 sm:px-10 px-5 bg-slate-200 flex items-center sm:justify-start justify-center">
     <div>
-        <h2 class="text-3xl font-bold py-3">{{ $props['title'] ?? '' }}</h2>
+        <h2 class="lg:text-3xl sm:text-2xl text-xl font-bold lg:py-3 sm:text-left text-center">
+            {{ $props['title'] ?? '' }}</h2>
         <div class="flex items-center">
-
             <div class="flex items-center">
                 <a href="/" class="flex items-start gap-1">
                     <x-heroicon-s-home class="w-5 h-5" />
@@ -31,6 +32,6 @@
         </div>
     </div>
 </div>
-<div class="my-8 px-20">
+<div class="lg:my-8 py-5 lg:px-20 sm:px-10 px-5">
     {{ $slot }}
 </div>

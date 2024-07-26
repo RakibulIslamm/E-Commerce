@@ -1,13 +1,13 @@
 @section('title', 'Shopping Cart')
 <x-app-guest-layout>
-    {{-- @dd($cart_items); --}}
+
     <x-page-layout :props="['title' => 'Shopping Cart', 'breadcrumbs' => $breadcrumbs]">
-        <div class="flex items-start gap-4">
-            <div class="flex-1" id="cart-page-container">
+        <div class="flex items-start lg:flex-row flex-col gap-4">
+            <div class="lg:flex-1 w-full" id="cart-page-container">
                 <p class="hidden text-3xl font-bold text-gray-300" id="cart-page-loading">Loading...</p>
             </div>
             <!-- Sub total -->
-            <div class="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
+            <div class="mt-6 h-full rounded-lg border bg-white p-6 shadow-md lg:block lg:w-[400px] w-full">
                 <div class="mb-2 flex justify-between">
                     <p class="text-gray-700">Subtotal</p>
                     <p class="text-gray-700">$
@@ -15,9 +15,9 @@
                     </p>
                 </div>
                 <div class="flex justify-between">
-                    <p class="text-gray-700">Shipping</p>
+                    <p class="text-gray-700">Vat</p>
                     <p class="text-gray-700">$
-                        <span id="shipping">0.00</span>
+                        <span id="vat">0.00</span>
                     </p>
                 </div>
                 <hr class="my-4" />
@@ -30,11 +30,18 @@
                         {{-- <p class="text-sm text-gray-700">including VAT</p> --}}
                     </div>
                 </div>
-                <form action="" id="selected-item-list">
-                    <button
-                        class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Check
+                @php
+                    $cart = session()->get('cart');
+                @endphp
+                @if (count($cart) > 0)
+                    <a a href="{{ route('app.checkout') }}"
+                        class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600">Check
+                        out</a>
+                @else
+                    <button disabled
+                        class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-900 cursor-not-allowed">Check
                         out</button>
-                </form>
+                @endif
             </div>
         </div>
     </x-page-layout>
@@ -44,82 +51,34 @@
 
     function updateQuantity(id, quantity) {
         console.log(`Updating server with quantity ${quantity} for product ${id}`);
-        // Simulate server request delay (replace with AJAX call or other server interaction)
         quantitySpinUpdate(id, 'invisible');
-
-        if (isUserLoggedIn()) {
-            setTimeout(() => {
-                fetch('/cart/add', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            product_id: id,
-                            quantity: quantity
-                        })
+        setTimeout(() => {
+            fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        product_id: id,
+                        quantity: quantity
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        if (data.success) {
-                            const exist_item = window.all_cart.find(item => item.product_id == id);
-                            if (exist_item) {
-                                exist_item.quantity = quantity;
-                            } else {
-                                alert('Something went wrong in updateQuantity')
-                            }
-                        }
-                        quantitySpinUpdate(id, 'invisible');
-                        render()
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        quantitySpinUpdate(id, 'invisible');
-                    });
-                console.log(`Server updated with quantity ${quantity} for product ${id}`);
-            }, 1000);
-        } else {
-            setTimeout(() => {
-                fetch('/cart/add', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            product_id: id,
-                            quantity: quantity
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            const exist_item = window.all_cart.find(item => item.product_id == id);
-
-                            if (exist_item) {
-                                let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                                let item = cart.find(item => item.product_id === exist_item.product_id);
-                                if (item) {
-                                    item.quantity = quantity;
-                                }
-                                localStorage.setItem('cart', JSON.stringify(cart));
-                                exist_item.quantity = quantity;
-                            } else {
-                                alert('Something went wrong in updateQuantity')
-                            }
-                        }
-                        quantitySpinUpdate(id, 'invisible');
-                        render()
-                    })
-                    .catch(error => {
-                        quantitySpinUpdate(id, 'invisible');
-                        console.log(error);
-                    });
-                console.log(`Server updated with quantity ${quantity} for product ${id}`);
-            }, 1000);
-        }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.success) {
+                        window.all_cart = data.cart_items;
+                    }
+                    quantitySpinUpdate(id, 'invisible');
+                    render()
+                })
+                .catch(error => {
+                    console.log(error);
+                    quantitySpinUpdate(id, 'invisible');
+                });
+            console.log(`Server updated with quantity ${quantity} for product ${id}`);
+        }, 1000);
     }
 
     const debouncedUpdateServer = debounce(updateQuantity, 1000);

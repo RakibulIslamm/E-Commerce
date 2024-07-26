@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained();
-            $table->integer('qta')->default(0);
-            $table->decimal('imponibile', 8, 2);
-            $table->decimal('ivato', 8, 2);
+            $table->decimal('price', 10, 2)->nullable();
+            $table->decimal('vat', 5, 2);
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

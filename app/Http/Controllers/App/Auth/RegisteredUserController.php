@@ -31,25 +31,34 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validate = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'date_of_birth' => ['required', 'date'],
+            'address' => ['required', 'string', 'max:255'],
+            'postal_code' => ['required', 'string', 'max:10'],
+            'city' => ['required', 'string', 'max:255'],
+            'province' => ['required', 'string', 'max:255'],
+            'tax_id' => ['nullable', 'string', 'max:255'],
+            'business_name' => ['required', 'string', 'max:255'],
+            'vat_number' => ['required', 'string', 'max:255'],
+            'pec_address' => ['nullable', 'string', 'max:255'],
+            'sdi_code' => ['required', 'string', 'max:255'],
         ]);
 
+        $validate['password'] = Hash::make($validate['password']);
         try {
-            return tenant()->run(function () use ($request) {
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                ]);
-                event(new Registered($user));
-                Auth::login($user);
-                return redirect(route('app.dashboard', absolute: false));
-            });
+            $user = User::create($validate);
+            event(new Registered($user));
+            Auth::login($user);
+            $from = $request->input('from') ?? null;
+            if (isset($from)) {
+                dd($from);
+            }
+            return redirect(route('app.account', absolute: false));
         } catch (\Exception $exception) {
-            return redirect()->back()->withInput()->withErrors(['error' => 'Registration failed. Please try again.']);
+            return redirect()->back()->withInput()->withErrors(['error' => $exception->getMessage()]);
         }
     }
 }

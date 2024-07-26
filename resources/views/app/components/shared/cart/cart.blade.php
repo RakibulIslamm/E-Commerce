@@ -1,5 +1,5 @@
 <div id="cart-sidebar"
-    class="w-[400px] h-screen z-50 transform translate-x-full fixed top-0 right-0 bg-slate-50 transition-all ease-in-out duration-300 flex flex-col justify-between">
+    class="sm:w-[400px] w-[85%] h-screen z-50 transform translate-x-full fixed top-0 right-0 bg-slate-50 transition-all ease-in-out duration-300 flex flex-col justify-between">
 
     <div class="flex items-start justify-between p-3">
         <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
@@ -40,83 +40,30 @@
         console.log(`Updating server with quantity ${quantity} for product ${id}`);
         // Simulate server request delay (replace with AJAX call or other server interaction)
         quantitySpinUpdate(id, 'invisible');
-
-        if (isUserLoggedIn()) {
-            setTimeout(() => {
-                fetch('/cart/add', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            product_id: id,
-                            quantity: quantity
-                        })
+        setTimeout(() => {
+            fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        product_id: id,
+                        quantity: quantity
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        if (data.success) {
-                            const exist_item = window.all_cart.find(item => item.product_id ==
-                                id);
-                            if (exist_item) {
-                                exist_item.quantity = quantity;
-                            } else {
-                                alert('Something went wrong in updateQuantity')
-                            }
-                        }
-                        quantitySpinUpdate(id, 'invisible');
-                        render()
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        quantitySpinUpdate(id, 'invisible');
-                    });
-                console.log(`Server updated with quantity ${quantity} for product ${id}`);
-            }, 1000);
-        } else {
-            setTimeout(() => {
-                fetch('/cart/add', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            product_id: id,
-                            quantity: quantity
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            const exist_item = window.all_cart.find(item => item.product_id ==
-                                id);
-
-                            if (exist_item) {
-                                let cart = JSON.parse(localStorage.getItem('cart')) || [];
-                                let item = cart.find(item => item.product_id === exist_item
-                                    .product_id);
-                                if (item) {
-                                    item.quantity = quantity;
-                                }
-                                localStorage.setItem('cart', JSON.stringify(cart));
-                                exist_item.quantity = quantity;
-                            } else {
-                                alert('Something went wrong in updateQuantity')
-                            }
-                        }
-                        quantitySpinUpdate(id, 'invisible');
-                        render()
-                    })
-                    .catch(error => {
-                        quantitySpinUpdate(id, 'invisible');
-                        console.log(error);
-                    });
-                console.log(`Server updated with quantity ${quantity} for product ${id}`);
-            }, 1000);
-        }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    window.all_cart = data.cart_items;
+                    quantitySpinUpdate(id, 'invisible');
+                    render()
+                })
+                .catch(error => {
+                    console.log(error);
+                    quantitySpinUpdate(id, 'invisible');
+                });
+            console.log(`Server updated with quantity ${quantity} for product ${id}`);
+        }, 1000);
     }
 
     function updateQuantityDisplaySidebar(quantity, id) {

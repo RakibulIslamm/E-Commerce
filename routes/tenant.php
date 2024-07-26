@@ -35,22 +35,17 @@ Route::middleware([
         Route::patch('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('app.profile.destroy');
 
-        Route::prefix('options')->group(function () {
-            Route::get('/change-password', [PasswordController::class, 'edit'])->name('app.change-password');
-        });
-
         // dd('inside');
     });
     require __DIR__ . '/app/dashboard.php';
     require __DIR__ . '/app/api/api.php';
     require __DIR__ . '/app/common.php';
     require __DIR__ . '/app/cart.php';
+    require __DIR__ . '/app/order.php';
+    require __DIR__ . '/app/auth.php';
+    require __DIR__ . '/app/my-account.php';
 });
 
-
-require __DIR__ . '/app/auth.php';
-require __DIR__ . '/app/corporate-content.php';
-require __DIR__ . '/app/options.php';
 
 Route::fallback(function () {
     abort(404);

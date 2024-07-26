@@ -5,15 +5,9 @@ use App\Http\Controllers\App\CorporateContent\ConditionForSaleController;
 use App\Http\Controllers\App\CorporateContent\CorporateDataController;
 use App\Http\Controllers\App\CorporateContent\EcommerceSettingsController;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
-Route::middleware([
-    'web',
-    'auth',
-    InitializeTenancyByDomain::class,
-    PreventAccessFromCentralDomains::class,
-])->prefix('corporate-content')->group(function () {
+
+Route::prefix('corporate-content')->group(function () {
 
     Route::prefix('corporate-data')->group(function () {
         Route::get('', [CorporateDataController::class, 'index'])->name('app.corporate-data');
@@ -47,6 +41,4 @@ Route::middleware([
 
         Route::put('/edit', [ConditionForSaleController::class, 'update'])->name('app.corporate-content.condition-for-sale.update');
     });
-
-    Route::get('/account', [EcommerceSettingsController::class, 'index'])->name('app.corporate-content.account');
 });

@@ -48,8 +48,9 @@ class PromotionController
             'active' => 'boolean',
             'bg_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        // dd($validated);
 
+        $validated['discount_amount'] = $validated['discount_amount'] ? $validated['discount_amount'] : 0;
+        $validated['discount_percentage'] = $validated['discount_percentage'] ? ($validated['discount_percentage']) : 0;
         // Set all other promotions to inactive
         if ($validated['active'] == true) {
             Promotion::where('active', true)->update(['active' => false]);
@@ -104,6 +105,11 @@ class PromotionController
             'active' => 'boolean',
             'bg_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        $validated['discount_amount'] = $validated['discount_amount'] ? $validated['discount_amount'] : null;
+        $validated['discount_percentage'] = $validated['discount_percentage'] ? ($validated['discount_percentage']) : null;
+
+        // dd($validated);
 
         if ($validated['active'] == true) {
             Promotion::where('active', true)->update(['active' => false]);
