@@ -30,7 +30,8 @@ class User extends Authenticatable
         'business_name',
         'vat_number',
         'pec_address',
-        'sdi_code'
+        'sdi_code',
+        'telephone'
     ];
 
     /**

@@ -57,25 +57,25 @@
                         <div class="w-full">
                             <x-input-label for="nominativo" :value="__('Nominativo')" />
                             <x-text-input id="nominativo" class="block w-full mt-1" type="text" name="nominativo"
-                                required />
+                                value="{{ $user->name ?? '' }}" required />
                         </div>
                         <div class="w-full">
                             <x-input-label for="telefono" :value="__('Telefono')" />
                             <x-text-input id="telefono" class="block w-full mt-1" type="text" name="telefono"
-                                required />
+                                value="{{ $user->telephone ?? '' }}" required />
                         </div>
                     </div>
 
                     <div>
                         <x-input-label for="ragione_sociale" :value="__('Ragione Sociale')" />
                         <x-text-input id="ragione_sociale" class="block w-full mt-1" type="text"
-                            name="ragione_sociale" required />
+                            name="ragione_sociale" value="{{ $user->business_name ?? '' }}" required />
                     </div>
 
                     <div>
                         <x-input-label for="indirizzo" :value="__('Indirizzo')" />
                         <x-text-input id="indirizzo" class="block w-full mt-1" type="text" name="indirizzo"
-                            required />
+                            value="{{ $user->address ?? '' }}" required />
                     </div>
                     <div class="w-full">
                         <p class="text-red-500 italic text-sm" id="cap_error"></p>
@@ -83,20 +83,21 @@
                             <div class="w-full">
                                 <x-input-label for="cap" :value="__('Cap')" />
                                 <x-text-input id="cap" class="block w-full mt-1" type="text" name="cap"
-                                    required />
+                                    value="{{ $user->postal_code ?? '' }}" required />
                             </div>
 
                             <div class="w-full">
                                 <label for="citta" class="block font-medium text-sm text-gray-700">Citta</label>
                                 <select name="citta" id="citta"
                                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1">
-                                    <option value="">Enter post code</option>
+                                    <option value="{{ $user->city ?? '' }}">{{ $user->city ?? 'Enter post code' }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="w-full">
                                 <x-input-label for="provincia" :value="__('Provincia')" />
                                 <x-text-input id="provincia" class="block w-full mt-1" type="text" name="provincia"
-                                    required />
+                                    value="{{ $user->province }}" required />
                             </div>
 
                             {{-- <div class="sr-only">

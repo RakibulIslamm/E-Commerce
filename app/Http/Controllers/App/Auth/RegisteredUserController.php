@@ -42,6 +42,7 @@ class RegisteredUserController extends Controller
             'province' => ['required', 'string', 'max:255'],
             'tax_id' => ['nullable', 'string', 'max:255'],
             'business_name' => ['required', 'string', 'max:255'],
+            'telephone' => 'required|string',
             'vat_number' => ['required', 'string', 'max:255'],
             'pec_address' => ['nullable', 'string', 'max:255'],
             'sdi_code' => ['required', 'string', 'max:255'],
@@ -56,7 +57,7 @@ class RegisteredUserController extends Controller
             if (isset($from)) {
                 dd($from);
             }
-            return redirect(route('app.account', absolute: false));
+            return redirect(route('app.summary', absolute: false));
         } catch (\Exception $exception) {
             return redirect()->back()->withInput()->withErrors(['error' => $exception->getMessage()]);
         }

@@ -33,7 +33,7 @@
                 @php
                     $cart = session()->get('cart');
                 @endphp
-                @if (count($cart) > 0)
+                @if (isset($cart) and count($cart) > 0)
                     <a a href="{{ route('app.checkout') }}"
                         class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600">Check
                         out</a>
