@@ -97,7 +97,7 @@
                             <div class="w-full">
                                 <x-input-label for="provincia" :value="__('Provincia')" />
                                 <x-text-input id="provincia" class="block w-full mt-1" type="text" name="provincia"
-                                    value="{{ $user->province }}" required />
+                                    value="{{ $user->province ?? ''}}" required />
                             </div>
 
                             {{-- <div class="sr-only">
