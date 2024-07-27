@@ -46,5 +46,12 @@
                 </div>
             </div>
         @endforeach
+
+        <div class="mt-4">
+            <p>Sub total: <span>$100</span></p>
+            <p>Vat: <span>$100</span></p>
+            <p>Shipping cost: <span>$100</span></p>
+            <p>Total: <span>$100</span></p>
+        </div>
     </div>
 </div>
