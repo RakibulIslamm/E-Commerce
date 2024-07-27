@@ -33,6 +33,9 @@ class AuthenticatedSessionController extends Controller
             dd($from);
         }
 
+        if (Auth::user()->id != 1) {
+            return redirect()->intended(route('app.summary', absolute: false));
+        }
         return redirect()->intended(route('app.dashboard', absolute: false));
     }
 

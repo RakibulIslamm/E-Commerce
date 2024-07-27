@@ -67,7 +67,8 @@ if (isset($site_settings->brand_info)) {
                 @endif
                 @if ($user && $user->role != 1)
                     <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                        <a href="/account" class="text-sm font-medium text-gray-700 hover:text-gray-800">My Account</a>
+                        <a href="/account/summary" class="text-sm font-medium text-gray-700 hover:text-gray-800">My
+                            Account</a>
                         <form action="{{ route('app.logout') }}" method="post">
                             @csrf
                             <button type="submit">

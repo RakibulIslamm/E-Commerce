@@ -84,7 +84,7 @@
             <!-- City -->
             <div class="w-full">
                 <label for="city" class="block font-medium text-sm text-gray-700">City</label>
-                <select name="city" id="city"
+                <select name="city" id="city" required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1">
                     <option value="">Enter post code</option>
                 </select>

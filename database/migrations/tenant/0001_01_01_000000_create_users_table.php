@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('postal_code');
             $table->string('city');
             $table->string('province');
+            $table->string('telephone');
             $table->string('tax_id')->nullable();
             $table->string('business_name');
             $table->string('vat_number');
