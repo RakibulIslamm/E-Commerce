@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\App;
 
-use Auth;
 use Illuminate\Http\Request;
 use App\Models\Tenant;
 

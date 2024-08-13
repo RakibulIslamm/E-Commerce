@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 // * Ecommerce Routes
 
-Route::middleware(['auth', 'verified'])->prefix('ecommerces')->group(function () {
+Route::middleware(['auth'])->prefix('ecommerces')->group(function () {
     Route::get('/', [EcommerceController::class, 'index'])->name('ecommerce.index');
 
     Route::get('/show/{ecommerce}', [EcommerceController::class, 'show']);

@@ -8,7 +8,7 @@ Route::middleware([
     'central_domain'
 ])->group(function () {
     Route::get('/', function () {
-        return view('central_app.welcome');
+        return redirect()->route('central.login');
     });
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -23,4 +23,9 @@ Route::middleware([
     require __DIR__ . '/central-app/request.php';
     require __DIR__ . '/central-app/user.php';
     require __DIR__ . '/central-app/ecommerce.php';
+});
+
+
+Route::fallback(function () {
+    abort(404);
 });

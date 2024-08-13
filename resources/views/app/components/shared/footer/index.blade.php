@@ -1,6 +1,6 @@
-<footer class="w-full text-gray-700 body-font px-20 bg-slate-50">
+<footer class="w-full text-gray-700 body-font lg:px-20 sm:px-10 px-5 bg-slate-50">
     <div
-        class="container flex flex-col flex-wrap px-5 py-24 mx-auto md:items-center lg:items-start md:flex-row md:flex-no-wrap">
+        class="container flex flex-col flex-wrap lg:py-20 py-10 mx-auto md:items-center lg:items-start md:flex-row md:flex-no-wrap">
         <div class="flex-shrink-0 w-64 mx-auto text-center md:mx-0 md:text-left">
             <a class="flex items-center justify-center font-medium text-gray-900 title-font md:justify-start">
                 <img class="w-16 h-16" src="/images/logo.png" alt="">
@@ -103,7 +103,7 @@
     </div>
     <div class="border-t">
         <div class="container px-5 py-4 mx-auto">
-            <p class="text-sm text-gray-700 capitalize xl:text-center">&copy; 2024 All rights reserved </p>
+            <p class="text-sm text-gray-700 capitalize text-center">&copy; 2024 All rights reserved </p>
         </div>
     </div>
 </footer>

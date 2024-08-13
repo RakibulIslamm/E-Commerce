@@ -15,8 +15,10 @@ export function element(id) {
 
 export const sessionMessageClose = () => {
     const session = document.getElementById("session_status");
-    document.getElementById("icon").addEventListener("click", () => {
-        session.classList.add("hidden");
-        session.classList.remove("flex");
-    });
+    if (session) {
+        document.getElementById("icon").addEventListener("click", () => {
+            session.classList.add("hidden");
+            session.classList.remove("flex");
+        });
+    }
 };

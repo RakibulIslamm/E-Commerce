@@ -1,4 +1,4 @@
-<a href=""
+<a href="{{ route('app.products', ['category' => $category->id]) }}"
     class="relative h-[100px] w-[500px] group rounded-lg overflow-hidden transition-all ease-in-out border swiper-slide bg-slate-300">
     <img class="rounded-lg relative z-0 h-full object-cover w-full object-center"
         src="{{ $category->img ? tenant_asset($category->img) : 'https://www.supergeneral.com/public/images/category/main-catergory.jpg' }}"

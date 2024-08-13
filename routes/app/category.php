@@ -7,6 +7,6 @@ Route::prefix('products')->group(function () {
     ;
     Route::get('categories/create', [CategoryController::class, 'create'])->name('app.dashboard.categories.create');
     Route::post('categories/create', [CategoryController::class, 'store'])->name('app.dashboard.categories.store');
-    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('app.dashboard.categories.update');
+    Route::put('/categories/{category}', [CategoryController::class, 'update_img'])->name('app.dashboard.categories.update');
     Route::delete('/categories/delete/{category}', [CategoryController::class, 'destroy'])->name('app.dashboard.categories.delete');
 });

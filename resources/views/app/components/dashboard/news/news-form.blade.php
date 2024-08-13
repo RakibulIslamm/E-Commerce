@@ -1,7 +1,6 @@
 <form action="{{ $mode == 'edit' ? route('app.dashboard.news.update', $news) : route('app.dashboard.news.store') }}"
     id="news-submit" method="POST" class="w-full flex items-start gap-3" enctype="multipart/form-data">
     @csrf
-    {{-- {{ old('name', $news['name'] ?? '') }} --}}
     @method($mode == 'edit' ? 'PUT' : 'POST')
     <div class="flex-1 w-full">
         <input type="text" name="title" value="{{ old('title', $news['title'] ?? '') }}"

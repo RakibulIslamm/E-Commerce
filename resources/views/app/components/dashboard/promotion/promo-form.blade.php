@@ -76,11 +76,9 @@
             rows="3">{{ old('description', $promotion['description'] ?? '') }}</textarea>
         <x-input-error :messages="$errors->get('description')" class="mt-2" />
     </div>
-
     <div>
         <input type="checkbox" class="mr-2 leading-tight"
-            {{ isset($promotion['accepted_payments']) and ($promotion['accepted_payments'] ? 'checked' : '') }}
-            name="active" id="active" />
+            {{ isset($promotion['active']) and ($promotion['active'] ? 'checked' : '') }} name="active" id="active" />
         <label class="text-sm" for="active">Activate The Promo</label>
     </div>
 
@@ -98,3 +96,17 @@
 
     <button type="submit" class="px-5 py-1 border rounded bg-sky-500 text-white">Create</button>
 </form>
+
+
+<script>
+    const discountAmount = document.getElementById('discount_amount')
+    const discountPercentage = document.getElementById('discount_percentage')
+
+    discountAmount.addEventListener('change', () => {
+        discountPercentage.value = '';
+    })
+
+    discountPercentage.addEventListener('change', () => {
+        discountAmount.value = '';
+    })
+</script>

@@ -13,7 +13,7 @@ class PromotionController
      */
     public function index()
     {
-        $promotions = Promotion::all();
+        $promotions = Promotion::orderBy('active', 'desc')->get();
         return view('app.pages.options.promotions.index', ["promotions" => $promotions]);
     }
 
@@ -39,7 +39,8 @@ class PromotionController
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:255|unique:promotions',
+            'description' => 'required|string',
+            'code' => 'required|string|max:8|unique:promotions',
             'discount_amount' => 'nullable|numeric',
             'discount_percentage' => 'nullable|integer',
             'minimum_spend' => 'nullable|numeric',
@@ -48,8 +49,9 @@ class PromotionController
             'active' => 'boolean',
             'bg_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        // dd($validated);
 
+        $validated['discount_amount'] = $validated['discount_amount'] ? $validated['discount_amount'] : 0;
+        $validated['discount_percentage'] = $validated['discount_percentage'] ? ($validated['discount_percentage']) : 0;
         // Set all other promotions to inactive
         if ($validated['active'] == true) {
             Promotion::where('active', true)->update(['active' => false]);
@@ -104,6 +106,11 @@ class PromotionController
             'active' => 'boolean',
             'bg_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        $validated['discount_amount'] = $validated['discount_amount'] ? $validated['discount_amount'] : null;
+        $validated['discount_percentage'] = $validated['discount_percentage'] ? ($validated['discount_percentage']) : null;
+
+        // dd($validated);
 
         if ($validated['active'] == true) {
             Promotion::where('active', true)->update(['active' => false]);
