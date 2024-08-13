@@ -15,6 +15,7 @@ Route::middleware(['auth', 'admin'])->prefix('dashboard')->group(function () {
     require __DIR__ . '/slider.php';
     require __DIR__ . '/corporate-content.php';
     require __DIR__ . '/options.php';
+    require __DIR__ . '/users.php';
 });
 
 

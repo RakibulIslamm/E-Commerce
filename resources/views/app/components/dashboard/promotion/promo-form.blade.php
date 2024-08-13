@@ -77,8 +77,8 @@
         <x-input-error :messages="$errors->get('description')" class="mt-2" />
     </div>
     <div>
-        <input type="checkbox" class="mr-2 leading-tight" {{ $promotion['active'] ? 'checked' : '' }} name="active"
-            id="active" />
+        <input type="checkbox" class="mr-2 leading-tight"
+            {{ isset($promotion['active']) and ($promotion['active'] ? 'checked' : '') }} name="active" id="active" />
         <label class="text-sm" for="active">Activate The Promo</label>
     </div>
 

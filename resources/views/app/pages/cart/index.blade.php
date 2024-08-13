@@ -34,9 +34,12 @@
                     $cart = session()->get('cart');
                 @endphp
                 @if (isset($cart) and count($cart) > 0)
-                    <a a href="{{ route('app.checkout') }}"
-                        class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600">Check
-                        out</a>
+                    <form action="{{ route('app.checkout') }}" method="POST">
+                        @csrf
+                        <button
+                            class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600">Check
+                            out</button>
+                    </form>
                 @else
                     <button disabled
                         class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-900 cursor-not-allowed">Check
@@ -103,15 +106,3 @@
         }
     }
 </script>
-
-
-
-{{-- 
-@if (isset($cart_items) && !$cart_items->isEmpty())
-                    @foreach ($cart_items as $item)
-                    @endforeach
-                @else
-                    <p>No item found</p>
-                @endif
-
---}}

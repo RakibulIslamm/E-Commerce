@@ -1,45 +1,8 @@
-<?php
-
-// $cart = session()->get('cart');
-// dd($cart);
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Checkout</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body class=" bg-slate-50">
-
-    @if (isset($success))
-        @dd($success)
-        @dd($order)
-    @endif
-
-    <div class="px-20 py-5 flex items-center justify-between border-b">
-        <a href="/" class="flex items-center gap-2">
-            <img class="h-12 w-auto object-cover" src="{{ '/images/logo.png' }}" alt="">
-            {{-- <h2 class="text-lg font-bold">Company Name</h2> --}}
-        </a>
-
-        <div class="flex items-center gap-5 text-sm text-gray-500">
-            <a href="{{ route('app.cart') }}">Cart</a>
-            <x-ri-arrow-drop-right-fill class="w-5 h-5" />
-            <p class="font-bold text-gray-700">Checkout</p>
-            <x-ri-arrow-drop-right-fill class="w-5 h-5" />
-            <p>Confirmation</p>
-        </div>
-    </div>
-
-    <form action="{{ route('app.place-order') }}" method="POST" class="flex items-start justify-between py-10">
+<x-app-checkout-layout>
+    <form action="{{ route('app.place-order') }}" method="POST"
+        class="flex items-start justify-between py-10 px-5 sm:px-10 lg:px-20">
         @csrf
-        <div class="flex-1 px-10">
+        <div class="flex-1">
             <div>
                 <h4 class="text-xl">Contact information</h4>
                 <div class="mt-4">
@@ -101,10 +64,10 @@
                             </div>
 
                             {{-- <div class="sr-only">
-                            <x-input-label for="stato" :value="__('Stato')" />
-                            <x-text-input id="stato" class="block w-full mt-1" type="text" name="stato"
-                                value='1' required />
-                        </div> --}}
+                        <x-input-label for="stato" :value="__('Stato')" />
+                        <x-text-input id="stato" class="block w-full mt-1" type="text" name="stato"
+                            value='1' required />
+                    </div> --}}
                         </div>
                     </div>
 
@@ -285,168 +248,164 @@
         </div>
     </form>
 
-</body>
-
-<script>
-    document.querySelectorAll('input[name="spedizione"]').forEach(function(radio) {
-        radio.addEventListener('change', function() {
-            let shippingCost = this.value === 'express' ? 16.00 : 5.00;
-            document.getElementById('shipping_cost').innerText = `${shippingCost.toFixed(2)}`;
-            document.getElementById('shipping_cost_input').value = parseFloat(
-                `${shippingCost.toFixed(2)}`);
-            let total = {{ $grand_total }} + shippingCost;
-            document.getElementById('grand_total').innerText = `$${total.toFixed(2)}`;
+    <script>
+        document.querySelectorAll('input[name="spedizione"]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                let shippingCost = this.value === 'express' ? 16.00 : 5.00;
+                document.getElementById('shipping_cost').innerText = `${shippingCost.toFixed(2)}`;
+                document.getElementById('shipping_cost_input').value = parseFloat(
+                    `${shippingCost.toFixed(2)}`);
+                let total = {{ $grand_total }} + shippingCost;
+                document.getElementById('grand_total').innerText = `$${total.toFixed(2)}`;
+            });
         });
-    });
 
-    // default
-    let total = {{ $grand_total }} + 5;
-    document.getElementById('grand_total').innerText = `$${total.toFixed(2)}`;
-
+        // default
+        let total = {{ $grand_total }} + 5;
+        document.getElementById('grand_total').innerText = `$${total.toFixed(2)}`;
 
 
-    // set location
-    // const debouncedHandleLocation = debounce(handleLocation, 1000);
 
-    document.getElementById('cap').addEventListener('keypress', (e) => {
-        if (e.key == 'Enter') {
-            e.preventDefault();
-            const code = document.getElementById('cap')?.value;
+        // set location
+        // const debouncedHandleLocation = debounce(handleLocation, 1000);
 
-            if (!code) {
-                console.log("Please provide zip/post code");
-                e.target.focus();
-                return;
+        document.getElementById('cap').addEventListener('keypress', (e) => {
+            if (e.key == 'Enter') {
+                e.preventDefault();
+                const code = document.getElementById('cap')?.value;
+
+                if (!code) {
+                    console.log("Please provide zip/post code");
+                    e.target.focus();
+                    return;
+                }
+
+                handleLocation(code);
+                e.target.blur()
             }
 
-            handleLocation(code);
-            e.target.blur()
+        })
+
+        document.getElementById('cap').addEventListener('change', (e) => {
+            handleLocation(e?.target?.value);
+        })
+        const city = document.getElementById('citta');
+        const province = document.getElementById('provincia');
+        const state_code = document.getElementById('stato');
+        const capError = document.getElementById('cap_error');
+
+        function handleLocation(value) {
+            capError.innerText = '';
+            fetch(`/api/location/${value}`)
+                .then(res => res.json())
+                .then(data => {
+                    // console.log(data);
+                    if (data?.locations?.length) {
+                        province.value = data?.locations[0]?.province;
+                        // state_code.value = data?.locations[0]?.state_code;
+                        city.innerHTML = '';
+                        data?.locations?.forEach(location => {
+                            const option = document.createElement('option');
+                            option.value = location?.place;
+                            option.innerText = location?.place;
+                            city.appendChild(option);
+                        })
+                    } else {
+                        capError.innerText = 'Location not found';
+                        city.innerHTML = '';
+                        province.value = '';
+                    }
+
+                })
+                .catch(error => {
+                    console.log(error);
+                })
         }
 
-    })
 
-    document.getElementById('cap').addEventListener('change', (e) => {
-        handleLocation(e?.target?.value);
-    })
-    const city = document.getElementById('citta');
-    const province = document.getElementById('provincia');
-    const state_code = document.getElementById('stato');
-    const capError = document.getElementById('cap_error');
-
-    function handleLocation(value) {
-        capError.innerText = '';
-        fetch(`/api/location/${value}`)
-            .then(res => res.json())
-            .then(data => {
-                // console.log(data);
-                if (data?.locations?.length) {
-                    province.value = data?.locations[0]?.province;
-                    // state_code.value = data?.locations[0]?.state_code;
-                    city.innerHTML = '';
-                    data?.locations?.forEach(location => {
-                        const option = document.createElement('option');
-                        option.value = location?.place;
-                        option.innerText = location?.place;
-                        city.appendChild(option);
-                    })
-                } else {
-                    capError.innerText = 'Location not found';
-                    city.innerHTML = '';
-                    province.value = '';
-                }
-
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    }
-
-
-    function debounce(func, delay, id) {
-        let timeout;
-        return function() {
-            const context = this;
-            const args = arguments;
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(context, args), delay);
-        };
-    }
+        function debounce(func, delay, id) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), delay);
+            };
+        }
 
 
 
 
 
-    const itemsContainer = document.getElementById('items-container');
-    // getCart()
-    async function getCart(loadingId = '') {
-        // const loadingElement = document.getElementById(loadingId);
-        if (isUserLoggedIn()) {
-            // loadingElement && loadingElement.classList.remove('hidden')
-            const res = await fetch('/get-cart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            });
-            const data = await res.json();
-
-            const container = document.createElement('div');
-            const productItem = document.createElement('div');
-            productItem.classList.add("flex", "items-center", "justify-between", "text-gray-500")
-
-            for (const item of data?.cart_items) {
-                const total = parseFloat(item.quantity * item?.product?.PRE1IMP).toFixed(2);
-                const itemStr = JSON.stringify({
-                    ...item,
-                    product: {
-                        ...item.product,
-                        FOTO: null,
-                        DESCRIZIONEESTESA: ''
-                    }
-                });
-
-                productItem.innerHTML = `
-                <p>${item?.product?.DESCRIZIONEBREVE} x ${item.quantity}</p>
-                <p>$${total}</p>
-                <input type="text" class="sr-only" name="items[]" value="${itemStr}" />
-                `
-
-                container.appendChild(productItem);
-            }
-
-            itemsContainer.appendChild(container);
-            const hr = document.createElement('hr');
-            hr.classList.add('my-3')
-            itemsContainer.appendChild(hr);
-
-            // loadingElement && loadingElement.classList.remove('hidden')
-
-        } else {
-            const cartData = localStorage.getItem('cart');
-            if (cartData) {
+        const itemsContainer = document.getElementById('items-container');
+        // getCart()
+        async function getCart(loadingId = '') {
+            // const loadingElement = document.getElementById(loadingId);
+            if (isUserLoggedIn()) {
                 // loadingElement && loadingElement.classList.remove('hidden')
                 const res = await fetch('/get-cart', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        cart: cartData
-                    })
+                    }
                 });
                 const data = await res.json();
+
+                const container = document.createElement('div');
+                const productItem = document.createElement('div');
+                productItem.classList.add("flex", "items-center", "justify-between", "text-gray-500")
+
+                for (const item of data?.cart_items) {
+                    const total = parseFloat(item.quantity * item?.product?.PRE1IMP).toFixed(2);
+                    const itemStr = JSON.stringify({
+                        ...item,
+                        product: {
+                            ...item.product,
+                            FOTO: null,
+                            DESCRIZIONEESTESA: ''
+                        }
+                    });
+
+                    productItem.innerHTML = `
+                <p>${item?.product?.DESCRIZIONEBREVE} x ${item.quantity}</p>
+                <p>$${total}</p>
+                <input type="text" class="sr-only" name="items[]" value="${itemStr}" />
+                `
+
+                    container.appendChild(productItem);
+                }
+
+                itemsContainer.appendChild(container);
+                const hr = document.createElement('hr');
+                hr.classList.add('my-3')
+                itemsContainer.appendChild(hr);
+
                 // loadingElement && loadingElement.classList.remove('hidden')
+
+            } else {
+                const cartData = localStorage.getItem('cart');
+                if (cartData) {
+                    // loadingElement && loadingElement.classList.remove('hidden')
+                    const res = await fetch('/get-cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            cart: cartData
+                        })
+                    });
+                    const data = await res.json();
+                    // loadingElement && loadingElement.classList.remove('hidden')
+                }
             }
         }
-    }
 
-    // Checking user logged in or not
-    function isUserLoggedIn() {
-        return {{ Auth::check() ? 'true' : 'false' }};
-    }
-</script>
-
-
-</html>
+        // Checking user logged in or not
+        function isUserLoggedIn() {
+            return {{ Auth::check() ? 'true' : 'false' }};
+        }
+    </script>
+</x-app-checkout-layout>

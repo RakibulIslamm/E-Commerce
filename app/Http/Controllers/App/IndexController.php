@@ -5,6 +5,7 @@ namespace App\Http\Controllers\App;
 use App\Models\Category;
 use App\Models\ContentSlider;
 use App\Models\Product;
+use App\Models\Promotion;
 use Illuminate\Http\Request;
 
 class IndexController
@@ -20,10 +21,8 @@ class IndexController
                 $product['FOTO'] = $product->FOTO[0];
             }
         }
-
-        // dd($products);
-
         $categories = Category::all();
-        return view("app.pages.index", ['sliders' => $sliders, 'products' => $products, 'categories' => $categories]);
+        $promotion = Promotion::where('active', true)->first();
+        return view("app.pages.index", ['sliders' => $sliders, 'products' => $products, 'categories' => $categories, 'promotion' => $promotion]);
     }
 }

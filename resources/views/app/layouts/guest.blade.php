@@ -18,7 +18,7 @@
     {{-- @include('app.components.shared.top-bar.index') --}}
     @include('app.components.shared.navbar.index')
     @include('app.components.shared.cart.cart')
-    <main>
+    <main class="w-full h-full">
         {{ $slot }}
     </main>
     @include('app.components.shared.footer.index')
@@ -27,6 +27,7 @@
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script>
     const cartSidebar = document.getElementById('cart-sidebar');
+    const cartSidebarOverlay = document.getElementById('cart-sidebar-overlay');
     const cartContainer = document.getElementById('cart-container');
     const sidebarSubtotal = document.getElementById('sidebar-subtotal');
     const cartCountElements = document.getElementsByClassName('cart-count');
@@ -140,6 +141,16 @@
         if (!cartPageContainer) return
         cartPageContainer.innerHTML = '';
         const items = window.all_cart;
+        console.log(items);
+
+        if (!Object?.keys(window?.all_cart)?.length) {
+            cartItemHtml = `
+            <h2 class="text-2xl font-bold text-gray-400">Cart is empty</h2>
+            `;
+            cartPageContainer.innerHTML = cartItemHtml;
+            return;
+        }
+
         for (const item in items) {
             const FOTO = items[item]?.photo ? "data:image/png;base64," + items[item].photo :
                 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png'
@@ -240,10 +251,14 @@
     // console.log(cartSidebar)
     function openCart() {
         cartSidebar.classList.remove('translate-x-full')
+        cartSidebarOverlay.classList.remove('hidden')
+        document.body.style.overflow = 'hidden'
     }
 
     function closeCart() {
         cartSidebar.classList.add('translate-x-full')
+        cartSidebarOverlay.classList.add('hidden')
+        document.body.style.overflowY = 'auto'
     }
 
     // Set local storage cart to database

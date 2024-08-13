@@ -31,7 +31,9 @@ class User extends Authenticatable
         'vat_number',
         'pec_address',
         'sdi_code',
-        'telephone'
+        'telephone',
+        'price_list',
+        'active'
     ];
 
     /**

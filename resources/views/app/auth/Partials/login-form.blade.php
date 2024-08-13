@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('app.login') }}" class="w-4/12 mt-20">
+<form method="POST" action="{{ route('app.login') }}" class="w-full">
     @csrf
 
     @if (isset($from))
