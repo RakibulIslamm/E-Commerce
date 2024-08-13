@@ -1,7 +1,5 @@
-<form method="POST" action="{{ route('app.register') }}" class="w-6/12 mb-10 mt-5 space-y-4">
+<form method="POST" action="{{ route('app.register') }}" class="w-full space-y-4">
     @csrf
-
-    <h2 class="text-3xl font-bold pb-5">CREATE YOUR ACCOUNT</h2>
     @if (isset($from))
         <input type="text" name="from" value="{{ $from }}" class="sr-only">
     @endif

@@ -22,10 +22,10 @@
                 <x-bx-news class="w-5 h-5" />
                 <p class="text-base leading-4">News</p>
             </a>
-            <a href="#"
-                class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('#') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
+            <a href="{{ route('app.dashboard.customers') }}"
+                class="flex jusitfy-start items-center space-x-3 w-full rounded hover:text-gray-100 hover:bg-gray-700 {{ Request::is('dashboard/customers') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} rounded px-3 py-2 w-full">
                 <x-bx-user class="w-5 h-5" />
-                <p class="text-base leading-4">Customers</p>
+                <span class="text-base leading-4">Customers</span>
             </a>
 
         </div>

@@ -8,7 +8,7 @@ Route::middleware([
     'central_domain'
 ])->group(function () {
     Route::get('/', function () {
-        return view('central_app.welcome');
+        return redirect()->route('central.login');
     });
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');

@@ -13,7 +13,7 @@ class PromotionController
      */
     public function index()
     {
-        $promotions = Promotion::all();
+        $promotions = Promotion::orderBy('active', 'desc')->get();
         return view('app.pages.options.promotions.index', ["promotions" => $promotions]);
     }
 
@@ -39,7 +39,8 @@ class PromotionController
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:255|unique:promotions',
+            'description' => 'required|string',
+            'code' => 'required|string|max:8|unique:promotions',
             'discount_amount' => 'nullable|numeric',
             'discount_percentage' => 'nullable|integer',
             'minimum_spend' => 'nullable|numeric',

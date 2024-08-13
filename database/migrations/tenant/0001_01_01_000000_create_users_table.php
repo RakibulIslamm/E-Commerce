@@ -28,6 +28,8 @@ return new class extends Migration {
             $table->string('sdi_code')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('price_list')->default(1);
+            $table->boolean('active')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

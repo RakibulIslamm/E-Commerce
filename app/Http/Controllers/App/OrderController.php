@@ -21,20 +21,24 @@ class OrderController
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
 
-        // if (session('cart', [])->isEmpty()) {
-        //     return redirect()->route('app.cart');
-        // }
+
         $cart = session()->get('cart', []);
 
         if (count($cart) < 1) {
             return redirect('/cart');
         }
 
+        $proceed = $request->input('proceed') ?? null;
+        if (!Auth::check()) {
+            if ($proceed == 'proceed-checkout') {
+                return view("app.pages.checkout.index");
+            }
+            return view("app.pages.checkout.login-or-register");
+        }
         return view("app.pages.checkout.index");
-        // return view("app.pages.checkout.confirmation");
     }
 
     /**
@@ -45,6 +49,10 @@ class OrderController
         // dd(request()->all());
 
         $cart = session()->get('cart', []);
+
+        if (count($cart) < 1) {
+            return redirect()->route('app.cart');
+        }
 
         $validate = $request->validate([
             'nominativo' => 'required|string', // name
@@ -86,35 +94,48 @@ class OrderController
         $validate['promotion_id'] = $validate['promotion_id'] ? $validate['promotion_id'] : 0;
 
 
-        if (Auth::check()) {
-            $validate['user_id'] = auth()->user()->id;
+        try {
+            if (Auth::check()) {
+                $validate['user_id'] = auth()->user()->id;
+            }
+
+            $filledValues = array_filter($validate, function ($value) {
+                return !is_null($value) && $value !== '';
+            });
+
+            $order = Order::create($filledValues);
+            foreach ($cart as $item) {
+                // dd($item['product_id']);
+                $order->order_items()->create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['product_id'],
+                    'vat' => $item['vat'],
+                    'price' => $item['price'],
+                    'quantity' => $item['quantity']
+                ]);
+                $product = Product::find($item['product_id']);
+                $product->update([
+                    "GIACENZA" => $product->GIACENZA - $item['quantity']
+                ]);
+            }
+            $order->load('order_items');
+            session()->forget('cart');
+            return redirect()->route('app.confirm-order')->with('order', $order)->with('success', true);
+        } catch (\Exception $e) {
+            return redirect()->route('app.confirm-order')->with('message', "Internal Server Error")->with('success', false);
+        }
+    }
+
+    public function confirm_order()
+    {
+        $order = session('order');
+        $success = session('success');
+
+        if (!$order) {
+            return redirect()->route('app.cart');
         }
 
-        $filledValues = array_filter($validate, function ($value) {
-            return !is_null($value) && $value !== '';
-        });
-        // dd($validate);
-        $order = Order::create($filledValues);
-
-        // dd($order);
-
-        foreach ($cart as $item) {
-            // dd($item['product_id']);
-            $order->order_items()->create([
-                'order_id' => $order->id,
-                'product_id' => $item['product_id'],
-                'vat' => $item['vat'],
-                'price' => $item['price'],
-                'quantity' => $item['quantity']
-            ]);
-            $product = Product::find($item['product_id']);
-            $product->update([
-                "GIACENZA" => $product->GIACENZA - $item['quantity']
-            ]);
-        }
-        $order->load('order_items');
-        session()->forget('cart');
-        return view('app.pages.checkout.confirmation', ['success' => true, 'order' => $order]);
+        return view('app.pages.checkout.confirmation', ['success' => $success, 'order' => $order]);
     }
 
     /**

@@ -29,7 +29,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $validate = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -55,7 +55,9 @@ class RegisteredUserController extends Controller
             Auth::login($user);
             $from = $request->input('from') ?? null;
             if (isset($from)) {
-                dd($from);
+                if ($from == 'checkout') {
+                    return view("app.pages.checkout.index");
+                }
             }
             return redirect(route('app.summary', absolute: false));
         } catch (\Exception $exception) {

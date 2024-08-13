@@ -1,5 +1,8 @@
+<div id="cart-sidebar-overlay" onclick="closeCart()"
+    class="hidden fixed top-0 left-0 w-full h-screen bg-black bg-opacity-40 backdrop-blur-sm z-[50]">
+</div>
 <div id="cart-sidebar"
-    class="sm:w-[400px] w-[85%] h-screen z-50 transform translate-x-full fixed top-0 right-0 bg-slate-50 transition-all ease-in-out duration-300 flex flex-col justify-between">
+    class="sm:w-[400px] w-[85%] h-screen transform translate-x-full  fixed top-0 right-0 z-[60] bg-slate-50 transition-all ease-in-out duration-300 flex flex-col justify-between">
 
     <div class="flex items-start justify-between p-3">
         <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
@@ -35,6 +38,7 @@
         </div>
     </div>
 </div>
+
 <script>
     function updateQuantitySidebar(id, quantity) {
         console.log(`Updating server with quantity ${quantity} for product ${id}`);
