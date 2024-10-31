@@ -26,9 +26,9 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $user = User::where('email', $request->input('email'))->first();
+        
         // dd($user);
-
-        if (!$user->active) {
+        if (isset($user) && !$user->active) {
             return view('app.pages.lock.index');
         }
 

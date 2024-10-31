@@ -93,6 +93,6 @@ class ContentSliderController
         $slider->position = $validated['position'];
         $slider->save();
 
-        return redirect('/slider')->with('success', 'Slider updated successfully.');
+        return redirect('/dashboard/slider')->with('success', 'Slider updated successfully.');
     }
 }

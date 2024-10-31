@@ -182,7 +182,7 @@
                         @foreach (session('cart') as $id => $details)
                             <div class="flex items-center justify-between text-gray-500">
                                 <p>{{ $details['name'] }} x {{ $details['quantity'] }}</p>
-                                <p>${{ $details['price'] * $details['quantity'] }}</p>
+                                <p>{{ $details['price'] * $details['quantity'] }}€</p>
                             </div>
                         @endforeach
                     @else
@@ -213,7 +213,7 @@
                     <div>
                         <div class="flex justify-between items-center text-gray-600">
                             <p>Sub Total</p>
-                            <p>${{ $total }}</p>
+                            <p>{{ $total }}€</p>
                         </div>
                         <hr class="my-3">
                     </div>
@@ -221,7 +221,7 @@
                     <div>
                         <div class="flex justify-between items-center text-gray-600">
                             <p>Shipping</p>
-                            <p id="shipping_cost">5.00</p>
+                            <p id="shipping_cost">5.00€</p>
                             <input type="text" name="spese_spedizione" id="shipping_cost_input" class=" sr-only"
                                 value="5">
                         </div>
@@ -231,7 +231,7 @@
                     <div>
                         <div class="flex justify-between items-center text-gray-600">
                             <p>Vat</p>
-                            <p>${{ $vat }}</p>
+                            <p>{{ $vat }}€</p>
                         </div>
                         <hr class="my-3">
                     </div>
@@ -239,7 +239,7 @@
                     <div>
                         <div class="flex justify-between items-center font-semibold text-gray-800 text-lg">
                             <p>Grand Total</p>
-                            <p id="grand_total">${{ $grand_total }}</p>
+                            <p id="grand_total">{{ $grand_total }}€</p>
                         </div>
                     </div>
                 </div>
@@ -262,7 +262,7 @@
 
         // default
         let total = {{ $grand_total }} + 5;
-        document.getElementById('grand_total').innerText = `$${total.toFixed(2)}`;
+        document.getElementById('grand_total').innerText = `${total.toFixed(2)}€`;
 
 
 

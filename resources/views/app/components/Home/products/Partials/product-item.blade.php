@@ -55,22 +55,17 @@
                             {{ $product['DESCRIZIONEBREVE'] }}
                         </h3>
                     </a>
-                    <div class="flex items-center gap-1 text-yellow-400">
-                        <x-heroicon-m-star class="w-4 h-4" />
-                        <x-heroicon-m-star class="w-4 h-4" />
-                        <x-heroicon-m-star class="w-4 h-4" />
-                        <x-heroicon-m-star class="w-4 h-4" />
-                        <x-heroicon-m-star class="w-4 h-4" />
-                    </div>
-                </div>
-                <div class="px-4 text-right">
-                    <h3 class="font-semibold text-slate-100 group-hover/product:text-white drop-shadow-xl">
-                        {{ $product['PRE1IMP'] }}</h3>
                     @if ($product->GIACENZA > 0)
                         <p class="text-xs text-yellow-400">In stock</p>
                     @else
                         <p class="text-xs text-red-300">Stock out</p>
                     @endif
+                </div>
+                <div class="px-4 text-right">
+                    <h3 class="font-semibold text-red-500 group-hover/product:text-red-500 drop-shadow-xl text-sm line-through">
+                        {{ $product['PRE1IMP'] }}€</h3>
+                    <h3 class="font-semibold text-slate-100 group-hover/product:text-white drop-shadow-xl">
+                            {{ $product['PRE1IMP'] }}€</h3>
                 </div>
             </div>
         </div>

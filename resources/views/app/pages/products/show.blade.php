@@ -45,7 +45,18 @@
                 <div>
                     <div class="flex items-center justify-between gap-10 w-10/12 max-w-full">
                         <h1 class="text-2xl font-semibold">{{ $product['DESCRIZIONEBREVE'] }}</h1>
-                        <h3 class="text-lg font-semibold">${{ $product['PRE1IMP'] }}</h3>
+                        @if (tenant()->offer_display == 'View cut price')
+                        <div class="flex items-center gap-4">
+                            @if ($product['PREPROMOIMP'])
+                                <h3 class="text-lg font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
+                                <h3 class="text-lg font-semibold">{{ $product['PREPROMOIMP'] }}€</h3>
+                            @else
+                                <h3 class="text-lg font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+                            @endif
+                        </div>
+                        @else
+                            <h3 class="text-lg font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+                        @endif
                     </div>
 
                     <div class="flex items-center gap-2 mt-1">
@@ -64,15 +75,33 @@
                 <div class="space-y-1">
                     <p>Code: <span class="font-semibold">290</span></p>
                     <p>Barcode: <span class="font-semibold">8003495106693</span></p>
-                    <p>Availability:
+                    {{-- {{dd(tenant()->product_stock_display)}} --}}
+                    @if (tenant()->product_stock_display == 'Text + Quantity')
+                        <div>Availability:
+                            @if ($product->GIACENZA > 0)
+                                <span class="font-semibold text-green-500">In Stock</span>
+                                <br>
+                                <div class="mt-1">
+                                    <span class="">Quantity:</span>
+                                    <span class="font-semibold text-green-500">{{$product->GIACENZA}}</span>
+                                </div>
+                            @else
+                                <span class="font-semibold text-red-500">Stock Out</span>
+                            @endif
 
-                        @if ($product->GIACENZA > 0)
-                            <span class="font-semibold text-green-500">In Stock</span>
-                        @else
-                            <span class="font-semibold text-red-500">Stock Out</span>
-                        @endif
+                        </div>
+                    @elseif (tenant()->product_stock_display == 'Text Only')
+                        <p>Availability:
 
-                    </p>
+                            @if ($product->GIACENZA > 0)
+                                <span class="font-semibold text-green-500">In Stock</span>
+                            @else
+                                <span class="font-semibold text-red-500">Stock Out</span>
+                            @endif
+
+                        </p>
+                    @endif
+                    
                 </div>
 
                 <div class="flex items-center gap-3">

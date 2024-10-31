@@ -87,7 +87,7 @@
                             <h3 class="text-sm sm:text-lg line-clamp-1">
                                 <a href="#">${items[item]?.name}</a>
                             </h3>
-                            <p class="text-xs sm:text-base">$${items[item]?.price}</p>    
+                            <p class="text-xs sm:text-base">€${items[item]?.price}</p>    
                         </div>
                         <div class="flex sm:items-center sm:flex-row sm:justify-between flex-col items-start mt-3">
                             <div class="flex items-center gap-1 border-gray-100">

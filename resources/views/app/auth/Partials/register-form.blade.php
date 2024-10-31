@@ -184,6 +184,7 @@
     })
 
     document.getElementById('postal_code').addEventListener('change', (e) => {
+        console.log(e.target.value);
         handleLocation(e?.target?.value);
     })
     const city = document.getElementById('city');
@@ -195,7 +196,6 @@
         fetch(`/api/location/${value}`)
             .then(res => res.json())
             .then(data => {
-                // console.log(data);
                 if (data?.locations?.length) {
                     province.value = data?.locations[0]?.province;
                     city.innerHTML = '';

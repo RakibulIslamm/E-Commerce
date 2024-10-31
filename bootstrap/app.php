@@ -1,13 +1,17 @@
 <?php
 
 use App\Http\Middleware\Admin;
+use App\Http\Middleware\BasicAuthenticate;
 use App\Http\Middleware\CheckCentralDomain;
 use App\Http\Middleware\Creator;
 use App\Http\Middleware\Editor;
+use App\Http\Middleware\RegistrationProcess;
+use App\Http\Middleware\RequestTracker;
 use App\Http\Middleware\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -43,6 +47,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'creator' => Creator::class,
             'user' => User::class,
             'central_domain' => CheckCentralDomain::class,
+            'track_user' => RequestTracker::class,
+            'registration_process' => RegistrationProcess::class,
+            'auth.basic' => BasicAuthenticate::class,
         ]);
 
         $middleware->redirectUsersTo(function () {
