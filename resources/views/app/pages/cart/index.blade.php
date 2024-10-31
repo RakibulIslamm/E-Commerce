@@ -10,13 +10,13 @@
             <div class="mt-6 h-full rounded-lg border bg-white p-6 shadow-md lg:block lg:w-[400px] w-full">
                 <div class="mb-2 flex justify-between">
                     <p class="text-gray-700">Subtotal</p>
-                    <p class="text-gray-700">$
+                    <p class="text-gray-700">€
                         <span id="sub-total">0.00</span>
                     </p>
                 </div>
                 <div class="flex justify-between">
                     <p class="text-gray-700">Vat</p>
-                    <p class="text-gray-700">$
+                    <p class="text-gray-700">€
                         <span id="vat">0.00</span>
                     </p>
                 </div>
@@ -24,7 +24,7 @@
                 <div class="flex justify-between">
                     <p class="text-lg font-bold">Total</p>
                     <div class=" flex flex-col items-end">
-                        <p class="mb-1 text-lg font-bold">$
+                        <p class="mb-1 text-lg font-bold">€
                             <span id="total">0.00</span>
                         </p>
                         {{-- <p class="text-sm text-gray-700">including VAT</p> --}}
@@ -34,12 +34,15 @@
                     $cart = session()->get('cart');
                 @endphp
                 @if (isset($cart) and count($cart) > 0)
-                    <form action="{{ route('app.checkout') }}" method="POST">
+                    {{-- <form action="{{ route('app.checkout') }}" method="POST">
                         @csrf
                         <button
                             class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600">Check
                             out</button>
-                    </form>
+                    </form> --}}
+                    <a href="/cart/checkout"
+                    class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600">Check
+                    out</a>
                 @else
                     <button disabled
                         class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-900 cursor-not-allowed">Check

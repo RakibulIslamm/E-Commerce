@@ -14,8 +14,8 @@
             @csrf
 
             <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
+                <x-primary-button id="resend-button" class=" disabled:bg-opacity-70 disabled:cursor-not-allowed">
+                    {{ __('Resend Verification Email') }} <span id="countdown"></span>
                 </x-primary-button>
             </div>
         </form>
@@ -29,4 +29,33 @@
             </button>
         </form>
     </div>
+
+    <script>
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const button = document.getElementById('resend-button');
+        //     let remainingTime = 30;
+
+        //     // Initialize button text
+        //     button.textContent = `Resend Verification Email (${remainingTime}s)`;
+
+        //     const interval = setInterval(() => {
+        //         remainingTime -= 1;
+        //         // countdown.textContent = `(${remainingTime}s)`;
+
+        //         // Update button text with countdown
+        //         button.textContent = `Resend Verification Email (${remainingTime}s)`;
+
+        //         if (remainingTime <= 0) {
+        //             clearInterval(interval);
+        //             button.disabled = false;
+        //             button.textContent = 'Resend Verification Email';
+        //         }
+        //     }, 1000); // Update every second
+
+        //     // Disable the button for the initial 60 seconds
+        //     setTimeout(() => {
+        //         button.disabled = false;
+        //     }, 30000); // 60 seconds
+        // });
+    </script>
 </x-central-guest-layout>

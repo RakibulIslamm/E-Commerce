@@ -27,25 +27,23 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    Route::get('/', [IndexController::class, 'index']);
-    Route::get('/contact', [ContactController::class, 'index'])->name('app.contact');
-
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('app.profile.destroy');
-
-        // dd('inside');
+    Route::middleware(['registration_process', 'track_user'])->group(function () {
+        Route::get('/', [IndexController::class, 'index']);
+        Route::get('/contact', [ContactController::class, 'index'])->name('app.contact');
+        Route::middleware(['auth'])->group(function () {
+            Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile.edit');
+            Route::patch('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
+            Route::delete('/profile', [ProfileController::class, 'destroy'])->name('app.profile.destroy');
+        });
+        require __DIR__ . '/app/dashboard.php';
+        require __DIR__ . '/app/common.php';
+        require __DIR__ . '/app/cart.php';
+        require __DIR__ . '/app/order.php';
+        require __DIR__ . '/app/my-account.php';
     });
-    require __DIR__ . '/app/dashboard.php';
-    require __DIR__ . '/app/api/api.php';
-    require __DIR__ . '/app/common.php';
-    require __DIR__ . '/app/cart.php';
-    require __DIR__ . '/app/order.php';
     require __DIR__ . '/app/auth.php';
-    require __DIR__ . '/app/my-account.php';
+    require __DIR__ . '/app/api/api.php';
 });
-
 
 Route::fallback(function () {
     abort(404);

@@ -17,8 +17,7 @@ class User
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
-            dd('.....');
-            return redirect()->route('central.login');
+            // return redirect()->route('central.login');
         }
 
         return $next($request);

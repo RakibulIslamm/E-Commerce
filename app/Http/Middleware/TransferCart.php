@@ -3,9 +3,9 @@
 namespace App\Http\Middleware;
 
 use App\Models\Cart;
-use Auth;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class TransferCart

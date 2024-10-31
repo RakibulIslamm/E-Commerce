@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\App\Dashboard\OrderController;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/elenco_ordini', [OrderController::class, 'get_orders']);
 Route::post('/cambia_stato_ordine', [OrderController::class, 'change_order_status']);
