@@ -4,7 +4,7 @@
         @csrf
         <div class="flex-1">
             <div>
-                <h4 class="text-xl">Contact information</h4>
+                <h4 class="text-xl">Informazioni contatto</h4>
                 <div class="mt-4">
                     <x-input-label for="email" :value="__('Email address')" />
                     <x-text-input id="email" class="block w-full mt-1" type="text" name="email"
@@ -14,7 +14,7 @@
             <hr class="my-10">
 
             <div>
-                <h4 class="text-xl">Billing information</h4>
+                <h4 class="text-xl">Dati di fatturazione</h4>
                 <div class="mt-4 space-y-4">
                     <div class="flex items-center gap-3">
                         <div class="w-full">
@@ -79,10 +79,10 @@
 
             <label for="shipping" class="peer cursor-pointer flex items-center gap-2 my-2">
                 <input class="cursor-pointer" id="shipping" type="checkbox" name="" />
-                <span>Different Shipping address</span>
+                <span>Indirizzo di spedizione diverso</span>
             </label>
             <div class="hidden peer-has-[:checked]:block">
-                <h4 class="text-xl">Shipping information (If differe from billing)</h4>
+                <h4 class="text-xl">Informazioni sulla spedizione (se diverse dalla fatturazione)</h4>
                 <div class="mt-4 space-y-4">
                     <div class="flex items-center gap-3">
                         <div>
@@ -111,10 +111,10 @@
 
                         <div>
                             <label for="citta_spedizione"
-                                class="block font-medium text-sm text-gray-700">City/Place</label>
+                                class="block font-medium text-sm text-gray-700">Città</label>
                             <select name="citta_spedizione" id="citta_spedizione"
                                 class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1">
-                                <option value="">Enter post code</option>
+                                <option value="">Inserisci il codice postale</option>
                             </select>
                         </div>
                         <div>
@@ -134,8 +134,7 @@
             <hr class="my-6">
 
             <div>
-                <label for="spedizione" class="block text-lg font-medium text-gray-900 mb-2">Delivery
-                    Method</label>
+                <label for="spedizione" class="block text-lg font-medium text-gray-900 mb-2">Spedizione</label>
                 <div class="flex justify-between gap-3">
                     <div class="relative w-full ">
                         <input type="radio" name="spedizione" value="standard" id="shipping_standard"
@@ -145,8 +144,8 @@
 
                             <label for="shipping_standard" class="block w-full cursor-pointer">
                                 <span class="block text-lg font-semibold">Standard</span>
-                                <span class="block text-sm text-gray-500">4-10 business days</span>
-                                <span class="block mt-2 text-lg font-medium">$5.00</span>
+                                <span class="block text-sm text-gray-500">4-10 giorni lavorativi</span>
+                                <span class="block mt-2 text-lg font-medium">€5.00</span>
                             </label>
                         </div>
                     </div>
@@ -158,8 +157,8 @@
                             class="w-full flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition peer-checked/express:border-blue-500 peer-checked/express:shadow">
                             <label for="shipping_express" class="block w-full cursor-pointer">
                                 <span class="block text-lg font-semibold">Express</span>
-                                <span class="block text-sm text-gray-500">2-5 business days</span>
-                                <span class="block mt-2 text-lg font-medium">$16.00</span>
+                                <span class="block text-sm text-gray-500">2-5 giorni lavorativi</span>
+                                <span class="block mt-2 text-lg font-medium">16.00</span>
                             </label>
                         </div>
                     </div>
@@ -172,8 +171,8 @@
             <div class="mt-4 bg-white p-10 rounded-lg shadow-md space-y-10">
                 <div id="items-container">
                     <div class="flex justify-between items-center">
-                        <p>Product</p>
-                        <p>Sub Total</p>
+                        <p>Prodotto</p>
+                        <p>SubTotale</p>
                     </div>
 
 
@@ -186,7 +185,7 @@
                             </div>
                         @endforeach
                     @else
-                        <p>Your cart is empty</p>
+                        <p>Il tuo carrello è vuoto</p>
                     @endif
                     <hr class="my-3">
                 </div>
@@ -212,7 +211,7 @@
                 <div>
                     <div>
                         <div class="flex justify-between items-center text-gray-600">
-                            <p>Sub Total</p>
+                            <p>SubTotale</p>
                             <p>{{ $total }}€</p>
                         </div>
                         <hr class="my-3">
@@ -220,7 +219,7 @@
 
                     <div>
                         <div class="flex justify-between items-center text-gray-600">
-                            <p>Shipping</p>
+                            <p>Spedizione</p>
                             <p id="shipping_cost">5.00€</p>
                             <input type="text" name="spese_spedizione" id="shipping_cost_input" class=" sr-only"
                                 value="5">
@@ -230,7 +229,7 @@
 
                     <div>
                         <div class="flex justify-between items-center text-gray-600">
-                            <p>Vat</p>
+                            <p>Iva</p>
                             <p>{{ $vat }}€</p>
                         </div>
                         <hr class="my-3">
@@ -238,13 +237,13 @@
 
                     <div>
                         <div class="flex justify-between items-center font-semibold text-gray-800 text-lg">
-                            <p>Grand Total</p>
+                            <p>Somma totale</p>
                             <p id="grand_total">{{ $grand_total }}€</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="px-10 py-3 rounded-lg border w-full mt-4 bg-slate-800 text-white">Place Order</button>
+            <button class="px-10 py-3 rounded-lg border w-full mt-4 bg-slate-800 text-white">Effettuare l'ordine</button>
         </div>
     </form>
 

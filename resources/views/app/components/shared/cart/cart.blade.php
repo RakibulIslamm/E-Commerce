@@ -5,7 +5,7 @@
     class="sm:w-[400px] w-[85%] h-screen transform translate-x-full  fixed top-0 right-0 z-[60] bg-slate-50 transition-all ease-in-out duration-300 flex flex-col justify-between">
 
     <div class="flex items-start justify-between p-3">
-        <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Shopping cart</h2>
+        <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">Carrello</h2>
         <div class="ml-3 flex h-7 items-center">
             <button onclick="closeCart()" type="button" class="relative -m-2 p-2 text-gray-400 hover:text-gray-500">
                 <span class="absolute -inset-0.5"></span>
@@ -26,15 +26,14 @@
 
     <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
         <div class="flex justify-between text-base font-medium text-gray-900">
-            <p>Subtotal</p>
+            <p>Subtotale</p>
             <p>€
                 <span id="sidebar-subtotal">0.00</span>
             </p>
         </div>
         <div class="mt-6">
             <a href="/cart"
-                class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Go
-                to Cart</a>
+                class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Vai al carrello</a>
         </div>
     </div>
 </div>

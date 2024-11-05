@@ -30,7 +30,7 @@ if (isset($site_settings->brand_info)) {
                 <select id="search-categories" name="search-categories"
                     class="relative rounded-l-md text-gray-900 border border-r-0 border-gray-200 outline-none
                       focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10 appearance-none">
-                    <option value="" class="px-2 py-1">All</option>
+                    <option value="" class="px-2 py-1">Tutti</option>
                     @foreach ($categories as $item)
                         <option value="{{ $item->id }}" class="px-2 py-1">{{ $item->nome }}</option>
                     @endforeach
@@ -58,11 +58,10 @@ if (isset($site_settings->brand_info)) {
             <div class="flex items-center gap-3">
                 @if (!$user)
                     <div class="flex items-center gap-3">
-                        <a href="/login" class="text-sm font-medium text-gray-700 hover:text-gray-800">Sign
+                        <a href="/login" class="text-sm font-medium text-gray-700 hover:text-gray-800">Accedi
                             in</a>
                         <span class="h-6 w-px bg-gray-200"></span>
-                        <a href="/register" class="text-sm font-medium text-gray-700 hover:text-gray-800">Create
-                            account</a>
+                        <a href="/register" class="text-sm font-medium text-gray-700 hover:text-gray-800">Registrati</a>
                     </div>
                 @endif
                 @if ($user && $user->role != 1)
@@ -72,7 +71,7 @@ if (isset($site_settings->brand_info)) {
                         <form action="{{ route('app.logout') }}" method="post">
                             @csrf
                             <button type="submit">
-                                Logout
+                                Esci
                             </button>
                         </form>
                     </div>

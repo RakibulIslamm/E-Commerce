@@ -9,20 +9,20 @@
             <!-- Sub total -->
             <div class="mt-6 h-full rounded-lg border bg-white p-6 shadow-md lg:block lg:w-[400px] w-full">
                 <div class="mb-2 flex justify-between">
-                    <p class="text-gray-700">Subtotal</p>
+                    <p class="text-gray-700">Subtotale</p>
                     <p class="text-gray-700">€
                         <span id="sub-total">0.00</span>
                     </p>
                 </div>
                 <div class="flex justify-between">
-                    <p class="text-gray-700">Vat</p>
+                    <p class="text-gray-700">Iva</p>
                     <p class="text-gray-700">€
                         <span id="vat">0.00</span>
                     </p>
                 </div>
                 <hr class="my-4" />
                 <div class="flex justify-between">
-                    <p class="text-lg font-bold">Total</p>
+                    <p class="text-lg font-bold">Totale</p>
                     <div class=" flex flex-col items-end">
                         <p class="mb-1 text-lg font-bold">€
                             <span id="total">0.00</span>
@@ -41,12 +41,10 @@
                             out</button>
                     </form> --}}
                     <a href="/cart/checkout"
-                    class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600">Check
-                    out</a>
+                    class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600">Procedi</a>
                 @else
                     <button disabled
-                        class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-900 cursor-not-allowed">Check
-                        out</button>
+                        class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-900 cursor-not-allowed">Procedi</button>
                 @endif
             </div>
         </div>

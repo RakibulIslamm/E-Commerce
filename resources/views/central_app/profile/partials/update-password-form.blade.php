@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
+            {{ __('Per garantire la sicurezza del tuo account, assicurati che la password utilizzata sia lunga e casuale.') }}
         </p>
     </header>
 
@@ -14,21 +14,21 @@
         @method('put')
 
         <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
+            <x-input-label for="update_password_current_password" :value="__('Password Attuale')" />
             <x-text-input id="update_password_current_password" name="current_password" type="password"
                 class="mt-1 block w-full" autocomplete="current-password" />
             <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
+            <x-input-label for="update_password_password" :value="__('Nuova Password')" />
             <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full"
                 autocomplete="new-password" />
             <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="update_password_password_confirmation" :value="__('Conferma Password')" />
             <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password"
                 class="mt-1 block w-full" autocomplete="new-password" />
             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />

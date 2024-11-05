@@ -4,13 +4,13 @@
         <x-my-account-layout>
 
             <div class="p-3">
-                <h1 class="text-xl text-gray-400">Welcome <span
+                <h1 class="text-xl text-gray-400">Benvenuto <span
                         class="text-2xl text-gray-600 font-semibold">{{ $user->name }}</span>
                 </h1>
                 <form action="{{ route('app.logout') }}" method="post">
                     @csrf
                     <button type="submit" class="mt-2 px-5 py-1 bg-red-500 text-white rounded-md">
-                        Logout
+                        Esci
                     </button>
                 </form>
             </div>

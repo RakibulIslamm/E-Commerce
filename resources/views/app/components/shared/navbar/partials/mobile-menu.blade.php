@@ -49,7 +49,7 @@ if (isset($site_settings->brand_info)) {
             <select id="search-categories-mobile" name="search-categories"
                 class="w-full rounded-md py-2 pl-2 pr-7 text-gray-900 border border-gray-200 outline-none
             focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10 appearance-none">
-                <option value="" class="px-2 py-1">All</option>
+                <option value="" class="px-2 py-1">Tutti</option>
                 @foreach ($categories as $item)
                     <option value="{{ $item->id }}" class="px-2 py-1">{{ $item->nome }}
                     </option>
@@ -59,7 +59,7 @@ if (isset($site_settings->brand_info)) {
                 <input type="text" name="search" id="search-text-mobile"
                     class="w-full relative rounded py-2 pl-3 pr-8 text-gray-900 border border-gray-200 outline-none
                   focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10"
-                    placeholder="Search Product...">
+                    placeholder="Ricerca prodotto...">
 
                 <button
                     class="w-7 h-7 absolute right-2 top-1/2 -translate-y-1/2 z-50 text-gray-500 cursor-pointer transition-all ease-in-out duration-100"
@@ -70,10 +70,10 @@ if (isset($site_settings->brand_info)) {
         </div>
         <div class="flex items-center justify-center flex-col gap-6">
             <a href="/" class="flex items-center text-xl uppercase font-medium">Home</a>
-            <a href="{{ route('app.products') }}" class="flex items-center text-xl uppercase font-medium">Products</a>
-            <a href="/agency" class="flex items-center text-xl uppercase font-medium">Agency</a>
-            <a href="/news" class="flex items-center text-xl uppercase font-medium">News</a>
-            <a href="{{ route('app.contact') }}" class="flex items-center text-xl uppercase font-medium">Contact</a>
+            <a href="{{ route('app.products') }}" class="flex items-center text-xl uppercase font-medium">Prodotti</a>
+            <a href="/agency" class="flex items-center text-xl uppercase font-medium">Chi siamo</a>
+            <a href="/news" class="flex items-center text-xl uppercase font-medium">Notizie</a>
+            <a href="{{ route('app.contact') }}" class="flex items-center text-xl uppercase font-medium">Contatti</a>
         </div>
     </div>
 </div>

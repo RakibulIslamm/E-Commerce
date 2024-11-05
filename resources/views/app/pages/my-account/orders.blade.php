@@ -1,6 +1,6 @@
 @section('title', 'My Orders')
 <x-app-guest-layout>
-    <x-page-layout :props="['title' => 'My orders']">
+    <x-page-layout :props="['title' => 'I miei ordini']">
         <x-my-account-layout>
             <div class="space-y-5">
                 @if (!$orders->isEmpty())

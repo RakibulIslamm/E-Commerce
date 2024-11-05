@@ -10,7 +10,7 @@
                 ])
             @endforeach
         @else
-            <h2 class="text-gray-300 font-bold text-2xl">No product found!</h2>
+            <h2 class="text-gray-300 font-bold text-2xl">Nessun prodotto trovato.</h2>
         @endif
     </div>
 </div>

@@ -28,7 +28,7 @@
                             <div class="flex items-center h-full space-x-8">
                                 <a href="/" class="flex items-center text-sm font-medium">Home</a>
                                 <a href="{{ route('app.products') }}"
-                                    class="flex items-center text-sm font-medium">Products</a>
+                                    class="flex items-center text-sm font-medium">Prodotti</a>
                                 <a href="/agency" class="flex items-center text-sm font-medium">Agency</a>
                                 <a href="/news" class="flex items-center text-sm font-medium">News</a>
                                 <a href="{{ route('app.contact') }}"

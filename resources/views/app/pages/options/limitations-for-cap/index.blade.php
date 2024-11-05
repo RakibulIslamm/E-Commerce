@@ -4,7 +4,7 @@
         <div class="w-5/12 flex items-start gap-3">
             <div class="w-full">
                 <label for="cap-search" class="inline-block font-semibold mb-1">Seleziona località</label>
-                <input id="cap-search" type="text" placeholder="Search..." class="rounded-md w-full">
+                <input id="cap-search" type="text" placeholder="Ricerca..." class="rounded-md w-full">
                 <div class="w-full rounded-md mt-1 hidden" id="cap-list-select">
                     <div class="bg-white p-4 rounded-b-md overflow-hidden overflow-y-auto max-h-[300px] space-y-2"
                         id="search-list-container">
@@ -15,7 +15,7 @@
         </div>
         <div class="w-7/12">
             <div class="w-full hidden" id="selected-container">
-                <div class="inline-block font-semibold mb-1">Selected</div>
+                <div class="inline-block font-semibold mb-1">Selezionata</div>
                 <form class="w-full rounded-md">
                     <div class="border p-2 rounded-md space-y-2" id="selected-items">
 

@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+            {{ __('Una volta eliminato il tuo account, tutte le sue risorse e i suoi dati saranno eliminati in modo permanente. Prima di eliminare il tuo account, scarica tutti i dati o le informazioni che desideri conservare.') }}
         </p>
     </header>
 

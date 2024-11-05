@@ -13,7 +13,7 @@
                 </div>
                 <span class="hidden sm:block">|</span>
                 <div class="flex items-center gap-2">
-                    <label for="order_by" class="text-sm">Order by</label>
+                    <label for="order_by" class="text-sm">Ordina per</label>
                     <select name="" id="order_by" class="text-sm py-1 rounded-md">
                         <option value="default">default</option>
                         <option value="asc">nome (A-Z)</option>
@@ -43,7 +43,7 @@
                             ])
                         @endforeach
                     @else
-                        <h2 class="text-gray-300 font-bold text-2xl">No product found!</h2>
+                        <h2 class="text-gray-300 font-bold text-2xl">Nessun prodotto trovato.</h2>
                     @endif
                 </div>
             </div>
@@ -57,7 +57,7 @@
                             ])
                         @endforeach
                     @else
-                        <h2 class="text-gray-300 font-bold text-2xl">No product found!</h2>
+                        <h2 class="text-gray-300 font-bold text-2xl">Nessun prodotto trovato.</h2>
                     @endif
                 </div>
             </div>
