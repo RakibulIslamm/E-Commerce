@@ -101,6 +101,21 @@
 
                         </p>
                     @endif
+
+                    @if (tenant()->size_color_options)
+                        <div class="flex items-center gap-5">
+                            <p>Size:
+                                @if (isset($product->TAGLIA))
+                                    <span class="font-semibold text-gray-500">{{$product->TAGLIA}}</span>
+                                @endif
+                            </p>
+                            <p>Color:
+                                @if (isset($product->COLORE))
+                                    <span style="color: {{$product->COLORE}}" class="font-semibold text-gray-500">{{$product->COLORE}}</span>
+                                @endif
+                            </p>
+                        </div>
+                    @endif
                     
                 </div>
 

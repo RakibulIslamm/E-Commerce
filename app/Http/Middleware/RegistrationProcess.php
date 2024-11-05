@@ -9,6 +9,9 @@ class RegistrationProcess
     {   
         $tenant = tenant();
         if (!Auth::check()) {
+            if($tenant->registration_process == 'Optional' && $tenant->business_type != 'B2B Plus'){
+                return $next($request);
+            }
             return redirect()->route('app.login');
         }
         elseif(Auth::check()){
