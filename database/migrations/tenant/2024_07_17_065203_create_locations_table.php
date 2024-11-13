@@ -2,7 +2,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
+use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 
 return new class extends Migration {
     /**
@@ -25,6 +28,18 @@ return new class extends Migration {
             $table->decimal('longitude');
             $table->timestamps();
         });
+
+        // tenant()->run(function (){
+        //     try {
+        //         $path = database_path('sql/locations.sql');
+        //         if(file_exists($path)){
+        //             $sql = file_get_contents($path);
+        //             DB::unprepared($sql);
+        //         }
+        //     } catch (TenantCouldNotBeIdentifiedById $e) {
+        //         logger()->error('Tenant not identified: ' . $e->getMessage());
+        //     }
+        // });
     }
 
     /**

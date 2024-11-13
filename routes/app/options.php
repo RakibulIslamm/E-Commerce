@@ -31,5 +31,6 @@ Route::prefix('options')->group(function () {
 
     Route::prefix('cap')->group(function () {
         Route::get('', [LimitByLocationController::class, 'index'])->name('app.cap');
+        Route::delete('/delete/{availableLocation}', [LimitByLocationController::class, 'destroy'])->name('app.cap.delete');
     });
 });
