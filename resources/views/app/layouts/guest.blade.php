@@ -67,7 +67,7 @@
             if (addToCartButtons?.length > 0) {
                 for (const button of addToCartButtons) {
                     button.setAttribute('disabled', true);
-                    button.innerText = 'Added'
+                    button.innerText = 'Aggiungi'
                 }
             }
 
@@ -110,7 +110,7 @@
                             </div>
             
                             <button onclick="handleDeleteCart(${item})" type="button"
-                                class="font-medium text-indigo-600 hover:text-indigo-400 text-xs mt-2 sm:text-base sm:mt-0">Remove</button>
+                                class="font-medium text-indigo-600 hover:text-indigo-400 text-xs mt-2 sm:text-base sm:mt-0">Rimuovi</button>
                         </div>
                     </div>    
                 </div>

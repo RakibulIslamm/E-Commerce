@@ -8,8 +8,7 @@
                             <div class="relative mr-10">
                                 <button type="button" id="categories-btn"
                                     class="flex items-center gap-2 font-semibold py-2"><x-lucide-layout-dashboard
-                                        class="w-5 h-5" /> All
-                                    Categories <x-ri-arrow-drop-down-fill class="w-5 h-5" /></button>
+                                        class="w-5 h-5" />Tutte le categorie<x-ri-arrow-drop-down-fill class="w-5 h-5" /></button>
                                 {{-- top-[55px] visible opacity-1 --}}
                                 <div class="absolute top-[70px] invisible opacity-0 left-0 text-sm text-gray-500 overflow-hidden transition-all ease-in-out duration-300 shadow"
                                     id="category-list">
@@ -20,7 +19,7 @@
                                                     class="px-4 py-3 hover:bg-gray-200 text-lg block {{ !$loop->last ? 'border-b' : '' }}">{{ $item->nome }}</a>
                                             @endforeach
                                         @else
-                                            <p>Category Not found</p>
+                                            <p>Categoria non trovata.</p>
                                         @endif
                                     </div>
                                 </div>
@@ -29,10 +28,10 @@
                                 <a href="/" class="flex items-center text-sm font-medium">Home</a>
                                 <a href="{{ route('app.products') }}"
                                     class="flex items-center text-sm font-medium">Prodotti</a>
-                                <a href="/agency" class="flex items-center text-sm font-medium">Agency</a>
-                                <a href="/news" class="flex items-center text-sm font-medium">News</a>
+                                <a href="/agency" class="flex items-center text-sm font-medium">Chi siamo</a>
+                                <a href="/news" class="flex items-center text-sm font-medium">Notizie</a>
                                 <a href="{{ route('app.contact') }}"
-                                    class="flex items-center text-sm font-medium">Contact</a>
+                                    class="flex items-center text-sm font-medium">Contatti</a>
                             </div>
                         </div>
                     </div>
@@ -42,7 +41,7 @@
                             <x-lucide-shopping-cart class="w-7 h-7" />
                             <span
                                 class=" absolute top-0 right-0 text-xs group-hover:text-gray-800 bg-yellow-500 text-white rounded-full w-5 h-5 flex items-center justify-center cart-count">0</span>
-                            <span class="sr-only">items in cart, view bag</span>
+                            <span class="sr-only">articoli nel carrello, visualizza</span>
                         </button>
                     </div>
 

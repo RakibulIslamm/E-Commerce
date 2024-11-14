@@ -20,7 +20,7 @@
             @if (!$product->PIUVENDUTI and $product->NOVITA)
                 <p
                     class="px-4 py-1 rounded-r bg-yellow-700 text-white text-xs group-hover/product:border group-hover/product:border-l-0">
-                    New arrieval</p>
+                    Nuovo arrivo</p>
             @endif
 
             @if (isset($section))
@@ -62,26 +62,26 @@
         </div>
 
         @if (tenant()->product_stock_display == 'Text + Quantity')
-            <div class="mt-1">Availability:
+            <div class="mt-1">Disponibilità:
                 @if ($product->GIACENZA > 0)
-                    <span class="font-semibold text-green-500">In Stock</span>
+                    <span class="font-semibold text-green-500">In magazzino</span>
                     <br>
                     <div class="mt-1">
                         <span class="">Quantity:</span>
                         <span class="font-semibold text-green-500">{{$product->GIACENZA}}</span>
                     </div>
                 @else
-                    <span class="font-semibold text-red-500">Stock Out</span>
+                    <span class="font-semibold text-red-500">Esauritot</span>
                 @endif
 
             </div>
         @elseif (tenant()->product_stock_display == 'Text Only')
-            <p>Availability:
+            <p>Disponibilità:
 
                 @if ($product->GIACENZA > 0)
-                    <span class="font-semibold text-green-500">In Stock</span>
+                    <span class="font-semibold text-green-500">In magazzino</span>
                 @else
-                    <span class="font-semibold text-red-500">Stock Out</span>
+                    <span class="font-semibold text-red-500">Esaurito</span>
                 @endif
 
             </p>
@@ -91,16 +91,16 @@
             @if ($product->GIACENZA > 0)
                 <button onclick="addToCart({{ $product->id }}, {{ $product }})"
                     class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"><x-lucide-shopping-cart
-                        class="w-5 h-5" /> Add</button>
+                        class="w-5 h-5" /> Aggiungi</button>
             @else
                 <button
                     class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"
-                    disabled><x-lucide-shopping-cart class="w-5 h-5" />Stock out</button>
+                    disabled><x-lucide-shopping-cart class="w-5 h-5" />Esaurito</button>
             @endif
-            <button
+            <!-- <button
                 class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-wishlist-{{ $product->id }}">
                 <x-heroicon-o-heart class="w-5 h-5" />
-                Wishlist</button>
+                Wishlist</button> -->
         </div>
 
     </div>

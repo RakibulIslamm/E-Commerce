@@ -39,7 +39,7 @@ if (isset($site_settings->brand_info)) {
             <input type="text" name="search" id="search-text"
                 class="relative grow rounded-r-md py-2 pl-3 pr-8 text-gray-900 border border-gray-200 outline-none
                       focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10"
-                placeholder="Search Product...">
+                placeholder="Ricerca prodotto...">
 
             <button onclick="handleSearch()">
                 <x-lucide-search

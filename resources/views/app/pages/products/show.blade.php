@@ -185,7 +185,7 @@
             }).then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Product added to cart');
+                    // alert('Product added to cart');
                     window.all_cart = data.cart_items;
                 }
                 renderSidebarCart();

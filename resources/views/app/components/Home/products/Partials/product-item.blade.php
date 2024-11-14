@@ -23,7 +23,7 @@
                 @if (!$product->PIUVENDUTI and $product->NOVITA)
                     <p
                         class="px-4 py-1 rounded-r bg-yellow-700 text-white text-xs group-hover/product:border group-hover/product:border-l-0">
-                        New arrieval</p>
+                        Nuovo arrivo</p>
                 @endif
 
                 @if (isset($section))
@@ -56,9 +56,9 @@
                         </h3>
                     </a>
                     @if ($product->GIACENZA > 0)
-                        <p class="text-xs text-yellow-400">In stock</p>
+                        <p class="text-xs text-yellow-400">In magazzino</p>
                     @else
-                        <p class="text-xs text-red-300">Stock out</p>
+                        <p class="text-xs text-red-300">Esaurito</p>
                     @endif
                 </div>
                 <div class="px-4 text-right">
@@ -87,7 +87,7 @@
             }).then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Product added to cart');
+                    // alert('Product added to cart');
                     console.log(data);
                     window.all_cart = data.cart_items;
                 }
