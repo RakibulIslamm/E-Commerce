@@ -244,6 +244,10 @@
                 </div>
             </div>
             <button class="px-10 py-3 rounded-lg border w-full mt-4 bg-slate-800 text-white">Effettuare l'ordine</button>
+
+            @error('cap_not_available')
+                <h3 class="text-red-500 text-xl font-bold my-3">{{ $message }}</h3>
+            @enderror
         </div>
     </form>
 

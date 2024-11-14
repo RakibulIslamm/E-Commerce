@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Models\AvailableLocation;
 use App\Models\Location;
 use App\Models\Order;
 use App\Models\Product;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController
 {
@@ -23,8 +24,6 @@ class OrderController
      */
     public function create(Request $request)
     {
-
-
         $cart = session()->get('cart', []);
 
         if (count($cart) < 1) {
@@ -46,7 +45,7 @@ class OrderController
      */
     public function store(Request $request)
     {
-        // dd(request()->all());
+        // dd(request()->all('citta_spedizione'));
 
         $cart = session()->get('cart', []);
 
@@ -59,7 +58,7 @@ class OrderController
             'ragione_sociale' => 'nullable|string', // business name
             'indirizzo' => 'required|string', // address
             'cap' => 'required|string', // Postal code
-            'citta' => 'nullable|string', // city
+            'citta' => 'required|string', // city
             'provincia' => 'required|string', // province
             'email' => 'required|email',
             'telefono' => 'required|string', // telephone
@@ -80,7 +79,23 @@ class OrderController
             'corriere' => 'nullable|string', // courier
             'note' => 'nullable|string',
         ]);
+        
+        $postal = $validate['cap'];
+        $city = $validate['citta'];
+        $province = $validate['provincia'];
 
+        $availableLocations = AvailableLocation::where('postal_code', $postal)->with('location')->get();
+
+        // Check if any location matches the provided city and province
+        $locationMatch = $availableLocations->first(function ($location) use ($city, $province) {
+            return $location->location->place === $city && $location->location->province === $province;
+        });
+
+        if (!$locationMatch) {
+            return redirect()->back()
+                ->withErrors(['cap_not_available' => 'Currently we are not available in your area'])
+                ->withInput();
+        }
 
         $validate['nominativo_spedizione'] = $validate['nominativo_spedizione'] ? $validate['nominativo_spedizione'] : $validate['nominativo'];
         $validate['telefono_spedizione'] = $validate['telefono_spedizione'] ? $validate['telefono_spedizione'] : $validate['telefono'];

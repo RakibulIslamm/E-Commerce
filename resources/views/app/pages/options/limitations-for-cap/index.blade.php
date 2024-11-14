@@ -16,11 +16,12 @@
         <div class="w-7/12">
             <div class="w-full hidden" id="selected-container">
                 <div class="inline-block font-semibold mb-1">Selezionata</div>
-                <form class="w-full rounded-md">
-                    <div class="border p-2 rounded-md space-y-2" id="selected-items">
+                <form id="form" class="w-full rounded-md">
+                    <div class="border p-2 rounded-md space-y-2 max-h-[300px] overflow-y-auto" id="selected-items">
 
                     </div>
                     <button
+                        type="submit"
                         class="bg-indigo-500 text-white active:bg-indigo-600 font-bold  px-3 py-1 rounded outline-none focus:outline-none ease-linear transition-all duration-150 mt-3">
                         Save
                     </button>
@@ -28,8 +29,10 @@
                 <hr class="my-5">
             </div>
             <h3 class="font-semibold mb-1">Limita la spedizione per località</h3>
-            <div class="w-full bg-white rounded-md p-4">
-                list of cap
+            <div class="w-full bg-white rounded-md p-4 space-y-2 max-h-[400px] overflow-y-auto">
+                @foreach ($available_locations as $item)
+                    @include('app.pages.options.limitations-for-cap.cap', ['item' => $item])
+                @endforeach
             </div>
         </div>
     </div>
@@ -45,7 +48,46 @@
     const selectedItems = document.getElementById('selected-items');
     const list = document.getElementById('search-item-list');
 
+    const locationMap = new Map(@json($available_locations).map(location => [location.location_id, location]));
+
     let selectedLocations = [];
+
+    document.getElementById('form').addEventListener('submit', async (e) => {
+        e.preventDefault(); 
+        if (!selectedLocations.length) {
+            alert("Please select at least one location.");
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/add-cap', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    locations: selectedLocations.map(location => ({
+                        location_id: String(location.id),
+                        postal_code: String(location.zipcode)
+                    }))
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.code !== 201) {
+                alert('Error: ' + data.message);
+            } else {
+                // alert('Locations added successfully');
+                window.location.reload();
+            }
+        } catch (error) {
+            alert("Something went wrong");
+            console.error(error);
+        }
+    });
 
     capSearch.addEventListener('focus', () => {
         capListSelect.classList.remove('hidden');
@@ -97,7 +139,7 @@
             selectedLocations = selectedLocations.filter(item => item.id !== id);
         }
 
-        const isChecked = checkbox.checked;
+        const isChecked = checkbox?.checked;
         if (isChecked) {
             checkbox.checked = false;
         }
@@ -142,26 +184,34 @@
 
     function renderSearchLocations(locations) {
         list.innerHTML = '';
+        let count = 0;
         for (const location of locations) {
-            const element = document.createElement('div');
-            element.classList.add('flex', 'items-center', 'gap-2')
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = 'cap-item';
-            checkbox.id = `cap-${location.id}`;
-            checkbox.value = location.id;
-            checkbox.dataset.location = JSON.stringify(location);
-            checkbox.addEventListener('change', handleSelectLocation); // Attach event listener
+            if(!locationMap.has(location.id)){
+                count += 1;
+                const element = document.createElement('div');
+                element.classList.add('flex', 'items-center', 'gap-2')
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'cap-item';
+                checkbox.id = `cap-${location.id}`;
+                checkbox.value = location.id;
+                checkbox.dataset.location = JSON.stringify(location);
+                checkbox.addEventListener('change', handleSelectLocation);
 
-            const label = document.createElement('label');
-            label.htmlFor = checkbox.id;
-            label.textContent = `${location.province_code} ${location.place} ${location.zipcode}`;
+                const label = document.createElement('label');
+                label.htmlFor = checkbox.id;
+                label.textContent = `${location.province_code} ${location.place} ${location.zipcode}`;
 
-            element.appendChild(checkbox);
-            element.appendChild(label);
-            list.appendChild(element);
+                element.appendChild(checkbox);
+                element.appendChild(label);
+                list.appendChild(element);
+            }
+        }
+        if(count < 1){
+            list.innerHTML = 'No location found';
         }
     }
+
 
     function debounce(func, delay, id) {
         let timeout;
@@ -171,6 +221,13 @@
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(context, args), delay);
         };
+    }
+
+    const handleDelete = (cap) => {
+        event.preventDefault();
+        if (confirm('Are you sure you want to delete?')) {
+            document.getElementById(`delete-form-${cap.id}`).submit();
+        }
     }
 </script>
 

@@ -2,6 +2,7 @@
 use App\Http\Controllers\App\CorporateContent\CompanyProfileController;
 use App\Http\Controllers\App\ShowNewsController;
 use App\Http\Controllers\App\ShowProductController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix("products")->group(function () {
     Route::get('', [ShowProductController::class, 'index'])->name('app.products');
