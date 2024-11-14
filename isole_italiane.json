@@ -1,0 +1,59 @@
+{
+    "isole_maggiori": [
+        "Sicilia",
+        "Sardegna"
+    ],
+    "isole_minori": {
+        "arcipelago_toscano": [
+            "Isola d'Elba",
+            "Isola del Giglio",
+            "Capraia",
+            "Pianosa",
+            "Montecristo",
+            "Gorgona",
+            "Giannutri"
+        ],
+        "arcipelago_pontino": [
+            "Ponza",
+            "Ventotene",
+            "Palmarola",
+            "Santo Stefano",
+            "Zannone"
+        ],
+        "arcipelago_campano": [
+            "Ischia",
+            "Capri",
+            "Procida",
+            "Vivara",
+            "Nisida"
+        ],
+        "isole_eolie": [
+            "Lipari",
+            "Salina",
+            "Vulcano",
+            "Stromboli",
+            "Filicudi",
+            "Alicudi",
+            "Panarea"
+        ],
+        "isole_egadi": [
+            "Favignana",
+            "Levanzo",
+            "Marettimo"
+        ],
+        "isole_pelagie": [
+            "Lampedusa",
+            "Linosa",
+            "Lampione"
+        ],
+        "altre_isole_minori": [
+            "Ustica",
+            "Pantelleria",
+            "San Pietro",
+            "Sant'Antioco",
+            "La Maddalena",
+            "Asinara",
+            "Caprera"
+        ]
+    }
+}
