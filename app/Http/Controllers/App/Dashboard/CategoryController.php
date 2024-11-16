@@ -4,8 +4,8 @@ namespace App\Http\Controllers\App\Dashboard;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Storage;
-use Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController
 {
@@ -65,10 +65,26 @@ class CategoryController
         // dd($validator);
 
         if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()->first(),
-                'code' => $validator->errors()->has('codice') ? 200 : 210,
-            ]);
+            if($validator->errors()->has('codice')){
+                return response()->json([
+                    'codice' => "KO",
+                    'errore' => [
+                        'numero' => 200,
+                        'msg' => "Codice categoria mancante",
+                        'extra_msg' => ""
+                    ]
+                ]);
+            }
+            if($validator->errors()->has('nome')){
+                return response()->json([
+                    'codice' => "KO",
+                    'errore' => [
+                        'numero' => 210,
+                        'msg' => "Nome categoria mancante",
+                        'extra_msg' => ""
+                    ]
+                ]);
+            }
         }
 
         try {
@@ -89,9 +105,12 @@ class CategoryController
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'System error during update',
-                'code' => 299,
-                'extra_msg' => $e->getMessage()
+                'codice' => 'KO',
+                'errore'=>[
+                    "numero" => 299,
+                    "msg" => "Errore di sistema durante l'aggiornamento",
+                    "extra_msg" => $e->getMessage()
+                ]
             ]);
         }
     }

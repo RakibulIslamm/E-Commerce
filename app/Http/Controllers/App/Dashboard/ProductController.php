@@ -5,8 +5,7 @@ namespace App\Http\Controllers\App\Dashboard;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Str;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController
 {
@@ -176,7 +175,7 @@ class ProductController
                 'status' => 'error',
                 'message' => 'Validation failed',
                 'errors' => $validator->errors(),
-            ], 400);
+            ]);
         }
 
         $validated = $validator->validated();
@@ -222,13 +221,13 @@ class ProductController
                 'product' => $product,
                 'code' => 201,
                 'status' => 'success',
-            ], 201);
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 "status" => "error",
                 "code" => $e->getCode(),
                 "message" => $e->getMessage()
-            ], 400);
+            ]);
         }
     }
 
@@ -239,10 +238,13 @@ class ProductController
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 400);
+                "codice" => "KO",
+                "errore" => [
+                    "numero" => 100,
+                    "msg" => "id_articolo categoria mancante",
+                    "extra_msg" => ""
+                ]
+            ]);
         }
         $validated = $validator->validated();
         $id_articolo = $validated['id_articolo'];
@@ -256,9 +258,13 @@ class ProductController
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'codice' => '100',
-                'message' => $e->getMessage(),
-            ], 500);
+                "codice" => "KO",
+                "errore" => [
+                    "numero" => 100,
+                    "msg" => "Errore di sistema durante l'aggiornamento",
+                    "extra_msg" => $e->getMessage()
+                ]
+            ]);
         }
     }
 
