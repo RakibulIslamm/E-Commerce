@@ -83,9 +83,20 @@ class OrderController
         if ($request->filled('IDORDINE')) {
             $order = $query->find($request->IDORDINE);
             if (!$order) {
-                return response()->json(['error' => 'Incorrect order ID'], 400);
+                return response()->json([
+                    "codice" => "KO",
+                    "errore" => [
+                        "numero" => 400,
+                        "msg" => "ID ordine errato",
+                        "extra_msg" => ""
+                    ]
+                ]);
             }
-            return response()->json(['Codice' => 'OK', 'n_ordini' => 1, 'ordini' => [$order]]);
+            return response()->json([
+                "codice" => "KO",
+                "n_ordini" => 1,
+                "array ordini" => [$order]
+            ]);
         }
 
         if ($request->filled('DATAORDINE')) {
@@ -103,9 +114,20 @@ class OrderController
         if ($request->filled('N_ORDINE')) {
             $order = $query->find($request->N_ORDINE);
             if (!$order) {
-                return response()->json(['error' => 'Incorrect order number'], 420);
+                return response()->json([
+                    "codice" => "KO",
+                    "errore" => [
+                        "numero" => 400,
+                        "msg" => "Numero d'ordine errato",
+                        "extra_msg" => ""
+                    ]
+                ]);
             }
-            return response()->json(['Codice' => 'OK', 'n_ordini' => 1, 'ordini' => [$order]]);
+            return response()->json([
+                "codice" => "KO",
+                "n_ordini" => 1,
+                "array ordini" => [$order]
+            ]);
         }
 
         if ($request->filled('STATO')) {
@@ -118,6 +140,11 @@ class OrderController
 
         $orders = $query->get();
         return response()->json(['Codice' => 'OK', 'n_ordini' => $orders->count(), 'ordini' => $orders]);
+        return response()->json([
+            "codice" => "KO",
+            "n_ordini" => $orders->count(),
+            "array ordini" => $orders
+        ]);
     }
 
 
@@ -148,11 +175,25 @@ class OrderController
             $order->pagato = $request->PAGATO;
         }
 
-        $order->save();
+        try{
+            $order->save();
+            // Logic to send confirmation email (omitted for brevity)
 
-        // Logic to send confirmation email (omitted for brevity)
-
-        return response()->json(['Codice' => 'OK']);
+            return response()->json([
+                'codice' => 'OK',
+                "msg" => "Stato ordine aggiornato correttamente"
+            ]);
+        }
+        catch(\Exception $e){
+            return response()->json([
+                'codice' => 'KO',
+                'errore'=>[
+                    "numero" => 310,
+                    "msg" => "Errore durante l'aggiornamento dello stato ordine",
+                    "extra_msg" => $e->getMessage()
+                ]
+            ]);
+        }
     }
 
     /**
