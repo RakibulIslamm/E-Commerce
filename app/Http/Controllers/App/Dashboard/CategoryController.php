@@ -100,7 +100,8 @@ class CategoryController
             );
 
             return response()->json([
-                'codice' => 'OK'
+                'codice' => "KO",
+                'categorie' => $category
             ]);
         } catch (\Exception $e) {
             return response()->json([
