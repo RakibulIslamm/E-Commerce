@@ -31,17 +31,26 @@ class ProductController
         try {
             $products = Product::all();
 
+            // return response()->json([
+            //     "products" => $products,
+            //     "message" => "Products retrieved successfully",
+            //     "status" => "success",
+            //     "code" => 200
+            // ]);
             return response()->json([
-                "products" => $products,
-                "message" => "Products retrieved successfully",
-                "status" => "success",
-                "code" => 200
+                "codice" => "KO",
+                "articolo" => $products,
+                "msg" => "Products retrieved successfully",
+                "numero"=> 200
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                "status" => "error",
-                "code" => $e->getCode(),
-                "message" => $e->getMessage()
+                "codice" => "KO",
+                "errore" => [
+                    "numero" => $e->getCode(),
+                    "msg" => $e->getMessage(),
+                    "extra_msg" => ''
+                ]
             ]);
         }
     }
@@ -140,7 +149,7 @@ class ProductController
         $rules = [
             'BARCODE' => 'nullable|string',
             'DESCRIZIONEBREVE' => 'required|string',
-            'DESCRIZIONEESTESA' => 'required|string',
+            'DESCRIZIONEESTESA' => 'nullable|string',
             'ALIQUOTAIVA' => 'required|numeric|min:0|max:100',
             'UNITAMISURA' => 'nullable|string|in:PZ,KG,L,CM,M',
             'PXC' => 'nullable|integer|min:1',
@@ -158,7 +167,7 @@ class ProductController
             'TAGLIA' => 'nullable|string',
             'COLORE' => 'nullable|string',
             'PRE1IMP' => 'required|numeric|min:0',
-            'PRE1IVA' => 'nullable|numeric|min:0',
+            'PRE1IVA' => 'required|numeric|min:0',
             'PRE2IMP' => 'nullable|numeric|min:0',
             'PRE2IVA' => 'nullable|numeric|min:0',
             'PRE3IMP' => 'nullable|numeric|min:0',
@@ -169,35 +178,40 @@ class ProductController
             'DATAFINEPROMO' => 'nullable|date',
         ];
 
+        
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
+                "codice" => "KO",
+                "errore" => [
+                    "numero" => 400,
+                    "msg" => "Validation failed",
+                    "errors" => $validator->errors(),
+                    "extra_msg" => ''
+                ]
             ]);
         }
-
+        
         $validated = $validator->validated();
-
         $validated['NOVITA'] = $request->input('NOVITA', false) ? true : false;
         $validated['PIUVENDUTI'] = $request->input('PIUVENDUTI', false) ? true : false;
         $validated['VISIBILE'] = $request->input('VISIBILE', true) ? true : false;
-        $validated['PESOARTICOLO'] = $validated['PESOARTICOLO'] ? ['PESOARTICOLO'] : null;
-        $validated['PRE1IMP'] = $validated['PRE1IMP'] ? $validated['PRE1IMP'] : null;
-        $validated['PRE1IVA'] = $validated['PRE1IVA'] ? $validated['PRE1IVA'] : null;
-        $validated['PRE2IMP'] = $validated['PRE2IMP'] ? $validated['PRE2IMP'] : null;
-        $validated['PRE2IVA'] = $validated['PRE2IVA'] ? $validated['PRE2IVA'] : null;
-        $validated['PRE3IMP'] = $validated['PRE3IMP'] ? $validated['PRE3IMP'] : null;
-        $validated['PRE3IVA'] = $validated['PRE3IVA'] ? $validated['PRE3IVA'] : null;
-        $validated['PREPROMOIMP'] = $validated['PREPROMOIMP'] ? $validated['PREPROMOIMP'] : null;
-        $validated['PREPROMOIVA'] = $validated['PREPROMOIVA'] ? $validated['PREPROMOIVA'] : null;
-        $validated['DATAINIZIOPROMO'] = $validated['DATAINIZIOPROMO'] ? $validated['DATAINIZIOPROMO'] : null;
-        $validated['DATAFINEPROMO'] = $validated['DATAFINEPROMO'] ? $validated['DATAFINEPROMO'] : null;
-
-        // dd($validated);
-
-
+        $validated['PESOARTICOLO'] = isset($validated['PESOARTICOLO']) ? $validated['PESOARTICOLO'] : null;
+        $validated['PRE1IMP'] = isset($validated['PRE1IMP']) ? $validated['PRE1IMP'] : null;
+        $validated['DESCRIZIONEESTESA'] = isset($validated['DESCRIZIONEESTESA']) ? $validated['DESCRIZIONEESTESA'] : "";
+        $validated['PRE1IVA'] = isset($validated['PRE1IVA']) ? $validated['PRE1IVA'] : null;
+        $validated['PRE2IMP'] = isset($validated['PRE2IMP']) ? $validated['PRE2IMP'] : null;
+        $validated['PRE2IVA'] = isset($validated['PRE2IVA']) ? $validated['PRE2IVA'] : null;
+        $validated['PRE3IMP'] = isset($validated['PRE3IMP']) ? $validated['PRE3IMP'] : null;
+        $validated['PRE3IVA'] = isset($validated['PRE3IVA']) ? $validated['PRE3IVA'] : null;
+        $validated['PREPROMOIMP'] = isset($validated['PREPROMOIMP']) ? $validated['PREPROMOIMP'] : null;
+        $validated['PREPROMOIVA'] = isset($validated['PREPROMOIVA']) ? $validated['PREPROMOIVA'] : null;
+        $validated['DATAINIZIOPROMO'] = isset($validated['DATAINIZIOPROMO']) ? $validated['DATAINIZIOPROMO'] : null;
+        $validated['DATAFINEPROMO'] = isset($validated['DATAFINEPROMO']) ? $validated['DATAFINEPROMO'] : null;
+        
+        
+        
+        
         $images = [];
         // dd($validated['FOTO']);
         try {
@@ -216,17 +230,30 @@ class ProductController
             }
             $product = Product::create($validated);
 
+            // return response()->json([
+            //     'message' => 'Product added successfully',
+            //     'product' => $product,
+            //     'code' => 201,
+            //     'status' => 'success',
+            // ]);
             return response()->json([
-                'message' => 'Product added successfully',
-                'product' => $product,
-                'code' => 201,
-                'status' => 'success',
+                "codice" => "KO",
+                "articolo" => $product,
+                "numero"=> 201
             ]);
         } catch (\Exception $e) {
+            // return response()->json([
+            //     "status" => "error",
+            //     "code" => $e->getCode(),
+            //     "message" => $e->getMessage()
+            // ]);
             return response()->json([
-                "status" => "error",
-                "code" => $e->getCode(),
-                "message" => $e->getMessage()
+                "codice" => "KO",
+                "errore" => [
+                    "numero" => $e->getCode(),
+                    "msg" => $e->getMessage(),
+                    "extra_msg" => ''
+                ]
             ]);
         }
     }
