@@ -38,7 +38,7 @@ class ProductController
             //     "code" => 200
             // ]);
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "articolo" => $products,
                 "msg" => "Products retrieved successfully",
                 "numero"=> 200
@@ -237,7 +237,7 @@ class ProductController
             //     'status' => 'success',
             // ]);
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "articolo" => $product,
                 "numero"=> 201
             ]);
