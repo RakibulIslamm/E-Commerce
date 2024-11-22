@@ -93,7 +93,7 @@ class OrderController
 
         if (!$locationMatch) {
             return redirect()->back()
-                ->withErrors(['cap_not_available' => 'Currently we are not available in your area'])
+                ->withErrors(['cap_not_available' => 'Al momento non siamo disponibili nella tua zona'])
                 ->withInput();
         }
 
