@@ -1,7 +1,7 @@
 @section('title', $product->DESCRIZIONEBREVE)
 <x-app-guest-layout>
-    <x-page-layout :props="['breadcrumbs' => $breadcrumbs, 'title' => 'Product details']">
-        @section('page_title', 'Product details')
+    <x-page-layout :props="['breadcrumbs' => $breadcrumbs, 'title' => 'Dettaglio prodotto']">
+        @section('page_title', 'Dettaglio prodotto')
 
 
 
@@ -123,16 +123,16 @@
                     @if ($product->GIACENZA > 0)
                         <button onclick="addToCart({{ $product->id }}, {{ $product }})"
                             class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"><x-lucide-shopping-cart
-                                class="w-5 h-5" /> Add</button>
+                                class="w-5 h-5" /> Aggiungi</button>
                     @else
                         <button
                             class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"
-                            disabled><x-lucide-shopping-cart class="w-5 h-5" />Stock out</button>
+                            disabled><x-lucide-shopping-cart class="w-5 h-5" />Esaurito</button>
                     @endif
-                    <button
+                    {{-- <button
                         class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-wishlist-{{ $product->id }}">
                         <x-heroicon-o-heart class="w-5 h-5" />
-                        Wishlist</button>
+                        Wishlist</button> --}}
                 </div>
                 <div class="w-full -ml-3">
                     <div id="editor">

@@ -49,7 +49,7 @@
             @endif
         </div>
 
-        <div class="flex items-center gap-2 mt-1">
+        {{-- <div class="flex items-center gap-2 mt-1">
             <p class="text-sm">5.0</p>
             <div class="flex items-center gap-1 text-yellow-400">
                 <x-heroicon-m-star class="w-4 h-4" />
@@ -59,7 +59,7 @@
                 <x-heroicon-m-star class="w-4 h-4" />
             </div>
             <p class="text-sm">See all 512 reviews</p>
-        </div>
+        </div> --}}
 
         @if (tenant()->product_stock_display == 'Text + Quantity')
             <div class="mt-1">Disponibilità:
@@ -67,7 +67,7 @@
                     <span class="font-semibold text-green-500">In magazzino</span>
                     <br>
                     <div class="mt-1">
-                        <span class="">Quantity:</span>
+                        <span class="">Quantità:</span>
                         <span class="font-semibold text-green-500">{{$product->GIACENZA}}</span>
                     </div>
                 @else

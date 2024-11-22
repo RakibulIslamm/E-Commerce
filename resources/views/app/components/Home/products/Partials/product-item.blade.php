@@ -11,13 +11,13 @@
                 @if ($product->PIUVENDUTI and $product->NOVITA)
                     <p
                         class="px-4 py-1 rounded-r bg-yellow-700 text-white text-xs group-hover/product:border group-hover/product:border-l-0">
-                        Best seller</p>
+                        Più venduto</p>
                 @endif
 
                 @if ($product->PIUVENDUTI and !$product->NOVITA)
                     <p
                         class="px-4 py-1 rounded-r bg-yellow-700 text-white text-xs group-hover/product:border group-hover/product:border-l-0">
-                        Best seller</p>
+                        Più venduto</p>
                 @endif
 
                 @if (!$product->PIUVENDUTI and $product->NOVITA)
@@ -38,11 +38,11 @@
                 @if ($product->GIACENZA > 0)
                     <button onclick="addToCart({{ $product->id }}, {{ $product }})"
                         class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"><x-lucide-shopping-cart
-                            class="w-5 h-5" /> Add</button>
+                            class="w-5 h-5" /> Aggiungi</button>
                 @else
                     <button
                         class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"
-                        disabled><x-lucide-shopping-cart class="w-5 h-5" />Stock out</button>
+                        disabled><x-lucide-shopping-cart class="w-5 h-5" />Esaurito</button>
                 @endif
                 {{-- <button class="px-5 py-1 text-sm bg-blue-700 active:bg-blue-500 text-white rounded">Buy Now</button> --}}
             </div>
