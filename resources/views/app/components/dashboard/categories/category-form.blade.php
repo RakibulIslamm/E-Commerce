@@ -1,3 +1,9 @@
+    @if ($errors->has('error'))
+    <div class="bg-red-100 text-red-700 border-l-4 border-red-500 p-4 mb-4">
+        <strong>{{ $errors->first('error') }}</strong>
+    </div>
+    @endif
+
     <form method="post" action="{{ route('app.dashboard.categories.store') }}" enctype="multipart/form-data"
         class="p-6 bg-white rounded-lg">
         @csrf

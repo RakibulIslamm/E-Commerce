@@ -5,6 +5,11 @@
 
 @section('title', 'Categories')
 <x-app-layout>
+    @if ($errors->has('error'))
+    <div class="bg-red-100 text-red-700 border-l-4 border-red-500 p-4 mb-4">
+        <strong>{{ $errors->first('error') }}</strong>
+    </div>
+    @endif
     <div class="relative w-full max-w-full flex-grow flex-1 text-right">
         <a href="{{ route('app.dashboard.categories.create') }}"
             class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold  px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
@@ -35,15 +40,18 @@
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Codice
+                                </th>
+                                <th
+                                    class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                     Action
                                 </th>
                             </tr>
                         </thead>
 
                         <tbody>
-
-                            @if (!$categories->isEmpty())
-                                @foreach ($categories as $item)
+                            @if (!$dashboard_categories->isEmpty())
+                                @foreach ($dashboard_categories as $item)
                                     @include('app.components.dashboard.categories.category-item', [
                                         'category' => $item,
                                     ])

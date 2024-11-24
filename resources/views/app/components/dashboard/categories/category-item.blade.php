@@ -14,6 +14,9 @@
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
         {{ $category['nome'] }}
     </td>
+    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
+        {{ $category['codice'] }}
+    </td>
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 ">
         <div class="flex items-center gap-2">
             <button id="open-modal-btn" x-data=""

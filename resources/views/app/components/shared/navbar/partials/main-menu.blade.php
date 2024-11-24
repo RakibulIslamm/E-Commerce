@@ -1,3 +1,4 @@
+{{-- @dd($categories[1]->children[0]->children) --}}
 <div class="sticky top-0 z-50 hidden lg:block" id="main-menu-container">
     <header class="relative">
         <nav aria-label="Top">
@@ -5,25 +6,53 @@
                 <div class="flex h-16 items-center justify-between gap-10">
                     <div class="flex-1">
                         <div class="flex items-center h-full">
-                            <div class="relative mr-10">
-                                <button type="button" id="categories-btn"
-                                    class="flex items-center gap-2 font-semibold py-2"><x-lucide-layout-dashboard
-                                        class="w-5 h-5" />Tutte le categorie<x-ri-arrow-drop-down-fill class="w-5 h-5" /></button>
-                                {{-- top-[55px] visible opacity-1 --}}
-                                <div class="absolute top-[70px] invisible opacity-0 left-0 text-sm text-gray-500 overflow-hidden transition-all ease-in-out duration-300 shadow"
-                                    id="category-list">
-                                    <div class="bg-white min-w-[200px]">
+                            
+
+                            <div class="mr-10">
+                                <button type="button" id="categories-btn" class="flex items-center gap-2 font-semibold py-2">
+                                    <x-lucide-layout-dashboard class="w-5 h-5" />Tutte le categorie
+                                    <x-ri-arrow-drop-down-fill class="w-5 h-5" />
+                                </button>
+                            
+                                <!-- Main Dropdown List -->
+                                <div class="absolute top-[70px] invisible opacity-0 left-0 text-sm text-gray-500 overflow-hidden transition-all ease-in-out duration-300 px-20" id="category-list">
+                                    <div class="my-3 bg-white min-w-[250px] rounded-lg shadow-lg overflow-y-auto max-h-[400px]">
                                         @if (!$categories->isEmpty())
-                                            @foreach ($categories as $item)
-                                                <a href="products?category={{ $item->id }}"
-                                                    class="px-4 py-3 hover:bg-gray-200 text-lg block {{ !$loop->last ? 'border-b' : '' }}">{{ $item->nome }}</a>
-                                            @endforeach
+                                            {!! renderCategoryDropdown($categories) !!}
                                         @else
-                                            <p>Categoria non trovata.</p>
+                                            <p class="px-4 py-3">Categoria non trovata.</p>
                                         @endif
                                     </div>
                                 </div>
                             </div>
+
+                            @php
+                                function renderCategoryDropdown($categories)
+                                {
+                                    $html = '<ul class="">';
+                                    foreach ($categories as $category) {
+                                        $html .= "<li class='relative'>";
+                                        $html .= '<a href="products?category=' . $category->id . '" class="px-4 py-3 block hover:bg-gray-200 text-lg rounded-lg">' . $category->nome .'</a>';
+
+                                        if (!empty($category->children)) {
+                                            $html .= "<div class='ml-4'>";
+                                            $html .= renderCategoryDropdown($category->children);
+                                            $html .= '</div>';
+                                        }
+
+                                        $html .= '</li>';
+                                    }
+                                    $html .= '</ul>';
+                                    return $html;
+                                }
+                            @endphp
+
+                            
+
+
+
+
+
                             <div class="flex items-center h-full space-x-8">
                                 <a href="/" class="flex items-center text-sm font-medium">Home</a>
                                 <a href="{{ route('app.products') }}"
@@ -51,33 +80,28 @@
     </header>
 </div>
 
-
 <script>
-    const categoriesButton = document.getElementById('categories-btn')
-    const categoryList = document.getElementById('category-list')
+    const categoriesButton = document.getElementById('categories-btn');
+const categoryList = document.getElementById('category-list');
 
-    categoriesButton.addEventListener('click', () => {
-        categoryList.classList.toggle('top-[70px]')
-        categoryList.classList.toggle('invisible')
-        categoryList.classList.toggle('opacity-0')
-        categoryList.classList.toggle('top-[53px]')
-        categoryList.classList.toggle('visible')
-        categoryList.classList.toggle('opacity-1')
-    })
+// Toggle main dropdown visibility
+categoriesButton.addEventListener('click', () => {
+    categoryList.classList.toggle('top-[70px]');
+    categoryList.classList.toggle('invisible');
+    categoryList.classList.toggle('opacity-0');
+    categoryList.classList.toggle('top-[53px]');
+    categoryList.classList.toggle('visible');
+    categoryList.classList.toggle('opacity-1');
+});
 
-    document.addEventListener('click', (event) => {
-        const target = event.target;
-        if (!categoryList.contains(target) && !categoriesButton.contains(target)) {
-            categoryList.classList.add('top-[70px]', 'invisible', 'opacity-0')
-            categoryList.classList.remove('top-[53px]', 'visible', 'opacity-1')
-        }
-    });
+// Close dropdown when clicking outside
+document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!categoryList.contains(target) && !categoriesButton.contains(target)) {
+        categoryList.classList.add('top-[70px]', 'invisible', 'opacity-0');
+        categoryList.classList.remove('top-[53px]', 'visible', 'opacity-1');
+    }
+});
 
-    document.addEventListener('scroll', function() {
-        if (window.pageYOffset > 105) {
-            document.getElementById('main-menu-cart-button').classList.remove('hidden')
-        } else {
-            document.getElementById('main-menu-cart-button').classList.add('hidden')
-        }
-    })
 </script>
+
