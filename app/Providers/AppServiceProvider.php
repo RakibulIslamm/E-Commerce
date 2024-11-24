@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
                     ]);
                 } else {
                     $tenant = tenant();
-                    $categories = Category::all();
+                    $categories = Category::with('children')->whereNull('parent_id')->get();
                     if (isset($tenant->data) && $tenant->data != null) {
                         $tenant->data = json_decode($tenant->data);
                     }

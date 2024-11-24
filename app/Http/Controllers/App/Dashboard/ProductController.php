@@ -5,6 +5,7 @@ namespace App\Http\Controllers\App\Dashboard;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController
@@ -178,9 +179,15 @@ class ProductController
             'DATAFINEPROMO' => 'nullable|date',
         ];
 
-        
+        $tenant = tenant();
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
+            Log::error("Error -> (Tenant ID: {$tenant->id}): Validation failed", ["errore" => [
+                "numero" => 400,
+                "msg" => "Validation failed",
+                "errors" => $validator->errors(),
+                "extra_msg" => ''
+            ]]);
             return response()->json([
                 "codice" => "KO",
                 "errore" => [
@@ -223,30 +230,38 @@ class ProductController
                         $imageData = base64_encode(file_get_contents($image->path()));
                         $images[] = $imageData;
                     } else {
-                        return redirect()->route('app.dashboard.product.create')->with('error', "Something went wrong with this image- '$imgName' to save as base64")->withInput(request()->all());
+                        // return redirect()->route('app.dashboard.product.create')->with('error', "Something went wrong with this image- '$imgName' to save as base64")->withInput(request()->all());
+                        Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
+                            "numero" => 400,
+                            "msg" => "Something went wrong with this image",
+                            "errors" => "",
+                            "extra_msg" => ''
+                        ]]);
+                        return response()->json([
+                            "codice" => "KO",
+                            "errore" => [
+                                "numero" => 400,
+                                "msg" => "Something went wrong with this image",
+                                "errors" => "",
+                                "extra_msg" => ''
+                            ]
+                        ]);
                     }
                 }
                 $validated['FOTO'] = json_encode($images);
             }
             $product = Product::create($validated);
-
-            // return response()->json([
-            //     'message' => 'Product added successfully',
-            //     'product' => $product,
-            //     'code' => 201,
-            //     'status' => 'success',
-            // ]);
             return response()->json([
                 "codice" => "OK",
                 "articolo" => $product,
                 "numero"=> 201
             ]);
         } catch (\Exception $e) {
-            // return response()->json([
-            //     "status" => "error",
-            //     "code" => $e->getCode(),
-            //     "message" => $e->getMessage()
-            // ]);
+            Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
+                    "numero" => $e->getCode(),
+                    "msg" => $e->getMessage(),
+                    "extra_msg" => ''
+                ]]);
             return response()->json([
                 "codice" => "KO",
                 "errore" => [
@@ -260,10 +275,16 @@ class ProductController
 
     public function articolo_esistente(Request $request)
     {
+        $tenant = tenant();
         $validator = Validator::make($request->all(), [
             'id_articolo' => 'required|string',
         ]);
         if ($validator->fails()) {
+            Log::error("Validation Error -> (Tenant ID: {$tenant->id}): id_articolo categoria mancante", ["errore" => [
+                "numero" => 100,
+                "msg" => "id_articolo categoria mancante",
+                "extra_msg" => ""
+            ]]);
             return response()->json([
                 "codice" => "KO",
                 "errore" => [
@@ -284,6 +305,11 @@ class ProductController
                 'presente' => $product ? 1 : 0,
             ], 200);
         } catch (\Exception $e) {
+            Log::error("Error -> (Tenant ID: {$tenant->id}): Errore di sistema durante l'aggiornamento", ["errore" => [
+                "numero" => 100,
+                "msg" => "Errore di sistema durante l'aggiornamento",
+                "extra_msg" => $e->getMessage()
+            ]]);
             return response()->json([
                 "codice" => "KO",
                 "errore" => [

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Promotion;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class OrderController
 {
@@ -72,6 +73,7 @@ class OrderController
 
     public function get_orders(Request $request)
     {
+        $tenant = tenant();
         $query = Order::with('order_items');
 
         // dd($request->NUOVI);
@@ -83,6 +85,12 @@ class OrderController
         if ($request->filled('IDORDINE')) {
             $order = $query->find($request->IDORDINE);
             if (!$order) {
+                Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
+                    "numero" => 400,
+                    "msg" => "ID ordine errato",
+                    "errors" => "",
+                    "extra_msg" => ''
+                ]]);
                 return response()->json([
                     "codice" => "KO",
                     "errore" => [
@@ -114,6 +122,12 @@ class OrderController
         if ($request->filled('N_ORDINE')) {
             $order = $query->find($request->N_ORDINE);
             if (!$order) {
+                Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
+                    "numero" => 400,
+                    "msg" => "Numero d'ordine errato",
+                    "errors" => "",
+                    "extra_msg" => ''
+                ]]);
                 return response()->json([
                     "codice" => "KO",
                     "errore" => [
@@ -140,11 +154,6 @@ class OrderController
 
         $orders = $query->get();
         return response()->json(['Codice' => 'OK', 'n_ordini' => $orders->count(), 'ordini' => $orders]);
-        return response()->json([
-            "codice" => "KO",
-            "n_ordini" => $orders->count(),
-            "array ordini" => $orders
-        ]);
     }
 
 
@@ -155,6 +164,7 @@ class OrderController
 
     public function change_order_status(Request $request)
     {
+        $tenant = tenant();
         $order = Order::find($request->IDORDINE);
         if (!$order) {
             return response()->json(['error' => 'Incorrect order ID'], 400);
@@ -185,6 +195,12 @@ class OrderController
             ]);
         }
         catch(\Exception $e){
+            Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
+                "numero" => 400,
+                "msg" => "Errore durante l'aggiornamento dello stato ordine",
+                "errors" => "",
+                "extra_msg" => $e->getMessage()
+            ]]);
             return response()->json([
                 'codice' => 'KO',
                 'errore'=>[
