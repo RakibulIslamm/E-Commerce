@@ -204,15 +204,15 @@ class ProductController
         $validated['PIUVENDUTI'] = $request->input('PIUVENDUTI', false) ? true : false;
         $validated['VISIBILE'] = $request->input('VISIBILE', true) ? true : false;
         $validated['PESOARTICOLO'] = isset($validated['PESOARTICOLO']) ? $validated['PESOARTICOLO'] : null;
-        $validated['PRE1IMP'] = isset($validated['PRE1IMP']) ? $validated['PRE1IMP'] : null;
         $validated['DESCRIZIONEESTESA'] = isset($validated['DESCRIZIONEESTESA']) ? $validated['DESCRIZIONEESTESA'] : "";
-        $validated['PRE1IVA'] = isset($validated['PRE1IVA']) ? $validated['PRE1IVA'] : null;
-        $validated['PRE2IMP'] = isset($validated['PRE2IMP']) ? $validated['PRE2IMP'] : null;
-        $validated['PRE2IVA'] = isset($validated['PRE2IVA']) ? $validated['PRE2IVA'] : null;
-        $validated['PRE3IMP'] = isset($validated['PRE3IMP']) ? $validated['PRE3IMP'] : null;
-        $validated['PRE3IVA'] = isset($validated['PRE3IVA']) ? $validated['PRE3IVA'] : null;
-        $validated['PREPROMOIMP'] = isset($validated['PREPROMOIMP']) ? $validated['PREPROMOIMP'] : null;
-        $validated['PREPROMOIVA'] = isset($validated['PREPROMOIVA']) ? $validated['PREPROMOIVA'] : null;
+        $validated['PRE1IMP'] = isset($validated['PRE1IMP']) ? floatval($validated['PRE1IMP']) : null;
+        $validated['PRE1IVA'] = isset($validated['PRE1IVA']) ? floatval($validated['PRE1IVA']) : null;
+        $validated['PRE2IMP'] = isset($validated['PRE2IMP']) ? floatval($validated['PRE2IMP']) : null;
+        $validated['PRE2IVA'] = isset($validated['PRE2IVA']) ? floatval($validated['PRE2IVA']) : null;
+        $validated['PRE3IMP'] = isset($validated['PRE3IMP']) ? floatval($validated['PRE3IMP']) : null;
+        $validated['PRE3IVA'] = isset($validated['PRE3IVA']) ? floatval($validated['PRE3IVA']) : null;
+        $validated['PREPROMOIMP'] = isset($validated['PREPROMOIMP']) ? floatval($validated['PREPROMOIMP']) : null;
+        $validated['PREPROMOIVA'] = isset($validated['PREPROMOIVA']) ? floatval($validated['PREPROMOIVA']) : null;
         $validated['DATAINIZIOPROMO'] = isset($validated['DATAINIZIOPROMO']) ? $validated['DATAINIZIOPROMO'] : null;
         $validated['DATAFINEPROMO'] = isset($validated['DATAFINEPROMO']) ? $validated['DATAFINEPROMO'] : null;
         
@@ -222,34 +222,14 @@ class ProductController
         $images = [];
         // dd($validated['FOTO']);
         try {
-            if (isset($validated['FOTO'])) {
-                foreach ($request->file('FOTO') as $image) {
-                    // dd($image->getClientOriginalName());
-                    $imgName = $image->getClientOriginalName();
-                    if ($image->isValid()) {
-                        $imageData = base64_encode(file_get_contents($image->path()));
-                        $images[] = $imageData;
-                    } else {
-                        // return redirect()->route('app.dashboard.product.create')->with('error', "Something went wrong with this image- '$imgName' to save as base64")->withInput(request()->all());
-                        Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
-                            "numero" => 400,
-                            "msg" => "Something went wrong with this image",
-                            "errors" => "",
-                            "extra_msg" => ''
-                        ]]);
-                        return response()->json([
-                            "codice" => "KO",
-                            "errore" => [
-                                "numero" => 400,
-                                "msg" => "Something went wrong with this image",
-                                "errors" => "",
-                                "extra_msg" => ''
-                            ]
-                        ]);
-                    }
-                }
-                $validated['FOTO'] = json_encode($images);
-            }
+            // if (isset($validated['FOTO'])) {
+            //     $image = $request->file('FOTO');
+            //     // dd($image->getClientOriginalName());
+            //     // $imgName = $image->getClientOriginalName();
+            //     $imageData = $validated['FOTO'];
+            //     $images[] = $imageData;
+            //     $validated['FOTO'] = json_encode($images);
+            // }
             $product = Product::create($validated);
             return response()->json([
                 "codice" => "OK",
