@@ -42,21 +42,21 @@ class CategoryController
         ]);
         // dd($validated);
 
-        $parentId = null;
-        if (strlen($request->codice) > 2) {
-            $parentCode = substr($request->codice, 0, -2);
+        // $parentId = null;
+        // if (strlen($request->codice) > 2) {
+        //     $parentCode = substr($request->codice, 0, -2);
     
-            // Find the parent category
-            $parent = Category::where('codice', $parentCode)->first();
+        //     // Find the parent category
+        //     $parent = Category::where('codice', $parentCode)->first();
     
-            if (!$parent) {
-                return redirect()->route('app.dashboard.categories.create')
-                ->withErrors(['error' => "Parent category start with code '{$parentCode}' not found, Please create parent category first"])
-                ->withInput();
-            }
+        //     if (!$parent) {
+        //         return redirect()->route('app.dashboard.categories.create')
+        //         ->withErrors(['error' => "Parent category start with code '{$parentCode}' not found, Please create parent category first"])
+        //         ->withInput();
+        //     }
     
-            $parentId = $parent->id;
-        }
+        //     $parentId = $parent->id;
+        // }
 
         try {
             // Update or create category
@@ -67,8 +67,11 @@ class CategoryController
 
             Category::updateOrCreate(
                 ['codice' => $request->codice],
-                [...$validated, "parent_id"=> $parentId]
+                [...$validated]
+                // [...$validated, "parent_id"=> $parentId]
             );
+
+            
 
             return redirect()->route('app.dashboard.categories')->with('success', 'Success');
         } catch (\Exception $e) {
