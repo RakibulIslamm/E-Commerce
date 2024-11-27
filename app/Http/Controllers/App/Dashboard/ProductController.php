@@ -92,7 +92,7 @@ class ProductController
             'PESOARTICOLO' => 'nullable|numeric|min:0',
             'TAGLIA' => 'nullable|string',
             'COLORE' => 'nullable|string',
-            'PRE1IMP' => 'required|numeric|min:0',
+            'PRE1IMP' => 'required|string|min:0',
             'PRE1IVA' => 'nullable|numeric|min:0',
             'PRE2IMP' => 'nullable|numeric|min:0',
             'PRE2IVA' => 'nullable|numeric|min:0',
@@ -108,14 +108,16 @@ class ProductController
         $validated['PIUVENDUTI'] = $request->input('PIUVENDUTI', false) ? true : false;
         $validated['VISIBILE'] = $request->input('VISIBILE', true) ? true : false;
         $validated['PESOARTICOLO'] = $validated['PESOARTICOLO'] ? ['PESOARTICOLO'] : null;
-        $validated['PRE1IMP'] = $validated['PRE1IMP'] ? $validated['PRE1IMP'] : null;
-        $validated['PRE1IVA'] = $validated['PRE1IVA'] ? $validated['PRE1IVA'] : null;
-        $validated['PRE2IMP'] = $validated['PRE2IMP'] ? $validated['PRE2IMP'] : null;
-        $validated['PRE2IVA'] = $validated['PRE2IVA'] ? $validated['PRE2IVA'] : null;
-        $validated['PRE3IMP'] = $validated['PRE3IMP'] ? $validated['PRE3IMP'] : null;
-        $validated['PRE3IVA'] = $validated['PRE3IVA'] ? $validated['PRE3IVA'] : null;
-        $validated['PREPROMOIMP'] = $validated['PREPROMOIMP'] ? $validated['PREPROMOIMP'] : null;
-        $validated['PREPROMOIVA'] = $validated['PREPROMOIVA'] ? $validated['PREPROMOIVA'] : null;
+        
+        $validated['PRE1IMP'] = $validated['PRE1IMP'] ? floatval($validated['PRE1IMP']) : null;
+        $validated['PRE1IVA'] = $validated['PRE1IVA'] ? floatval($validated['PRE1IVA']) : null;
+        $validated['PRE2IMP'] = $validated['PRE2IMP'] ? floatval($validated['PRE2IMP']) : null;
+        $validated['PRE2IVA'] = $validated['PRE2IVA'] ? floatval($validated['PRE2IVA']) : null;
+        $validated['PRE3IMP'] = $validated['PRE3IMP'] ? floatval($validated['PRE3IMP']) : null;
+        $validated['PRE3IVA'] = $validated['PRE3IVA'] ? floatval($validated['PRE3IVA']) : null;
+        $validated['PREPROMOIMP'] = $validated['PREPROMOIMP'] ? floatval($validated['PREPROMOIMP']) : null;
+        $validated['PREPROMOIVA'] = $validated['PREPROMOIVA'] ? floatval($validated['PREPROMOIVA']) : null;
+
         $validated['DATAINIZIOPROMO'] = $validated['DATAINIZIOPROMO'] ? $validated['DATAINIZIOPROMO'] : null;
         $validated['DATAFINEPROMO'] = $validated['DATAFINEPROMO'] ? $validated['DATAFINEPROMO'] : null;
 
@@ -163,18 +165,18 @@ class ProductController
             'NOVITA' => 'nullable|boolean',
             'PIUVENDUTI' => 'nullable|boolean',
             'VISIBILE' => 'nullable|boolean',
-            'FOTO' => 'nullable|array|max:10',
+            'FOTO' => 'nullable|string',
             'PESOARTICOLO' => 'nullable|numeric|min:0',
             'TAGLIA' => 'nullable|string',
             'COLORE' => 'nullable|string',
-            'PRE1IMP' => 'required|numeric|min:0',
-            'PRE1IVA' => 'required|numeric|min:0',
-            'PRE2IMP' => 'nullable|numeric|min:0',
-            'PRE2IVA' => 'nullable|numeric|min:0',
-            'PRE3IMP' => 'nullable|numeric|min:0',
-            'PRE3IVA' => 'nullable|numeric|min:0',
-            'PREPROMOIMP' => 'nullable|numeric|min:0',
-            'PREPROMOIVA' => 'nullable|numeric|min:0',
+            'PRE1IMP' => 'nullable|string',
+            'PRE1IVA' => 'nullable|string',
+            'PRE2IMP' => 'nullable|string',
+            'PRE2IVA' => 'nullable|string',
+            'PRE3IMP' => 'nullable|string',
+            'PRE3IVA' => 'nullable|string',
+            'PREPROMOIMP' => 'nullable|string',
+            'PREPROMOIVA' => 'nullable|string',
             'DATAINIZIOPROMO' => 'nullable|date',
             'DATAFINEPROMO' => 'nullable|date',
         ];
@@ -205,6 +207,9 @@ class ProductController
         $validated['VISIBILE'] = $request->input('VISIBILE', true) ? true : false;
         $validated['PESOARTICOLO'] = isset($validated['PESOARTICOLO']) ? $validated['PESOARTICOLO'] : null;
         $validated['DESCRIZIONEESTESA'] = isset($validated['DESCRIZIONEESTESA']) ? $validated['DESCRIZIONEESTESA'] : "";
+
+
+        
         $validated['PRE1IMP'] = isset($validated['PRE1IMP']) ? floatval($validated['PRE1IMP']) : null;
         $validated['PRE1IVA'] = isset($validated['PRE1IVA']) ? floatval($validated['PRE1IVA']) : null;
         $validated['PRE2IMP'] = isset($validated['PRE2IMP']) ? floatval($validated['PRE2IMP']) : null;
@@ -213,23 +218,60 @@ class ProductController
         $validated['PRE3IVA'] = isset($validated['PRE3IVA']) ? floatval($validated['PRE3IVA']) : null;
         $validated['PREPROMOIMP'] = isset($validated['PREPROMOIMP']) ? floatval($validated['PREPROMOIMP']) : null;
         $validated['PREPROMOIVA'] = isset($validated['PREPROMOIVA']) ? floatval($validated['PREPROMOIVA']) : null;
+
+        // $vatRate = $request->input('ALIQUOTAIVA');
+
+        // $calculatedPrice1WithVAT = $validated['PRE1IMP'] * (1 + $vatRate / 100);
+        // $calculatedPrice2WithVAT = $validated['PRE2IMP'] * (1 + $vatRate / 100);
+        // $calculatedPrice3WithVAT = $validated['PRE3IMP'] * (1 + $vatRate / 100);
+
+        // if (round($calculatedPrice1WithVAT, 2) !== round($validated['PRE1IVA'], 2)) {
+        //     $expected = round($calculatedPrice1WithVAT, 2);
+        //     $provided = round($validated['PRE1IVA'], 2);
+        //     Log::error("Error -> (Tenant ID: {$tenant->id}): PRE1IMP and PRE1IVA mismatch", ["errore" => [
+        //         "numero" => 422,
+        //         "msg" => "PRE1IMP and PRE1IVA mismatch. Expected {$expected} but provided {$provided}",
+        //         "extra_msg" => ''
+        //     ]]);
+        //     return response()->json([
+        //         "codice" => "KO",
+        //         "errore" => [
+        //             "numero" => 422,
+        //             "msg" => "PRE1IMP and PRE1IVA mismatch. Expected {$expected} but provided {$provided}",
+        //             "extra_msg" => ''
+        //         ]
+        //     ]);
+        // }
+
         $validated['DATAINIZIOPROMO'] = isset($validated['DATAINIZIOPROMO']) ? $validated['DATAINIZIOPROMO'] : null;
         $validated['DATAFINEPROMO'] = isset($validated['DATAFINEPROMO']) ? $validated['DATAFINEPROMO'] : null;
-        
-        
-        
-        
+
+        $photo = $request->input('FOTO');
         $images = [];
-        // dd($validated['FOTO']);
+        
+        if($photo){
+            if($this->isBase64($photo)){
+                $images[] = $photo;
+                $validated['FOTO'] = json_encode($images);
+            }
+            else{
+                Log::error("Error -> (Tenant ID: {$tenant->id}): Invalid FOTO", ["errore" => [
+                    "numero" => 400,
+                    "msg" => "Invalid base64 FOTO",
+                    "extra_msg" => ''
+                ]]);
+                return response()->json([
+                    "codice" => "KO",
+                    "errore" => [
+                        "numero" => 400,
+                        "msg" => "Invalid base64 FOTO",
+                        "extra_msg" => ''
+                    ]
+                ]);
+            }
+        }
+        
         try {
-            // if (isset($validated['FOTO'])) {
-            //     $image = $request->file('FOTO');
-            //     // dd($image->getClientOriginalName());
-            //     // $imgName = $image->getClientOriginalName();
-            //     $imageData = $validated['FOTO'];
-            //     $images[] = $imageData;
-            //     $validated['FOTO'] = json_encode($images);
-            // }
             $product = Product::create($validated);
             return response()->json([
                 "codice" => "OK",
@@ -463,5 +505,18 @@ class ProductController
     {
         Product::where('id', $id)->delete();
         return redirect()->route('app.dashboard.products')->with('success', 'Product deleted');
+    }
+
+    private function isBase64($string)
+    {
+        // Check if the string matches the Base64 pattern
+        if (preg_match('/^[a-zA-Z0-9\/\r\n+]*={0,2}$/', $string)) {
+            // Attempt to decode the string
+            $decoded = base64_decode($string, true);
+
+            return $decoded !== false && base64_encode($decoded) === $string;
+        }
+
+        return false;
     }
 }
