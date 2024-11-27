@@ -127,26 +127,26 @@ class CategoryController
             }
         }
 
-        $parentId = null;
-        if (strlen($request->codice) > 2) {
-            $parentCode = substr($request->codice, 0, -2);
+        // $parentId = null;
+        // if (strlen($request->codice) > 2) {
+        //     $parentCode = substr($request->codice, 0, -2);
     
-            // Find the parent category
-            $parent = Category::where('codice', $parentCode)->first();
+        //     // Find the parent category
+        //     $parent = Category::where('codice', $parentCode)->first();
     
-            if (!$parent) {
-                return response()->json([
-                    'codice' => "KO",
-                    'errore' => [
-                        'numero' => 210,
-                        'msg' => "Parent category start with code '{$parentCode}' not found",
-                        'extra_msg' => ""
-                    ]
-                ]);
-            }
+        //     if (!$parent) {
+        //         return response()->json([
+        //             'codice' => "KO",
+        //             'errore' => [
+        //                 'numero' => 210,
+        //                 'msg' => "Parent category start with code '{$parentCode}' not found",
+        //                 'extra_msg' => ""
+        //             ]
+        //         ]);
+        //     }
     
-            $parentId = $parent->id;
-        }
+        //     $parentId = $parent->id;
+        // }
 
         
         try {
@@ -159,7 +159,8 @@ class CategoryController
 
             $category = Category::updateOrCreate(
                 ['codice' => $request->codice],
-                [...$validator->getData(), "parent_id"=> $parentId]
+                // [...$validator->getData(), "parent_id"=> $parentId]
+                [...$validator->getData()]
             );
 
             return response()->json([
