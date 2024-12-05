@@ -42,10 +42,11 @@
                                 'product' => $item,
                             ])
                         @endforeach
-                    @else
-                        <h2 class="text-gray-300 font-bold text-2xl">Nessun prodotto trovato.</h2>
                     @endif
                 </div>
+                @if ($products->isEmpty())
+                    <h2 class="text-gray-300 font-semibold text-2xl w-full py-10 text-center">Nessun prodotto trovato.</h2>
+                @endif
             </div>
 
             <div class="w-full hidden" id="list">
@@ -157,6 +158,7 @@
         const orderBy = orderByElement?.value;
         urlHref += category ? "category=" + category + '&' : "";
         urlHref += searchText ? "search=" + searchText + '&' : "";
+        urlHref += query ? "query=" + query + '&' : "";
         urlHref += limit ? "limit=" + limit + '&' : "";
         if (orderBy != 'default') {
             urlHref += orderBy ? "order_by=" + orderBy + '&' : "";
@@ -171,6 +173,7 @@
         const itemPerPage = itemPerPageElement?.value;
         urlHref += category ? "category=" + category + '&' : "";
         urlHref += searchText ? "search=" + searchText + '&' : "";
+        urlHref += query ? "query=" + query + '&' : "";
         urlHref += order_by ? "order_by=" + order_by + '&' : "";
 
         if (itemPerPage != '12') {
