@@ -2,19 +2,13 @@
 
     <div class="relative border w-[300px]">
         <img src="{{ $product->FOTO ? 'data:image/png;base64,' . $product->FOTO : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
-            alt="" class="w-full h-full object-cover object-center">
+            alt="" class="min-h-[300px] max-h-[350px] w-full h-full object-cover object-center">
 
         <div class="absolute top-3 left-0">
-            @if ($product->PIUVENDUTI and $product->NOVITA)
-                <p
-                    class="px-4 py-1 rounded-r bg-yellow-700 text-white text-xs group-hover/product:border group-hover/product:border-l-0">
-                    Best seller</p>
-            @endif
-
             @if ($product->PIUVENDUTI and !$product->NOVITA)
                 <p
                     class="px-4 py-1 rounded-r bg-yellow-700 text-white text-xs group-hover/product:border group-hover/product:border-l-0">
-                    Best seller</p>
+                    Più venduto</p>
             @endif
 
             @if (!$product->PIUVENDUTI and $product->NOVITA)
@@ -35,7 +29,7 @@
                     {{ $product['DESCRIZIONEBREVE'] }}
                 </h3>
             </a>
-            @if (tenant()->offer_display == 'View cut price')
+            @if (tenant()->offer_display === 'View cut price')
                 <div class="flex items-center gap-4">
                     @if ($product['PREPROMOIMP'])
                         <h3 class="text-lg font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
@@ -44,8 +38,8 @@
                         <h3 class="text-2xl text-gray-600 font-semibold">{{ $product['PRE1IMP'] }}€</h3>
                     @endif
                 </div>
-                @else
-                    <h3 class="text-2xl text-gray-600 font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+            @else
+                <h3 class="text-2xl text-gray-600 font-semibold">{{ $product['PRE1IMP'] }}€</h3>
             @endif
         </div>
 

@@ -94,6 +94,7 @@ if (isset($site_settings->brand_info)) {
     const params = new URLSearchParams(url.search);
     const category = params.get('category');
     const search = params.get('search');
+    const query = params.get('query');
     const order_by = params.get('order_by');
     const limit = params.get('limit');
     let urlHref = '/products?';

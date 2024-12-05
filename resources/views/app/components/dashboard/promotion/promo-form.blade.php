@@ -78,7 +78,7 @@
     </div>
     <div>
         <input type="checkbox" class="mr-2 leading-tight"
-            {{ isset($promotion['active']) and ($promotion['active'] ? 'checked' : '') }} name="active" id="active" />
+        @checked(isset($promotion['active']) && $promotion['active']) name="active" id="active" />
         <label class="text-sm" for="active">Activate The Promo</label>
     </div>
 

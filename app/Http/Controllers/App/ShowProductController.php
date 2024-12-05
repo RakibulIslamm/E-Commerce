@@ -27,6 +27,14 @@ class ShowProductController
         } else {
             $query->orderBy('created_at', 'desc');
         }
+        if(request()->filled('q')){
+            if(request()->q == 'new'){
+                $query->where('NOVITA', true);
+            }
+            else if(request()->q == 'best_seller'){
+                $query->where('PIUVENDUTI', true);
+            }
+        }
 
         // Apply search filter if provided
         if (request()->filled('search')) {

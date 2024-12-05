@@ -13,16 +13,44 @@ class IndexController
     public function index(Request $request)
     {
         $sliders = ContentSlider::orderBy('position')->get();
-        $products = Product::all();
 
-        foreach ($products as $product) {
+        // Fetch New Arrivals (limit 8)
+        $newArrivals = Product::where('NOVITA', true)
+            ->orderBy('created_at', 'desc')
+            ->limit(8)
+            ->get();
+
+        // Fetch Best Sellers (limit 8)
+        $bestSellers = Product::where('PIUVENDUTI', true)
+            ->orderBy('created_at', 'desc')
+            ->limit(8)
+            ->get();
+
+        // Decode FOTO field for New Arrivals
+        foreach ($newArrivals as $product) {
             $product['FOTO'] = json_decode($product['FOTO'], true);
             if (isset($product['FOTO'])) {
-                $product['FOTO'] = $product->FOTO[0];
+                $product['FOTO'] = $product['FOTO'][0];
             }
         }
+
+        // Decode FOTO field for Best Sellers
+        foreach ($bestSellers as $product) {
+            $product['FOTO'] = json_decode($product['FOTO'], true);
+            if (isset($product['FOTO'])) {
+                $product['FOTO'] = $product['FOTO'][0];
+            }
+        }
+
         $categories = Category::all();
         $promotion = Promotion::where('active', true)->first();
-        return view("app.pages.index", ['sliders' => $sliders, 'products' => $products, 'categories' => $categories, 'promotion' => $promotion]);
+
+        return view("app.pages.index", [
+            'sliders' => $sliders,
+            'newArrivals' => $newArrivals,
+            'bestSellers' => $bestSellers,
+            'categories' => $categories,
+            'promotion' => $promotion,
+        ]);
     }
 }
