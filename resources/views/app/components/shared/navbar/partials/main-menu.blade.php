@@ -10,7 +10,7 @@
 
                             <div class="mr-10">
                                 <button type="button" id="categories-btn" class="flex items-center gap-2 font-semibold py-2">
-                                    <x-lucide-layout-dashboard class="w-5 h-5" />Tutte le categorie
+                                    <x-lucide-layout-dashboard class="w-5 h-5" />Tutte le categorie(m)
                                     <x-ri-arrow-drop-down-fill class="w-5 h-5" />
                                 </button>
                             
