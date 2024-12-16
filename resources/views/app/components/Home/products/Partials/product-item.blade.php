@@ -104,6 +104,7 @@
                 })
             }).then(response => response.json())
             .then(data => {
+                console.log(data);
                 if (data.success) {
                     // alert('Product added to cart');
                     console.log(data);
@@ -112,6 +113,9 @@
                 renderSidebarCart();
                 renderSidebarSubtotal();
                 setCartItemCount();
-            });
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 </script>

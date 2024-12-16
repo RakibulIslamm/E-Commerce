@@ -48,7 +48,8 @@ class OrderController
 
         // Check if the total price meets the minimum order requirement
         if ($minOrder > $totalPrice) {
-            return back()->with('error', 'Your cart total does not meet the minimum order requirement of $' . number_format($minOrder, 2) . ' for any shipping method.');
+            // return back()->with('error', 'Your cart total does not meet the minimum order requirement of $' . number_format($minOrder, 2) . ' for any shipping method.');
+            return back()->with('error', "Il totale del tuo carrello non soddisfa il requisito minimo dell'ordine di €" . number_format($minOrder, 2) . " per nessun metodo di spedizione.");
         }
 
         $validShippingSettings = $shippingSettings->filter(function ($setting) use ($totalPrice) {

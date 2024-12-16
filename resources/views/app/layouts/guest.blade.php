@@ -167,10 +167,10 @@
                             <div class="sm:ml-4 flex w-full justify-between">
                                 <div>
                                     <h2 class="sm:text-lg font-bold text-sm text-gray-900 line-clamp-1">${items[item].name}</h2>
-                                    <p class="text-xs sm:text-sm ${items[item]?.stock >= 5 ? 'text-green-500' : 'text-red-500'}">Stock available ${items[item]?.stock}</p>
+                                    <p class="text-xs sm:text-sm ${items[item]?.stock >= 5 ? 'text-green-500' : 'text-red-500'}">Stock disponibile ${items[item]?.stock}</p>
                                     <div class="flex items-center space-x-6">
                                         <p id="itemPrice" class="text-xs sm:text-sm">
-                                            ${items[item]?.price ?? 0} $</p>
+                                            ${items[item]?.price ?? 0}€</p>
                                         <button onclick="handleDeleteCart(${item}, 'cart_page')" class="mb-1">
                                             <x-lucide-trash-2 class="sm:w-5 sm:h-5 w-4 h-4 text-red-500" />
                                         </button>
@@ -311,7 +311,7 @@
                     if (addToCartButtons?.length > 0) {
                         for (const button of addToCartButtons) {
                             button.removeAttribute('disabled', true);
-                            button.innerText = 'Add'
+                            button.innerText = 'Aggiungi'
                         }
                     }
                 } else {

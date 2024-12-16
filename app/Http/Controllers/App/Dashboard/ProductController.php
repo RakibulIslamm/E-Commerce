@@ -617,8 +617,6 @@ class ProductController
         $validated['DATAINIZIOPROMO'] = $validated['DATAINIZIOPROMO'] ? $validated['DATAINIZIOPROMO'] : null;
         $validated['DATAFINEPROMO'] = $validated['DATAFINEPROMO'] ? $validated['DATAFINEPROMO'] : null;
 
-        $images = [];
-
         try {
             $imagePaths = [];
             if ($request->hasFile('FOTO')) {
@@ -627,12 +625,12 @@ class ProductController
                     $path = $image->storeAs('public/uploads/products', $imgName);
                     $imagePaths[] = "uploads/products/{$imgName}";
                 }
+                $validated['FOTO'] = json_encode($imagePaths);
             }
-            $validated['FOTO'] = json_encode($imagePaths);
             $product->update($validated);
             return redirect()->route('app.dashboard.products')->with('success', 'Product updated');
         } catch (\Exception $e) {
-            return redirect()->route('app.dashboard.product.update')->with('error', $e->getMessage())->withInput(request()->all());
+            return redirect()->back()->with('error', $e->getMessage())->withInput(request()->all());
         }
 
     }

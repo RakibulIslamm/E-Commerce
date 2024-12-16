@@ -28,18 +28,18 @@ class IndexController
 
         // Decode FOTO field for New Arrivals
         foreach ($newArrivals as $product) {
-            $product['FOTO'] = json_decode($product['FOTO'], true);
             if (isset($product['FOTO'])) {
-                $product['FOTO'] = $product['FOTO'][0];
+                $product['FOTO'] = json_decode($product['FOTO'], true);
+                $product['FOTO'] = count($product['FOTO']) ? $product['FOTO'][0]:null;
             }
         }
 
         // Decode FOTO field for Best Sellers
         foreach ($bestSellers as $product) {
             $product['FOTO'] = json_decode($product['FOTO'], true);
-            dd($product['FOTO']);
             if (isset($product['FOTO'])) {
-                $product['FOTO'] = $product['FOTO'][0];
+                $product['FOTO'] = json_decode($product['FOTO'], true);
+                $product['FOTO'] = count($product['FOTO']) ? $product['FOTO'][0]:null;
             }
         }
 

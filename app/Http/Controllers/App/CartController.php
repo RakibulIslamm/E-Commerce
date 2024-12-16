@@ -111,7 +111,13 @@ class CartController
             if ($product->GIACENZA < $request->quantity) {
                 return response()->json(['success' => false, "message" => 'Items current not available in the requested quantity']);
             }
-            $product->FOTO = isset($product->FOTO) ? json_decode($product->FOTO)[0] : '';
+            
+            if (isset($product->FOTO) && is_string($product->FOTO)) {
+                $decodedFoto = json_decode($product->FOTO, true); // Decoding as associative array
+                $product->FOTO = is_array($decodedFoto) && !empty($decodedFoto) ? $decodedFoto[0] : '';
+            } else {
+                $product->FOTO = '';
+            }
 
             if (isset($cart[$product->id])) {
                 $cart[$product->id]['quantity'] = $request->quantity;
