@@ -4,9 +4,10 @@ namespace App\Http\Controllers\App;
 
 use App\Models\Cart;
 use App\Models\Product;
-use Auth;
+use App\Models\ShippingSetting;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController
 {
@@ -18,6 +19,9 @@ class CartController
         $tenant = tenant();
         $registration_process = $tenant->registration_process;
         $cart_breadcrumbs = Breadcrumbs::generate('cart');
+        $shippingSetting = ShippingSetting::with('rules')
+            ->orderBy('minimum_order', 'asc')
+            ->get()->first();
 
         if (!Auth::check() && $registration_process == 'Mandatory with confirmation') {
             return redirect()->route('app.login');
@@ -26,10 +30,10 @@ class CartController
         } else {
             if (Auth::check()) {
                 $cart_items = Cart::with('product')->where('user_id', Auth::id())->get();
-                return view('app.pages.cart.index', ['cart_items' => $cart_items, 'breadcrumbs' => $cart_breadcrumbs]);
+                return view('app.pages.cart.index', ['cart_items' => $cart_items, 'breadcrumbs' => $cart_breadcrumbs, "shipping_setting"=>$shippingSetting]);
             } else {
                 // return redirect()->route('app.login');
-                return view('app.pages.cart.index', ['cart_items' => [], 'breadcrumbs' => $cart_breadcrumbs]);
+                return view('app.pages.cart.index', ['cart_items' => [], 'breadcrumbs' => $cart_breadcrumbs, "shipping_setting"=>$shippingSetting]);
             }
         }
     }
@@ -125,7 +129,7 @@ class CartController
                 "product_id" => $product->id,
                 "name" => $product->DESCRIZIONEBREVE,
                 "quantity" => 1,
-                "price" => $product->PRE1IMP,
+                "price" => $product->PREPROMOIMP ? $product->PREPROMOIMP : $product->PRE1IMP,
                 "photo" => $product->FOTO,
                 'stock' => $product->GIACENZA,
                 'vat' => $product->ALIQUOTAIVA,

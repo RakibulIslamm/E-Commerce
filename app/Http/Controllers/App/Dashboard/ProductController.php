@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController
@@ -71,7 +72,75 @@ class ProductController
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        $validated = $request->validate([
+            'BARCODE' => 'nullable|string',
+            'DESCRIZIONEBREVE' => 'required|string',
+            'DESCRIZIONEESTESA' => 'required|string',
+            'ALIQUOTAIVA' => 'required|numeric|min:0|max:100',
+            'UNITAMISURA' => 'nullable|string|in:PZ,KG,L,CM,M',
+            'PXC' => 'nullable|integer|min:1',
+            'CODICELEGAME' => 'nullable|string',
+            'MARCA' => 'nullable|string',
+            'CATEGORIEESOTTOCATEGORIE' => 'required',
+            'GIACENZA' => 'nullable|integer|min:0',
+            'ARTICOLIALTERNATIVI' => 'nullable|string',
+            'ARTICOLICORRELATI' => 'nullable|string',
+            'NOVITA' => 'nullable|boolean',
+            'PIUVENDUTI' => 'nullable|boolean',
+            'VISIBILE' => 'nullable|boolean',
+            'FOTO' => 'nullable|array|max:10',
+            'PESOARTICOLO' => 'nullable|numeric|min:0',
+            'TAGLIA' => 'nullable|string',
+            'COLORE' => 'nullable|string',
+            'PRE1IMP' => 'required|string|min:0',
+            'PRE1IVA' => 'nullable|numeric|min:0',
+            'PRE2IMP' => 'nullable|numeric|min:0',
+            'PRE2IVA' => 'nullable|numeric|min:0',
+            'PRE3IMP' => 'nullable|numeric|min:0',
+            'PRE3IVA' => 'nullable|numeric|min:0',
+            'PREPROMOIMP' => 'nullable|numeric|min:0',
+            'PREPROMOIVA' => 'nullable|numeric|min:0',
+            'DATAINIZIOPROMO' => 'nullable|date',
+            'DATAFINEPROMO' => 'nullable|date',
+        ]);
+
+        $validated['NOVITA'] = $request->input('NOVITA', false) ? true : false;
+        $validated['PIUVENDUTI'] = $request->input('PIUVENDUTI', false) ? true : false;
+        $validated['VISIBILE'] = $request->input('VISIBILE', true) ? true : false;
+        $validated['PESOARTICOLO'] = $validated['PESOARTICOLO'] ? ['PESOARTICOLO'] : null;
+        
+        $validated['PRE1IMP'] = $validated['PRE1IMP'] ? floatval($validated['PRE1IMP']) : null;
+        $validated['PRE1IVA'] = $validated['PRE1IVA'] ? floatval($validated['PRE1IVA']) : null;
+        $validated['PRE2IMP'] = $validated['PRE2IMP'] ? floatval($validated['PRE2IMP']) : null;
+        $validated['PRE2IVA'] = $validated['PRE2IVA'] ? floatval($validated['PRE2IVA']) : null;
+        $validated['PRE3IMP'] = $validated['PRE3IMP'] ? floatval($validated['PRE3IMP']) : null;
+        $validated['PRE3IVA'] = $validated['PRE3IVA'] ? floatval($validated['PRE3IVA']) : null;
+        $validated['PREPROMOIMP'] = $validated['PREPROMOIMP'] ? floatval($validated['PREPROMOIMP']) : null;
+        $validated['PREPROMOIVA'] = $validated['PREPROMOIVA'] ? floatval($validated['PREPROMOIVA']) : null;
+
+        $validated['DATAINIZIOPROMO'] = $validated['DATAINIZIOPROMO'] ? $validated['DATAINIZIOPROMO'] : null;
+        $validated['DATAFINEPROMO'] = $validated['DATAFINEPROMO'] ? $validated['DATAFINEPROMO'] : null;
+        
+
+        try {
+            $imagePaths = [];
+            if ($request->hasFile('FOTO')) {
+                foreach ($request->file('FOTO') as $image) {
+                    $imgName = uniqid('product_') . '.png';$image->getClientOriginalName();
+                    $path = $image->storeAs('public/uploads/products', $imgName);
+                    $imagePaths[] = "uploads/products/{$imgName}";
+                }
+            }
+            $validated['FOTO'] = json_encode($imagePaths);
+            
+            Product::create($validated);
+            return redirect()->route('app.dashboard.products')->with('success', 'Product added');
+        } catch (\Exception $e) {
+            return redirect()->route('app.dashboard.product.create')->with('error', $e->getMessage())->withInput(request()->all());
+        }
+    }
+    /* public function store(Request $request)
+    {
         $validated = $request->validate([
             'BARCODE' => 'nullable|string',
             'DESCRIZIONEBREVE' => 'required|string',
@@ -143,9 +212,139 @@ class ProductController
         } catch (\Exception $e) {
             return redirect()->route('app.dashboard.product.create')->with('error', $e->getMessage())->withInput(request()->all());
         }
-    }
+    } */
 
     public function store_api(Request $request)
+    {
+        // dd($request->all('FOTO'));
+
+        $rules = [
+            'BARCODE' => 'nullable|string',
+            'DESCRIZIONEBREVE' => 'required|string',
+            'DESCRIZIONEESTESA' => 'nullable|string',
+            'ALIQUOTAIVA' => 'required|numeric|min:0|max:100',
+            'UNITAMISURA' => 'nullable|string|in:PZ,KG,L,CM,M',
+            'PXC' => 'nullable|integer|min:1',
+            'CODICELEGAME' => 'nullable|string',
+            'MARCA' => 'nullable|string',
+            'CATEGORIEESOTTOCATEGORIE' => 'required',
+            'GIACENZA' => 'nullable|integer|min:0',
+            'ARTICOLIALTERNATIVI' => 'nullable|string',
+            'ARTICOLICORRELATI' => 'nullable|string',
+            'NOVITA' => 'nullable|boolean',
+            'PIUVENDUTI' => 'nullable|boolean',
+            'VISIBILE' => 'nullable|boolean',
+            'FOTO' => 'nullable|string',
+            'PESOARTICOLO' => 'nullable|numeric|min:0',
+            'TAGLIA' => 'nullable|string',
+            'COLORE' => 'nullable|string',
+            'PRE1IMP' => 'nullable|string',
+            'PRE1IVA' => 'nullable|string',
+            'PRE2IMP' => 'nullable|string',
+            'PRE2IVA' => 'nullable|string',
+            'PRE3IMP' => 'nullable|string',
+            'PRE3IVA' => 'nullable|string',
+            'PREPROMOIMP' => 'nullable|string',
+            'PREPROMOIVA' => 'nullable|string',
+            'DATAINIZIOPROMO' => 'nullable|date',
+            'DATAFINEPROMO' => 'nullable|date',
+        ];
+
+        $tenant = tenant();
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            Log::error("Error -> (Tenant ID: {$tenant->id}): Validation failed", ["errore" => [
+                "numero" => 400,
+                "msg" => "Validation failed",
+                "errors" => $validator->errors(),
+                "extra_msg" => ''
+            ]]);
+            return response()->json([
+                "codice" => "KO",
+                "errore" => [
+                    "numero" => 400,
+                    "msg" => "Validation failed",
+                    "errors" => $validator->errors(),
+                    "extra_msg" => ''
+                ]
+            ]);
+        }
+        
+        $validated = $validator->validated();
+        $validated['NOVITA'] = $request->input('NOVITA', false) ? true : false;
+        $validated['PIUVENDUTI'] = $request->input('PIUVENDUTI', false) ? true : false;
+        $validated['VISIBILE'] = $request->input('VISIBILE', true) ? true : false;
+        $validated['PESOARTICOLO'] = isset($validated['PESOARTICOLO']) ? $validated['PESOARTICOLO'] : null;
+        $validated['DESCRIZIONEESTESA'] = isset($validated['DESCRIZIONEESTESA']) ? $validated['DESCRIZIONEESTESA'] : "";
+
+
+        
+        $validated['PRE1IMP'] = isset($validated['PRE1IMP']) ? floatval($validated['PRE1IMP']) : null;
+        $validated['PRE1IVA'] = isset($validated['PRE1IVA']) ? floatval($validated['PRE1IVA']) : null;
+        $validated['PRE2IMP'] = isset($validated['PRE2IMP']) ? floatval($validated['PRE2IMP']) : null;
+        $validated['PRE2IVA'] = isset($validated['PRE2IVA']) ? floatval($validated['PRE2IVA']) : null;
+        $validated['PRE3IMP'] = isset($validated['PRE3IMP']) ? floatval($validated['PRE3IMP']) : null;
+        $validated['PRE3IVA'] = isset($validated['PRE3IVA']) ? floatval($validated['PRE3IVA']) : null;
+        $validated['PREPROMOIMP'] = isset($validated['PREPROMOIMP']) ? floatval($validated['PREPROMOIMP']) : null;
+        $validated['PREPROMOIVA'] = isset($validated['PREPROMOIVA']) ? floatval($validated['PREPROMOIVA']) : null;
+
+        $validated['DATAINIZIOPROMO'] = isset($validated['DATAINIZIOPROMO']) ? $validated['DATAINIZIOPROMO'] : null;
+        $validated['DATAFINEPROMO'] = isset($validated['DATAFINEPROMO']) ? $validated['DATAFINEPROMO'] : null;
+
+        $photo = $request->input('FOTO');
+        $imagePaths = [];
+        
+        if($photo){
+            if($this->isBase64($photo)){
+                $decodedImage = base64_decode($photo);
+                $filename = uniqid('product_') . '.png';
+                $filePath = "uploads/products/{$filename}";
+                Storage::disk('public')->put($filePath, $decodedImage);
+                $imagePaths[] = $filePath;
+            }
+            else{
+                Log::error("Error -> (Tenant ID: {$tenant->id}): Invalid FOTO", ["errore" => [
+                    "numero" => 400,
+                    "msg" => "Invalid base64 FOTO",
+                    "extra_msg" => ''
+                ]]);
+                return response()->json([
+                    "codice" => "KO",
+                    "errore" => [
+                        "numero" => 400,
+                        "msg" => "Invalid base64 FOTO",
+                        "extra_msg" => ''
+                    ]
+                ]);
+            }
+        }
+        $validated['FOTO'] = json_encode($imagePaths);
+        try {
+            $product = Product::create($validated);
+            $product->FOTO = json_decode($product->FOTO);
+            return response()->json([
+                "codice" => "OK",
+                "articolo" => $product,
+                "numero"=> 201
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
+                    "numero" => $e->getCode(),
+                    "msg" => $e->getMessage(),
+                    "extra_msg" => ''
+                ]]);
+            return response()->json([
+                "codice" => "KO",
+                "errore" => [
+                    "numero" => $e->getCode(),
+                    "msg" => $e->getMessage(),
+                    "extra_msg" => ''
+                ]
+            ]);
+        }
+    }
+    
+    /* public function store_api(Request $request)
     {
         // dd($request->all('FOTO'));
 
@@ -293,7 +492,7 @@ class ProductController
                 ]
             ]);
         }
-    }
+    } */
 
     public function articolo_esistente(Request $request)
     {
@@ -421,18 +620,15 @@ class ProductController
         $images = [];
 
         try {
-            if (isset($validated['FOTO'])) {
+            $imagePaths = [];
+            if ($request->hasFile('FOTO')) {
                 foreach ($request->file('FOTO') as $image) {
-                    $imgName = $image->getClientOriginalName();
-                    if ($image->isValid()) {
-                        $imageData = base64_encode(file_get_contents($image->path()));
-                        $images[] = $imageData;
-                    } else {
-                        return redirect()->route('app.dashboard.product.create')->with('error', "Something went wrong with this image- '$imgName' to save as base64")->withInput(request()->all());
-                    }
+                    $imgName = uniqid('product_') . '.png';$image->getClientOriginalName();
+                    $path = $image->storeAs('public/uploads/products', $imgName);
+                    $imagePaths[] = "uploads/products/{$imgName}";
                 }
-                $validated['FOTO'] = json_encode($images);
             }
+            $validated['FOTO'] = json_encode($imagePaths);
             $product->update($validated);
             return redirect()->route('app.dashboard.products')->with('success', 'Product updated');
         } catch (\Exception $e) {
@@ -492,6 +688,39 @@ class ProductController
         $validated['PREPROMOIVA'] = $validated['PREPROMOIVA'] ? $validated['PREPROMOIVA'] : null;
         $validated['DATAINIZIOPROMO'] = $validated['DATAINIZIOPROMO'] ? $validated['DATAINIZIOPROMO'] : null;
         $validated['DATAFINEPROMO'] = $validated['DATAFINEPROMO'] ? $validated['DATAFINEPROMO'] : null;
+
+        $photo = $request->input('FOTO');
+        $imagePaths = [];
+
+        $tenant = tenant();
+        
+        if($photo){
+            if($this->isBase64($photo)){
+                $decodedImage = base64_decode($photo);
+                $filename = uniqid('product_') . '.png';
+                $filePath = "uploads/products/{$filename}";
+                Storage::disk('public')->put($filePath, $decodedImage);
+                $imagePaths[] = $filePath;
+            }
+            else{
+                Log::error("Error -> (Tenant ID: {$tenant->id}): Invalid FOTO", ["errore" => [
+                    "numero" => 400,
+                    "msg" => "Invalid base64 FOTO",
+                    "extra_msg" => ''
+                ]]);
+                return response()->json([
+                    "codice" => "KO",
+                    "errore" => [
+                        "numero" => 400,
+                        "msg" => "Invalid base64 FOTO",
+                        "extra_msg" => ''
+                    ]
+                ]);
+            }
+        }
+        $validated['FOTO'] = json_encode($imagePaths);
+
+        
 
         $product->update($validated);
 

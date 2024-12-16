@@ -36,6 +36,7 @@ class Order extends Model
         'note',
         'corriere',
         'nuovi',
+        'cod_fee'
     ];
 
     public function order_items()

@@ -37,6 +37,7 @@ class IndexController
         // Decode FOTO field for Best Sellers
         foreach ($bestSellers as $product) {
             $product['FOTO'] = json_decode($product['FOTO'], true);
+            dd($product['FOTO']);
             if (isset($product['FOTO'])) {
                 $product['FOTO'] = $product['FOTO'][0];
             }

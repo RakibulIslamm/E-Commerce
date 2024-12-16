@@ -6,6 +6,7 @@ use App\Models\AvailableLocation;
 use App\Models\Location;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ShippingSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,19 +26,43 @@ class OrderController
     public function create(Request $request)
     {
         $cart = session()->get('cart', []);
-
+        
         if (count($cart) < 1) {
             return redirect('/cart');
         }
+        $totalPrice = 0;
+        foreach ($cart as $item) {
+            $totalPrice += $item['price'] * $item['quantity'];
+        }
+
+        // Get the shipping settings along with the rules
+        $shippingSettings = ShippingSetting::with('rules')
+            ->orderBy('minimum_order', 'asc')
+            ->get();
+
+        if ($shippingSettings->isEmpty()) {
+            return back()->with('error', 'Something went wrong, No shipping method found, Please try again later.');
+        }
+
+        $minOrder = $shippingSettings->first()->minimum_order;
+
+        // Check if the total price meets the minimum order requirement
+        if ($minOrder > $totalPrice) {
+            return back()->with('error', 'Your cart total does not meet the minimum order requirement of $' . number_format($minOrder, 2) . ' for any shipping method.');
+        }
+
+        $validShippingSettings = $shippingSettings->filter(function ($setting) use ($totalPrice) {
+            return $setting->minimum_order <= $totalPrice;
+        });
 
         $proceed = $request->input('proceed') ?? null;
         if (!Auth::check()) {
             if ($proceed == 'proceed-checkout') {
-                return view("app.pages.checkout.index");
+                return view("app.pages.checkout.index", ["shipping_settings"=>$shippingSettings]);
             }
             return view("app.pages.checkout.login-or-register");
         }
-        return view("app.pages.checkout.index");
+        return view("app.pages.checkout.index", ["shipping_settings"=>$validShippingSettings]);
     }
 
     /**
@@ -66,8 +91,9 @@ class OrderController
             'pagamento' => 'nullable|boolean', // payment
             'totale_netto' => 'nullable|numeric', // total
             'totale_iva' => 'nullable|numeric', // total vat
-            'promotion_id' => 'nullable|numeric',
             'spese_spedizione' => 'nullable|numeric', // Shipping costs
+            'cod_fee' => 'nullable|numeric', // Cash on delivery fee
+            'promotion_id' => 'nullable|numeric',
             'nominativo_spedizione' => 'nullable|string', // shipping name
             'telefono_spedizione' => 'nullable|string', // telephone
             'ragione_sociale_spedizione' => 'nullable|string', // shipping company name
@@ -79,7 +105,20 @@ class OrderController
             'corriere' => 'nullable|string', // courier
             'note' => 'nullable|string',
         ]);
-        
+
+
+        $total = 0;
+        $vat = 0 ;
+        foreach ($cart as $item) {
+            $item_total = $item['price'] * $item['quantity'];
+            $item_vat = ($item['price'] * $item['vat'] / 100) * $item['quantity'];
+            
+            $total += $item_total;
+            $vat += $item_vat;
+        }
+        $validate['totale_netto'] = $total;
+        $validate['totale_iva'] = $vat;
+
         $postal = $validate['cap'];
         $city = $validate['citta'];
         $province = $validate['provincia'];
@@ -133,7 +172,7 @@ class OrderController
                     "GIACENZA" => $product->GIACENZA - $item['quantity']
                 ]);
             }
-            $order->load('order_items');
+            $order->load('order_items.product');
             session()->forget('cart');
             return redirect()->route('app.confirm-order')->with('order', $order)->with('success', true);
         } catch (\Exception $e) {
@@ -158,8 +197,17 @@ class OrderController
      */
     public function show(Order $order)
     {
-        //
+        try {
+            // Correct eager loading when retrieving the order from the database
+            $order = Order::with('order_items.product')->findOrFail($order->id);
+            
+            return view("app.pages.my-account.show-order", ["order" => $order]);
+        } catch (\Exception $e) {
+            // Handle the exception (optional: log the error, return a meaningful response, etc.)
+            // Example: return redirect()->route('app.confirm-order')->with('message', "Internal Server Error")->with('success', false);
+        }
     }
+
 
     /**
      * Show the form for editing the specified resource.

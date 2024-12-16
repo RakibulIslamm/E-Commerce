@@ -1,11 +1,11 @@
-@section('title', 'My Account')
+@section('title', 'Il mio account')
 <x-app-guest-layout>
-    <x-page-layout :props="['title' => 'My account']">
+    <x-page-layout :props="['title' => 'Il mio account']">
         <x-my-account-layout>
 
             <div class="p-3">
                 <h1 class="text-xl text-gray-400">Benvenuto <span
-                        class="text-2xl text-gray-600 font-semibold">{{ $user->name }}</span>
+                        class="text-2xl text-gray-600 font-semibold">{{ $user->name ?? 'Utente sconosciuto' }}</span>
                 </h1>
                 <form action="{{ route('app.logout') }}" method="post">
                     @csrf

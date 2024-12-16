@@ -1,7 +1,7 @@
 <div class="flex items-start gap-5 w-full">
 
     <div class="relative border w-[300px]">
-        <img src="{{ $product->FOTO ? 'data:image/png;base64,' . $product->FOTO : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
+        <img src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
             alt="" class="min-h-[300px] max-h-[350px] w-full h-full object-cover object-center">
 
         <div class="absolute top-3 left-0">
