@@ -1,12 +1,18 @@
+@php
+    $tenant = tenant();
+    $brand_title = $tenant->brand_info['name'] ? $tenant->brand_info['name'] : '';
+    // dd($tenant)
+@endphp
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
+    <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name') }} @yield('title')</title>
+    {{-- @dd($tenant->brand_info['name']) --}}
+    
+    <title>@yield('title') | {{ $brand_title ?? config('app.name') }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.bubble.css" rel="stylesheet" />
@@ -54,7 +60,7 @@
         setCartItemCount();
     }
 
-    getCart([renderSidebarCart, renderSidebarSubtotal]);
+    getCart();
 
     function renderSidebarCart() {
         cartContainer.innerHTML = '';
@@ -70,8 +76,8 @@
                     button.innerText = 'Aggiungi'
                 }
             }
-
-            const FOTO = items[item]?.photo ? "data:image/png;base64," + items[item].photo :
+            const url = @json(tenant_asset(''))+'/'+items[item]?.photo;
+            const FOTO = items[item]?.photo ? url :
                 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png'
 
             cartItem.innerHTML = `
@@ -141,7 +147,6 @@
         if (!cartPageContainer) return
         cartPageContainer.innerHTML = '';
         const items = window.all_cart;
-        console.log(items);
 
         if (!Object?.keys(window?.all_cart)?.length) {
             cartItemHtml = `
@@ -152,7 +157,8 @@
         }
 
         for (const item in items) {
-            const FOTO = items[item]?.photo ? "data:image/png;base64," + items[item].photo :
+            const url = @json(tenant_asset(''))+'/'+items[item]?.photo;
+            const FOTO = items[item]?.photo ? url :
                 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png'
             const cartItemHtml = `
                         <div class="flex items-center gap-3">
@@ -161,10 +167,10 @@
                             <div class="sm:ml-4 flex w-full justify-between">
                                 <div>
                                     <h2 class="sm:text-lg font-bold text-sm text-gray-900 line-clamp-1">${items[item].name}</h2>
-                                    <p class="text-xs sm:text-sm ${items[item]?.stock >= 5 ? 'text-green-500' : 'text-red-500'}">Stock available ${items[item]?.stock}</p>
+                                    <p class="text-xs sm:text-sm ${items[item]?.stock >= 5 ? 'text-green-500' : 'text-red-500'}">Stock disponibile ${items[item]?.stock}</p>
                                     <div class="flex items-center space-x-6">
                                         <p id="itemPrice" class="text-xs sm:text-sm">
-                                            ${items[item]?.price ?? 0} $</p>
+                                            ${items[item]?.price ?? 0}€</p>
                                         <button onclick="handleDeleteCart(${item}, 'cart_page')" class="mb-1">
                                             <x-lucide-trash-2 class="sm:w-5 sm:h-5 w-4 h-4 text-red-500" />
                                         </button>
@@ -305,7 +311,7 @@
                     if (addToCartButtons?.length > 0) {
                         for (const button of addToCartButtons) {
                             button.removeAttribute('disabled', true);
-                            button.innerText = 'Add'
+                            button.innerText = 'Aggiungi'
                         }
                     }
                 } else {

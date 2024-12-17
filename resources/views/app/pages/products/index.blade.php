@@ -1,4 +1,5 @@
 @section('title', 'Products')
+{{-- @dd($products) --}}
 <x-app-guest-layout>
     {{-- @dd($breadcrumbs) --}}
     <x-page-layout :props="['breadcrumbs' => $breadcrumbs, 'title' => 'Shop']">

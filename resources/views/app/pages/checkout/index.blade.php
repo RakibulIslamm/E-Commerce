@@ -1,6 +1,7 @@
+{{-- @dd($shipping_settings) --}}
 <x-app-checkout-layout>
     <form action="{{ route('app.place-order') }}" method="POST"
-        class="flex items-start justify-between py-10 px-5 sm:px-10 lg:px-20">
+        class="flex items-start justify-between py-10 px-5 sm:px-10 lg:px-20" onsubmit="disableSubmitButton()">
         @csrf
         <div class="flex-1">
             <div>
@@ -132,11 +133,32 @@
                 </div>
             </div>
             <hr class="my-6">
+        </div>
 
+
+        <div class="flex-1 px-10">
             <div>
-                <label for="spedizione" class="block text-lg font-medium text-gray-900 mb-2">Spedizione</label>
-                <div class="flex justify-between gap-3">
-                    <div class="relative w-full ">
+                <label for="spedizione" class="block text-lg font-medium text-gray-900 mb-2">Courier</label>
+                <div class="grid grid-cols-2 gap-3">
+                    @if (isset($shipping_settings))
+                        @foreach ($shipping_settings as $index => $item)
+                            <div class="relative w-full ">
+                                <input type="radio" name="spedizione" value="{{$item->courier}}" id="shipping_{{$item->courier}}"
+                                    class="hidden checked:block absolute top-4 right-4 peer/{{$item->courier}}" 
+                                    {{$index === 0 ? 'checked' : ''}} required>
+                                <div class="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition peer-checked/{{$item->courier}}:border-blue-500 peer-checked/{{$item->courier}}:shadow">
+                                    <label for="shipping_{{$item->courier}}" class="block w-full cursor-pointer">
+                                        <span class="block text-lg font-semibold">{{$item->courier}}</span>
+                                        {{-- <span class="block text-sm text-gray-500"><b>Cash on delivery fee:</b> {{$item->cod_fee}}€</span> --}}
+                                        <span class="block text-sm text-gray-500"><b>Vat:</b> {{$item->vat_rate}}%</span>
+                                    </label>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <p>Not found</p>
+                    @endif
+                    {{-- <div class="relative w-full ">
                         <input type="radio" name="spedizione" value="standard" id="shipping_standard"
                             class="hidden checked:block absolute top-4 right-4 peer/standard" checked required>
                         <div
@@ -161,13 +183,10 @@
                                 <span class="block mt-2 text-lg font-medium">16.00</span>
                             </label>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
-
-        </div>
-        <div class="flex-1 px-10">
-            <h2 class="text-xl">Order summary</h2>
+            <h2 class="text-xl mt-5">Order summary</h2>
             <div class="mt-4 bg-white p-10 rounded-lg shadow-md space-y-10">
                 <div id="items-container">
                     <div class="flex justify-between items-center">
@@ -220,9 +239,19 @@
                     <div>
                         <div class="flex justify-between items-center text-gray-600">
                             <p>Spedizione</p>
-                            <p id="shipping_cost">5.00€</p>
+                            <p id="shipping_cost"></p>
                             <input type="text" name="spese_spedizione" id="shipping_cost_input" class=" sr-only"
-                                value="5">
+                                value="">
+                        </div>
+                        <hr class="my-3">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center text-gray-600">
+                            <p>Tassa di pagamento in contrassegno</p>
+                            <p id="cod_fee"></p>
+                            <input type="text" name="cod_fee" id="cod_fee_input" class=" sr-only"
+                                value="0">
                         </div>
                         <hr class="my-3">
                     </div>
@@ -243,7 +272,7 @@
                     </div>
                 </div>
             </div>
-            <button class="px-10 py-3 rounded-lg border w-full mt-4 bg-slate-800 text-white">Effettuare l'ordine</button>
+            <button class="px-10 py-3 rounded-lg border w-full mt-4 bg-slate-800 text-white" id="order_submit_btn">Effettuare l'ordine</button>
 
             @error('cap_not_available')
                 <h3 class="text-red-500 text-xl font-bold my-3">{{ $message }}</h3>
@@ -252,20 +281,55 @@
     </form>
 
     <script>
+        function disableSubmitButton() {
+            // Disable the submit button to prevent double-clicks
+            var submitButton = document.getElementById('order_submit_btn');
+            submitButton.disabled = true;
+            submitButton.innerText = 'Processing...';
+        }
+
+        let grandTotal = {{ $grand_total }};
+        let total = {{ $total }};
+        document.getElementById('grand_total').innerText = `${grandTotal.toFixed(2)}€`;
+
+        const shippings = @json($shipping_settings) || [];
         document.querySelectorAll('input[name="spedizione"]').forEach(function(radio) {
             radio.addEventListener('change', function() {
-                let shippingCost = this.value === 'express' ? 16.00 : 5.00;
-                document.getElementById('shipping_cost').innerText = `${shippingCost.toFixed(2)}`;
+                const shipping = shippings.find(item=> item.courier === this.value)
+                const vatRate = parseFloat(shipping.vat_rate)/100;
+                let shippingCost = 0;
+                const cod_fee = parseInt(shipping.cod_fee);
+                // rules currently static only for italy 
+                const rules = shipping?.rules?.filter(item => item.zone === 'italy')
+
+                for(const rule of rules){
+                    if(parseFloat(total) < parseInt(rule?.threshold)){
+                        shippingCost = parseFloat(parseInt(rule.fee)*(1+vatRate));
+                    }
+                }
+
+                document.getElementById('shipping_cost').innerText = `${shippingCost.toFixed(2) > 0 ? `${shippingCost.toFixed(2)}€` : "Free shipping"}`;
+
                 document.getElementById('shipping_cost_input').value = parseFloat(
                     `${shippingCost.toFixed(2)}`);
-                let total = {{ $grand_total }} + shippingCost;
-                document.getElementById('grand_total').innerText = `$${total.toFixed(2)}`;
+                    
+                document.getElementById('cod_fee').innerText = `${cod_fee}€`;
+
+                document.getElementById('cod_fee_input').value = parseFloat(
+                    `${cod_fee}`);
+
+                grandTotal = {{ $grand_total }} + shippingCost + cod_fee;
+                document.getElementById('grand_total').innerText = `${grandTotal.toFixed(2)}€`;
             });
         });
 
-        // default
-        let total = {{ $grand_total }} + 5;
-        document.getElementById('grand_total').innerText = `${total.toFixed(2)}€`;
+        document.addEventListener('DOMContentLoaded', function () {
+            const firstShipping = document.querySelector('input[name="spedizione"]:first-child');
+            if (firstShipping) {
+                firstShipping.checked = true;
+                firstShipping.dispatchEvent(new Event('change'));
+            }
+        });
 
 
 
@@ -335,10 +399,6 @@
                 timeout = setTimeout(() => func.apply(context, args), delay);
             };
         }
-
-
-
-
 
         const itemsContainer = document.getElementById('items-container');
         // getCart()

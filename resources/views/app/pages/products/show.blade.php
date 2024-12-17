@@ -13,7 +13,7 @@
                         @if (isset($product->FOTO))
                             @foreach ($product->FOTO as $img)
                                 <div class="swiper-slide">
-                                    <img class="w-full border float-right" src="{{ 'data:image/png;base64,' . $img }}"
+                                    <img class="w-full border float-right" src="{{ tenant_asset($img) }}"
                                         alt="">
                                 </div>
                             @endforeach
@@ -33,7 +33,7 @@
                         @if (isset($product->FOTO))
                             @foreach ($product->FOTO as $img)
                                 <div class="swiper-slide w-20">
-                                    <img class="w-full border" src="{{ 'data:image/png;base64,' . $img }}"
+                                    <img class="w-full border" src="{{ tenant_asset($img) }}"
                                         alt="">
                                 </div>
                             @endforeach

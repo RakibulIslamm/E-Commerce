@@ -35,7 +35,7 @@
             <div id="image-preview" class="flex flex-wrap gap-2 mt-3">
                 {{-- @dd($product['FOTO']) --}}
                 @foreach (old('FOTO', $product['FOTO'] ?? []) as $img)
-                    <img class="w-20 h-20 object-cover border rounded-md" src="{{ 'data:image/png;base64,' . $img }}"
+                    <img class="w-20 h-20 object-cover border rounded-md" src="{{ tenant_asset($img) }}"
                         alt="">
                 @endforeach
             </div>

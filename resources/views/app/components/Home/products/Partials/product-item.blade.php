@@ -4,8 +4,8 @@
         <div
             class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent to-70% opacity-60 group-hover/product:opacity-100 group-hover/product:to-[#00000049] transition-opacity ease-in-out duration-300">
         </div>
-        <img src="{{ $product->FOTO ? 'data:image/png;base64,' . $product->FOTO : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
-            alt="" class="min-h-[300px] max-h-[350px] w-full object-cover object-center">
+        <img src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
+            alt="" class="h-[300px] w-full object-cover object-center">
         <div class=" absolute top-0 left-0 w-full h-full flex flex-col justify-between items-center">
             <div class="w-full flex items-center justify-between mt-3">
                 @if ($product->PIUVENDUTI and $product->NOVITA)
@@ -104,6 +104,7 @@
                 })
             }).then(response => response.json())
             .then(data => {
+                console.log(data);
                 if (data.success) {
                     // alert('Product added to cart');
                     console.log(data);
@@ -112,6 +113,9 @@
                 renderSidebarCart();
                 renderSidebarSubtotal();
                 setCartItemCount();
-            });
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
     }
 </script>

@@ -111,14 +111,14 @@
                     <p class="text-sm leading-4">Cambiare la password</p>
                 </a>
 
-                <a href="#"
-                    class="flex justify-start items-center gap-2 {{ Request::is('dashboard/options/shipping-data') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
+                <a href="{{ route('app.shipping-settings') }}"
+                    class="flex justify-start items-center gap-2 {{ Request::is('dashboard/options/shipping-settings') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
                     <x-lucide-map-pinned class="w-5 h-5" />
                     <p class="text-sm leading-4">Dati di spedizione</p>
                 </a>
 
                 <a href="{{ route('app.cap') }}"
-                    class="flex justify-start items-center gap-2 {{ Request::is('dashboard/options/restricted-area') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
+                    class="flex justify-start items-center gap-2 {{ Request::is('dashboard/options/cap') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 hover:text-gray-100 rounded px-3 py-2 w-full my-2">
                     <x-lucide-map-pin-off class="w-5 h-5" />
                     <p class="text-sm leading-4">Limitazioni per il CAP</p>
                 </a>

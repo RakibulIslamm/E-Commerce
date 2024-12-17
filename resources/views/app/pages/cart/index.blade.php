@@ -1,7 +1,14 @@
 @section('title', 'Shopping Cart')
+{{-- @dd($shipping_setting) --}}
 <x-app-guest-layout>
 
     <x-page-layout :props="['title' => 'Shopping Cart', 'breadcrumbs' => $breadcrumbs]">
+        <p class="font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10">Limite minimo di ordine: {{$shipping_setting->minimum_order}}€</p>
+        @if (session('error'))
+        <div class="bg-red-100 text-red-700 border-l-4 border-red-500 p-2 mb-4">
+            <strong>{{ session('error') }}</strong>
+        </div>
+        @endif
         <div class="flex items-start lg:flex-row flex-col gap-4">
             <div class="lg:flex-1 w-full" id="cart-page-container">
                 <p class="hidden text-3xl font-bold text-gray-300" id="cart-page-loading">Loading...</p>
@@ -34,14 +41,8 @@
                     $cart = session()->get('cart');
                 @endphp
                 @if (isset($cart) and count($cart) > 0)
-                    {{-- <form action="{{ route('app.checkout') }}" method="POST">
-                        @csrf
-                        <button
-                            class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600">Check
-                            out</button>
-                    </form> --}}
                     <a href="/cart/checkout"
-                    class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600">Procedi</a>
+                    class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600" id="proceed-to-checkout-btn">Procedi</a>
                 @else
                     <button disabled
                         class="block mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 text-center hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-900 cursor-not-allowed">Procedi</button>

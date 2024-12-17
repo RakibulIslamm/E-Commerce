@@ -1,3 +1,7 @@
+@php
+    $tenant = tenant();
+    $brand_title = $tenant->brand_info['name'] ? $tenant->brand_info['name'] : '';
+@endphp
 @props(['title'])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -7,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name') }} @yield('title')</title>
+    <title>@yield('title') | {{ $brand_title ?? config('app.name') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.bubble.css" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])

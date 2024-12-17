@@ -63,9 +63,9 @@ class ShowProductController
 
         // Process product images
         foreach ($products as $product) {
-            $product['FOTO'] = json_decode($product['FOTO'], true);
             if (isset($product['FOTO'])) {
-                $product['FOTO'] = $product['FOTO'][0];
+                $product['FOTO'] = json_decode($product['FOTO'], true);
+                $product['FOTO'] = count($product['FOTO']) ? $product['FOTO'][0]:null;
             }
         }
 

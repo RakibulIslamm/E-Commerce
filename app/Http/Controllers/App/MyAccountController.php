@@ -4,8 +4,8 @@ namespace App\Http\Controllers\App;
 
 use App\Models\Order;
 use App\Models\User;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MyAccountController
 {
