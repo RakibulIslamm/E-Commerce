@@ -39,7 +39,6 @@ class UpdateBase64ToUrlPath extends Command
                         
                         if (is_array($photos)) {
                             foreach ($photos as $base64) {
-                                $this->info("Inside");
                                 if ($this->isBase64($base64)) {
                                     $decodedImage = base64_decode($base64);
 
