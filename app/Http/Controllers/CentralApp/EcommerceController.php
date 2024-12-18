@@ -96,12 +96,18 @@ class EcommerceController extends Controller
 
         $full_domain = $validatedData['domain'];
         $domain_name = strtok($full_domain, ".");
+        $brand_info = [
+            "logo_height" => "56",
+            "name" => "",
+            "tagline" => "",
+            "description" => ""
+        ];
 
         try {
             // Creating plesk db for tenant
             $this->plesk->createDatabase($full_domain, 'mysql', 'asefecommerce.space', 40, 1);
 
-            $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain]);
+            $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain, 'brand_info'=> $brand_info]);
 
             $tenant->domains()->create([
                 'domain' => $domain_name . '.' . config('app.domain')

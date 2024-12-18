@@ -1,7 +1,9 @@
 @php
     $tenant = tenant();
-    $brand_title = $tenant->brand_info['name'] ? $tenant->brand_info['name'] : '';
+    // Check if brand_info exists, then if name exists and is not empty
+    $brand_title = !empty($tenant->brand_info['name'] ?? null) ? $tenant->brand_info['name'] : 'Ecommerce';
 @endphp
+
 @props(['title'])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
