@@ -74,6 +74,8 @@ class OrderController
     public function get_orders(Request $request)
     {
         $tenant = tenant();
+        Log::info("Start get_orders(): ", ['payload' => $request->all(), 'url'=> request()->url()]);
+    
         $query = Order::with('order_items');
 
         // dd($request->NUOVI);
@@ -165,6 +167,8 @@ class OrderController
     public function change_order_status(Request $request)
     {
         $tenant = tenant();
+        Log::info("Start change_order_status(): ", ['payload' => $request->all(), 'url'=> request()->url()]);
+
         $order = Order::find($request->IDORDINE);
         if (!$order) {
             return response()->json(['error' => 'Incorrect order ID'], 400);
@@ -188,7 +192,7 @@ class OrderController
         try{
             $order->save();
             // Logic to send confirmation email (omitted for brevity)
-
+            Log::info("Success change_order_status()");
             return response()->json([
                 'codice' => 'OK',
                 "msg" => "Stato ordine aggiornato correttamente"

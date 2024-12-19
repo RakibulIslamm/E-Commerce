@@ -19,12 +19,11 @@ class ProductController
         $products = Product::all();
 
         foreach ($products as $product) {
-            $product['FOTO'] = json_decode($product->FOTO, true);
-            // $categoryName = $product->category->nome;
-            // dd($categoryName);
+            if (isset($product['FOTO'])) {
+                $product['FOTO'] = json_decode($product['FOTO'], true);
+                $product['FOTO'] = count($product['FOTO']) ? $product['FOTO'][0]:null;
+            }
         }
-        // dd($products['FOTO']);
-        // dd($products);
 
         return view("app.pages.dashboard.products.index", ["products" => $products]);
     }
@@ -32,13 +31,13 @@ class ProductController
     {
         try {
             $products = Product::all();
-
-            // return response()->json([
-            //     "products" => $products,
-            //     "message" => "Products retrieved successfully",
-            //     "status" => "success",
-            //     "code" => 200
-            // ]);
+            foreach ($products as $product) {
+                if (isset($product['FOTO'])) {
+                    $product['FOTO'] = json_decode($product['FOTO'], true);
+                    $product['FOTO'] = count($product['FOTO']) ? $product['FOTO'][0]:null;
+                }
+            }
+            // dd($products);
             return response()->json([
                 "codice" => "OK",
                 "articolo" => $products,
@@ -284,6 +283,7 @@ class ProductController
             'DATAINIZIOPROMO' => 'nullable|date',
             'DATAFINEPROMO' => 'nullable|date',
         ];
+        Log::info("Start Add new product: ", ['payload' => [...$request->all(), 'FOTO'=>''], 'url'=> request()->url()]);
 
         $tenant = tenant();
         $validator = Validator::make($request->all(), $rules);
@@ -394,6 +394,7 @@ class ProductController
         try {
             $product = Product::create($validated);
             $product->FOTO = json_decode($product->FOTO);
+            Log::info("Success Add new product");
             return response()->json([
                 "codice" => "OK",
                 "articolo" => $product,
@@ -568,10 +569,14 @@ class ProductController
 
     public function articolo_esistente(Request $request)
     {
+        Log::info("Start articolo_esistente() query: ", ['payload' => $request->all(), 'url'=> request()->url()]);
+        
         $tenant = tenant();
         $validator = Validator::make($request->all(), [
             'id_articolo' => 'required|string',
         ]);
+        
+
         if ($validator->fails()) {
             Log::error("Validation Error -> (Tenant ID: {$tenant->id}): id_articolo categoria mancante", ["errore" => [
                 "numero" => 100,
@@ -592,7 +597,7 @@ class ProductController
 
         try {
             $product = Product::where('id', $id_articolo)->exists();
-
+            Log::info("Success articolo_esistente() query");
             return response()->json([
                 'codice' => 'OK',
                 'presente' => $product ? 1 : 0,
@@ -739,6 +744,8 @@ class ProductController
 
     public function update_api(Request $request, $id)
     {
+        Log::info("Start update product: ", ['payload' => [...$request->all(), 'FOTO'=>''], 'url'=> request()->url()]);
+
         $product = Product::findOrFail($id);
 
         $validated = $request->validate([
@@ -846,11 +853,13 @@ class ProductController
         }
         $validated['FOTO'] = json_encode($imagePaths);
 
-        
-
-        $product->update($validated);
-
-        return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
+        try {
+            $product->update($validated);
+            Log::info("Success update product");
+            return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
+        } catch (\Exception $e) {
+            
+        }
     }
 
     /**

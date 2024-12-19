@@ -192,11 +192,14 @@ class CategoryController
     public function update_api(Request $request)
     {
         $tenant = tenant();
+        Log::info("Start Insert/update category: ", ['payload' => $request->all(), 'url'=> request()->url()]);
+
         $validator = Validator::make($request->all(), [
             'codice' => 'required|regex:/^\d{6}$/',
             'nome' => 'required|string|max:255',
             'img' => 'nullable|image|max:2048',
         ]);
+        
 
         if ($validator->fails()) {
             if ($validator->errors()->has('codice')) {
@@ -281,7 +284,7 @@ class CategoryController
                 ['codice' => $codice],
                 [...$data, 'parent_id' => $parentId]
             );
-
+            Log::info("Success Insert/update category");
             return response()->json([
                 'codice' => "OK",
                 'categorie' => $category
