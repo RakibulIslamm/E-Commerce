@@ -131,11 +131,15 @@ class CartController
                 return response()->json(['success' => true, 'cart_items' => $cart]);
             }
 
+            $PREPROMOIMP = isset($product['PREPROMOIMP']) && (float)$product['PREPROMOIMP'] > 0 
+                    ? (float)number_format((float)$product['PREPROMOIMP'], 2) 
+                    : false;
+
             $cart[$product->id] = [
                 "product_id" => $product->id,
                 "name" => $product->DESCRIZIONEBREVE,
                 "quantity" => 1,
-                "price" => $product->PREPROMOIMP ? $product->PREPROMOIMP : $product->PRE1IMP,
+                "price" => $PREPROMOIMP ? $PREPROMOIMP : $product->PRE1IMP,
                 "photo" => $product->FOTO,
                 'stock' => $product->GIACENZA,
                 'vat' => $product->ALIQUOTAIVA,
