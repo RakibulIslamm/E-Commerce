@@ -47,7 +47,7 @@ class ProductController
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "errore" => [
                     "numero" => $e->getCode(),
                     "msg" => $e->getMessage(),
@@ -64,7 +64,7 @@ class ProductController
     {
         $categories = Category::all();
 
-        return view("app.pages.dashboard.products.create", ["categories" => $categories, "mode" => 'create']);
+        return view("app.pages.dashboard.products.create", ["categories_for_form" => $categories, "mode" => 'create']);
     }
 
     /**
@@ -120,6 +120,41 @@ class ProductController
 
         $validated['DATAINIZIOPROMO'] = $validated['DATAINIZIOPROMO'] ? $validated['DATAINIZIOPROMO'] : null;
         $validated['DATAFINEPROMO'] = $validated['DATAFINEPROMO'] ? $validated['DATAFINEPROMO'] : null;
+
+
+        // Handle `CATEGORIEESOTTOCATEGORIE`
+        $categorieHierarchy = [];
+        $codice = $request->CATEGORIEESOTTOCATEGORIE;
+
+        // Check for the current category
+        $currentCategory = Category::where('codice', $codice)->first();
+        if (!$currentCategory) {
+            // return response()->json([
+            //     "codice" => "OK",
+            //     "errore" => [
+            //         "numero" => 404,
+            //         "msg" => "Category with code {$codice} not found",
+            //         "extra_msg" => ''
+            //     ]
+            // ]);
+        }
+        $categorieHierarchy[] = $codice;
+
+        // Check for the parent category
+        if (substr($codice, -4) !== '0000') {
+            $parentCode = substr($codice, 0, -4) . '0000';
+            if (substr($codice, -2) !== '00') {
+                $parentCode = substr($codice, 0, -2) . '00';
+                $categorieHierarchy[] = $parentCode;
+            }
+
+            // Check for the grandparent category
+            if (strlen($codice) > 4) {
+                $grandParentCode = substr($parentCode, 0, -4) . '0000';
+                $categorieHierarchy[] = $grandParentCode;
+            }
+        }
+        $validated['CATEGORIEESOTTOCATEGORIE'] = json_encode($categorieHierarchy);
         
 
         try {
@@ -227,7 +262,7 @@ class ProductController
             'PXC' => 'nullable|integer|min:1',
             'CODICELEGAME' => 'nullable|string',
             'MARCA' => 'nullable|string',
-            'CATEGORIEESOTTOCATEGORIE' => 'required',
+            'CATEGORIEESOTTOCATEGORIE' => 'required|string',
             'GIACENZA' => 'nullable|integer|min:0',
             'ARTICOLIALTERNATIVI' => 'nullable|string',
             'ARTICOLICORRELATI' => 'nullable|string',
@@ -260,7 +295,7 @@ class ProductController
                 "extra_msg" => ''
             ]]);
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "errore" => [
                     "numero" => 400,
                     "msg" => "Validation failed",
@@ -271,6 +306,43 @@ class ProductController
         }
         
         $validated = $validator->validated();
+
+
+        // Handle `CATEGORIEESOTTOCATEGORIE`
+        $categorieHierarchy = [];
+        $codice = $request->CATEGORIEESOTTOCATEGORIE;
+
+        // Check for the current category
+        $currentCategory = Category::where('codice', $codice)->first();
+        if (!$currentCategory) {
+            // return response()->json([
+            //     "codice" => "OK",
+            //     "errore" => [
+            //         "numero" => 404,
+            //         "msg" => "Category with code {$codice} not found",
+            //         "extra_msg" => ''
+            //     ]
+            // ]);
+        }
+        $categorieHierarchy[] = $codice;
+
+        // Check for the parent category
+        if (substr($codice, -4) !== '0000') {
+            $parentCode = substr($codice, 0, -4) . '0000';
+            if (substr($codice, -2) !== '00') {
+                $parentCode = substr($codice, 0, -2) . '00';
+                $categorieHierarchy[] = $parentCode;
+            }
+
+            // Check for the grandparent category
+            if (strlen($codice) > 4) {
+                $grandParentCode = substr($parentCode, 0, -4) . '0000';
+                $categorieHierarchy[] = $grandParentCode;
+            }
+        }
+        $validated['CATEGORIEESOTTOCATEGORIE'] = json_encode($categorieHierarchy);
+        // dd($validated['CATEGORIEESOTTOCATEGORIE']);
+
         $validated['NOVITA'] = $request->input('NOVITA', false) ? true : false;
         $validated['PIUVENDUTI'] = $request->input('PIUVENDUTI', false) ? true : false;
         $validated['VISIBILE'] = $request->input('VISIBILE', true) ? true : false;
@@ -309,7 +381,7 @@ class ProductController
                     "extra_msg" => ''
                 ]]);
                 return response()->json([
-                    "codice" => "KO",
+                    "codice" => "OK",
                     "errore" => [
                         "numero" => 400,
                         "msg" => "Invalid base64 FOTO",
@@ -334,7 +406,7 @@ class ProductController
                     "extra_msg" => ''
                 ]]);
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "errore" => [
                     "numero" => $e->getCode(),
                     "msg" => $e->getMessage(),
@@ -390,7 +462,7 @@ class ProductController
                 "extra_msg" => ''
             ]]);
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "errore" => [
                     "numero" => 400,
                     "msg" => "Validation failed",
@@ -433,7 +505,7 @@ class ProductController
         //         "extra_msg" => ''
         //     ]]);
         //     return response()->json([
-        //         "codice" => "KO",
+        //         "codice" => "OK",
         //         "errore" => [
         //             "numero" => 422,
         //             "msg" => "PRE1IMP and PRE1IVA mismatch. Expected {$expected} but provided {$provided}",
@@ -460,7 +532,7 @@ class ProductController
                     "extra_msg" => ''
                 ]]);
                 return response()->json([
-                    "codice" => "KO",
+                    "codice" => "OK",
                     "errore" => [
                         "numero" => 400,
                         "msg" => "Invalid base64 FOTO",
@@ -484,7 +556,7 @@ class ProductController
                     "extra_msg" => ''
                 ]]);
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "errore" => [
                     "numero" => $e->getCode(),
                     "msg" => $e->getMessage(),
@@ -507,7 +579,7 @@ class ProductController
                 "extra_msg" => ""
             ]]);
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "errore" => [
                     "numero" => 100,
                     "msg" => "id_articolo categoria mancante",
@@ -532,7 +604,7 @@ class ProductController
                 "extra_msg" => $e->getMessage()
             ]]);
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "errore" => [
                     "numero" => 100,
                     "msg" => "Errore di sistema durante l'aggiornamento",
@@ -557,7 +629,8 @@ class ProductController
     {
         $categories = Category::all();
         $product['FOTO'] = json_decode($product['FOTO']);
-        return view("app.pages.dashboard.products.edit", ["categories" => $categories, "mode" => 'edit', "product" => $product]);
+        // dd($product);
+        return view("app.pages.dashboard.products.edit", ["categories_for_form" => $categories, "mode" => 'edit', "product" => $product]);
     }
 
     /**
@@ -616,6 +689,35 @@ class ProductController
         $validated['PREPROMOIVA'] = $validated['PREPROMOIVA'] ? $validated['PREPROMOIVA'] : null;
         $validated['DATAINIZIOPROMO'] = $validated['DATAINIZIOPROMO'] ? $validated['DATAINIZIOPROMO'] : null;
         $validated['DATAFINEPROMO'] = $validated['DATAFINEPROMO'] ? $validated['DATAFINEPROMO'] : null;
+
+
+        // Handle `CATEGORIEESOTTOCATEGORIE`
+        $categorieHierarchy = [];
+        $codice = $request->CATEGORIEESOTTOCATEGORIE;
+
+        // Check for the current category
+        $currentCategory = Category::where('codice', $codice)->first();
+        $categorieHierarchy[] = $codice;
+        // Check for the parent category
+        if (substr($codice, -4) !== '0000') {
+            $parentCode = substr($codice, 0, -4) . '0000';
+            if (substr($codice, -2) !== '00') {
+                $parentCode = substr($codice, 0, -2) . '00';
+                $categorieHierarchy[] = $parentCode;
+            }
+
+            // Check for the grandparent category
+            if (strlen($codice) > 4) {
+                $grandParentCode = substr($parentCode, 0, -4) . '0000';
+                $categorieHierarchy[] = $grandParentCode;
+            }
+        }
+        $validated['CATEGORIEESOTTOCATEGORIE'] = json_encode($categorieHierarchy);
+        // if ($currentCategory) {
+            
+        // }
+        
+
 
         try {
             $imagePaths = [];
@@ -687,6 +789,32 @@ class ProductController
         $validated['DATAINIZIOPROMO'] = $validated['DATAINIZIOPROMO'] ? $validated['DATAINIZIOPROMO'] : null;
         $validated['DATAFINEPROMO'] = $validated['DATAFINEPROMO'] ? $validated['DATAFINEPROMO'] : null;
 
+        // Handle `CATEGORIEESOTTOCATEGORIE`
+        $categorieHierarchy = [];
+        $codice = $request->CATEGORIEESOTTOCATEGORIE;
+
+        // Check for the current category
+        $currentCategory = Category::where('codice', $codice)->first();
+        $categorieHierarchy[] = $codice;
+        // Check for the parent category
+        if (substr($codice, -4) !== '0000') {
+            $parentCode = substr($codice, 0, -4) . '0000';
+            if (substr($codice, -2) !== '00') {
+                $parentCode = substr($codice, 0, -2) . '00';
+                $categorieHierarchy[] = $parentCode;
+            }
+
+            // Check for the grandparent category
+            if (strlen($codice) > 4) {
+                $grandParentCode = substr($parentCode, 0, -4) . '0000';
+                $categorieHierarchy[] = $grandParentCode;
+            }
+        }
+        $validated['CATEGORIEESOTTOCATEGORIE'] = json_encode($categorieHierarchy);
+        // if ($currentCategory) {
+        // }
+
+
         $photo = $request->input('FOTO');
         $imagePaths = [];
 
@@ -707,7 +835,7 @@ class ProductController
                     "extra_msg" => ''
                 ]]);
                 return response()->json([
-                    "codice" => "KO",
+                    "codice" => "OK",
                     "errore" => [
                         "numero" => 400,
                         "msg" => "Invalid base64 FOTO",

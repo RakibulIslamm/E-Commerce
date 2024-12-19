@@ -50,8 +50,6 @@ class CategoryController
                 $parentCode = substr($codice, 0, -2) . '00';
             }
 
-            // dd($parentCode);
-
             // Check if the parent exists
             $parent = Category::where('codice', $parentCode)->first();
 
@@ -109,7 +107,7 @@ class CategoryController
                         'extra_msg' => $validator->errors()->messages()
                     ]]);
                 return response()->json([
-                    'codice' => "KO",
+                    'codice' => "OK",
                     'errore' => [
                         'numero' => 200,
                         'msg' => "Codice categoria mancante",
@@ -125,7 +123,7 @@ class CategoryController
                         'extra_msg' => ""
                     ]]);
                 return response()->json([
-                    'codice' => "KO",
+                    'codice' => "OK",
                     'errore' => [
                         'numero' => 210,
                         'msg' => "Nome categoria mancante",
@@ -144,7 +142,7 @@ class CategoryController
     
             if (!$parent) {
                 return response()->json([
-                    'codice' => "KO",
+                    'codice' => "OK",
                     'errore' => [
                         'numero' => 210,
                         'msg' => "Parent category start with code '{$parentCode}' not found",
@@ -208,7 +206,7 @@ class CategoryController
                     'extra_msg' => $validator->errors()->messages()
                 ]]);
                 return response()->json([
-                    'codice' => "KO",
+                    'codice' => "OK",
                     'errore' => [
                         'numero' => 200,
                         'msg' => "Codice categoria non valido o mancante",
@@ -224,7 +222,7 @@ class CategoryController
                     'extra_msg' => ""
                 ]]);
                 return response()->json([
-                    'codice' => "KO",
+                    'codice' => "OK",
                     'errore' => [
                         'numero' => 210,
                         'msg' => "Nome categoria mancante",
@@ -250,14 +248,14 @@ class CategoryController
             if (!$parent) {
                 Log::error("Error: ", ['request' => $request->all(), 'errore' => [
                     'numero' => 210,
-                    'msg' => "Parent category with code '{$parentCode}' not found",
+                    'msg' => "Categoria principale con codice '{$parentCode}' non trovata",
                     'extra_msg' => ""
                 ]]);
                 return response()->json([
-                    'codice' => "KO",
+                    'codice' => "OK",
                     'errore' => [
                         'numero' => 210,
-                        'msg' => "Parent category with code '{$parentCode}' not found",
+                        'msg' => "Categoria principale con codice '{$parentCode}' non trovata",
                         'extra_msg' => ""
                     ]
                 ]);

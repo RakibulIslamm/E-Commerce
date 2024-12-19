@@ -97,9 +97,9 @@
                 <select name="CATEGORIEESOTTOCATEGORIE" id="CATEGORIEESOTTOCATEGORIE"
                     class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
                     <option value="">Select a category</option>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}"
-                            {{ old('CATEGORIEESOTTOCATEGORIE', $product['CATEGORIEESOTTOCATEGORIE'] ?? '') == $category->id ? 'selected' : '' }}>
+                    @foreach ($categories_for_form as $category)
+                        <option value="{{ $category->codice }}"
+                            {{ old('CATEGORIEESOTTOCATEGORIE', $product['CATEGORIEESOTTOCATEGORIE'][0] ?? '') == $category->codice ? 'selected' : '' }}>
                             {{ $category->codice . ' ' . strtoupper($category->nome) }}
                         </option>
                     @endforeach

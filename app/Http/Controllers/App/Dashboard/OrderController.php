@@ -92,7 +92,7 @@ class OrderController
                     "extra_msg" => ''
                 ]]);
                 return response()->json([
-                    "codice" => "KO",
+                    "codice" => "OK",
                     "errore" => [
                         "numero" => 400,
                         "msg" => "ID ordine errato",
@@ -101,7 +101,7 @@ class OrderController
                 ]);
             }
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "n_ordini" => 1,
                 "array ordini" => [$order]
             ]);
@@ -129,7 +129,7 @@ class OrderController
                     "extra_msg" => ''
                 ]]);
                 return response()->json([
-                    "codice" => "KO",
+                    "codice" => "OK",
                     "errore" => [
                         "numero" => 400,
                         "msg" => "Numero d'ordine errato",
@@ -138,7 +138,7 @@ class OrderController
                 ]);
             }
             return response()->json([
-                "codice" => "KO",
+                "codice" => "OK",
                 "n_ordini" => 1,
                 "array ordini" => [$order]
             ]);

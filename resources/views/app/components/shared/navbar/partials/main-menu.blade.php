@@ -32,7 +32,7 @@
                                     $html = '<ul class="">';
                                     foreach ($categories as $category) {
                                         $html .= "<li class='relative'>";
-                                        $html .= '<a href="products?category=' . $category->id . '" class="px-4 py-3 block hover:bg-gray-200 text-lg rounded-lg">' . $category->nome .'</a>';
+                                        $html .= '<a href="/products?category=' . $category->codice . '" class="px-4 py-3 block hover:bg-gray-200 text-lg rounded-lg">' . $category->nome .'</a>';
 
                                         if (!empty($category->children)) {
                                             $html .= "<div class='ml-4'>";

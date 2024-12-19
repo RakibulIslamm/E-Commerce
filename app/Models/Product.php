@@ -47,8 +47,9 @@ class Product extends Model
         'VISIBILE' => 'boolean',
     ];
 
-    public function category()
+    // Accessor to decode JSON
+    public function getCategorieesottocategorieAttribute($value)
     {
-        return $this->belongsTo(Category::class, 'CATEGORIEESOTTOCATEGORIE');
+        return json_decode($value, true);
     }
 }

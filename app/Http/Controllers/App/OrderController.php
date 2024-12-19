@@ -41,14 +41,13 @@ class OrderController
             ->get();
 
         if ($shippingSettings->isEmpty()) {
-            return back()->with('error', 'Something went wrong, No shipping method found, Please try again later.');
+            return back()->with('error', 'Qualcosa è andato storto. Nessun metodo di spedizione trovato. Riprova più tardi');
         }
 
         $minOrder = $shippingSettings->first()->minimum_order;
 
         // Check if the total price meets the minimum order requirement
         if ($minOrder > $totalPrice) {
-            // return back()->with('error', 'Your cart total does not meet the minimum order requirement of $' . number_format($minOrder, 2) . ' for any shipping method.');
             return back()->with('error', "Il totale del tuo carrello non soddisfa il requisito minimo dell'ordine di €" . number_format($minOrder, 2) . " per nessun metodo di spedizione.");
         }
 

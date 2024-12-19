@@ -18,7 +18,7 @@ class ShowProductController
 
         // Filter by category
         if (request()->filled('category')) {
-            $query->where('CATEGORIEESOTTOCATEGORIE', request()->category);
+            $query->whereJsonContains('CATEGORIEESOTTOCATEGORIE', request()->category);
         }
 
         // Order by specified column or default to created_at

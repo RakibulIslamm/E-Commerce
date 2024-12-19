@@ -3,9 +3,19 @@
 <x-app-guest-layout>
 
     <x-page-layout :props="['title' => 'Shopping Cart', 'breadcrumbs' => $breadcrumbs]">
-        <p class="font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10">Limite minimo di ordine: {{$shipping_setting->minimum_order}}€</p>
+        
+        @if ($shipping_setting)
+            <p class="font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10">
+                Limite minimo di ordine: {{$shipping_setting->minimum_order}}€
+            </p>
+        @else
+            <p class="font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10">
+                Limite minimo di ordine non disponibile.
+            </p>
+        @endif
+        
         @if (session('error'))
-        <div class="bg-red-100 text-red-700 border-l-4 border-red-500 p-2 mb-4">
+        <div class="bg-red-100 text-red-700 border-l-4 border-red-500 p-2 -mt-4 mb-4 rounded-r-lg">
             <strong>{{ session('error') }}</strong>
         </div>
         @endif
