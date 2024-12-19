@@ -858,8 +858,14 @@ class ProductController
      */
     public function destroy($id)
     {
-        Product::where('id', $id)->delete();
-        return redirect()->route('app.dashboard.products')->with('success', 'Product deleted');
+
+        try {
+            Product::where('id', $id)->delete();
+            return redirect()->route('app.dashboard.products')->with('success', 'Product deleted');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        
     }
 
     private function isBase64($string)

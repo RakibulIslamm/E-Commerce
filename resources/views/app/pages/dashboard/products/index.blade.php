@@ -23,6 +23,14 @@
                     <x-lucide-x-circle class="w-4 h-4 cursor-pointer" id="icon" />
                 </div>
             @endif
+
+            @if (session()->has('error'))
+                <div class="px-10 py-2 bg-red-600 text-white font-semibold flex items-center justify-between"
+                    id="session_status">
+                    <p>{{ session('error') }}</p>
+                    <x-lucide-x-circle class="w-4 h-4 cursor-pointer" id="icon" />
+                </div>
+            @endif
             <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
                 <div class="block w-full overflow-x-auto">
                     <table class="items-center bg-transparent w-full border-collapse">

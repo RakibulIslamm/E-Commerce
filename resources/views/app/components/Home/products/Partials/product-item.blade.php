@@ -62,14 +62,20 @@
                     @endif
                 </div>
 
+                @php
+                    $PREPROMOIMP = isset($product['PREPROMOIMP']) && (float)$product['PREPROMOIMP'] > 0 
+                    ? number_format((float)$product['PREPROMOIMP'], 2) 
+                    : false;
+                @endphp
+
                 @if (tenant()->offer_display === 'View cut price')
                     <div class="flex items-center gap-4">
-                        @if ($product['PREPROMOIMP'])
+                        @if ($PREPROMOIMP)
                             <div class="px-4 text-right">
                                 <h3 class="font-semibold text-red-500 group-hover/product:text-red-500 drop-shadow-xl text-sm line-through">
                                     {{ $product['PRE1IMP'] }}€</h3>
                                 <h3 class="font-semibold text-slate-100 group-hover/product:text-white drop-shadow-xl">
-                                        {{ $product['PREPROMOIMP'] }}€</h3>
+                                        {{ $PREPROMOIMP }}€</h3>
                             </div>
                         @else
                             <div class="px-4 text-right">

@@ -45,11 +45,18 @@
                 <div>
                     <div class="flex items-center justify-between gap-10 w-10/12 max-w-full">
                         <h1 class="text-2xl font-semibold">{{ $product['DESCRIZIONEBREVE'] }}</h1>
+
+                        @php
+                            $PREPROMOIMP = isset($product['PREPROMOIMP']) && (float)$product['PREPROMOIMP'] > 0 
+                            ? number_format((float)$product['PREPROMOIMP'], 2) 
+                            : false;
+                        @endphp
+
                         @if (tenant()->offer_display == 'View cut price')
                         <div class="flex items-center gap-4">
-                            @if ($product['PREPROMOIMP'])
+                            @if ($PREPROMOIMP)
                                 <h3 class="text-lg font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
-                                <h3 class="text-lg font-semibold">{{ $product['PREPROMOIMP'] }}€</h3>
+                                <h3 class="text-lg font-semibold">{{ $PREPROMOIMP }}€</h3>
                             @else
                                 <h3 class="text-lg font-semibold">{{ $product['PRE1IMP'] }}€</h3>
                             @endif
