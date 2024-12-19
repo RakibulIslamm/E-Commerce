@@ -1,11 +1,11 @@
 <div class="group/product relative">
     <div
-        class="aspect-h-1 aspect-w-1 w-full min-h-[300px] max-h-[350px] overflow-hidden bg-gray-200 relative rounded-md border">
+        class="aspect-h-1 aspect-square overflow-hidden bg-gray-200 relative rounded-md border">
         <div
             class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent to-70% opacity-60 group-hover/product:opacity-100 group-hover/product:to-[#00000049] transition-opacity ease-in-out duration-300">
         </div>
         <img src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
-            alt="" class="h-[300px] w-full object-cover object-center">
+            alt="" class="h-full w-full object-cover object-center">
         <div class=" absolute top-0 left-0 w-full h-full flex flex-col justify-between items-center">
             <div class="w-full flex items-center justify-between mt-3">
                 @if ($product->PIUVENDUTI and $product->NOVITA)
