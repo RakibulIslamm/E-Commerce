@@ -17,10 +17,10 @@
 
 <body class=" bg-slate-50">
 
-    @if (isset($success))
+    {{-- @if (isset($success))
         @dd($success)
         @dd($order)
-    @endif
+    @endif --}}
 
     <div class="px-20 py-2 flex items-center justify-between border-b">
         <a href="/" class="flex items-center gap-2">

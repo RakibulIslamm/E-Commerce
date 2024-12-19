@@ -18,7 +18,7 @@ class TransferCart
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check() && $request->session()->has('cart')) {
-            dd($request->session()->get('cart', '[]'));
+            // dd($request->session()->get('cart', '[]'));
             // $cartItems = json_decode($request->session()->get('cart'), true);
             // foreach ($cartItems as $item) {
             //     $cart = Cart::firstOrNew(['product_id' => $item['product_id'], 'user_id' => Auth::id()]);
