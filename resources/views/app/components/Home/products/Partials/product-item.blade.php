@@ -1,6 +1,6 @@
 <div class="group/product relative">
     <div
-        class="aspect-h-1 aspect-square overflow-hidden bg-gray-200 relative rounded-md border">
+        class="aspect-square min-w-[250px] min-h-[250px] overflow-hidden bg-gray-200 relative rounded-md border">
         <div
             class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent to-70% opacity-60 group-hover/product:opacity-100 group-hover/product:to-[#00000049] transition-opacity ease-in-out duration-300">
         </div>
