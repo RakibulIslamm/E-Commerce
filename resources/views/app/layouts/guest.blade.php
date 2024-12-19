@@ -222,7 +222,7 @@
 
         }, 0);
         const grandTotal = subtotal + vat;
-        subTotalElement.innerText = subtotal;
+        subTotalElement.innerText = subtotal.toFixed(2);
         vatElement.innerText = vat.toFixed(2);
         totalElement.innerText = grandTotal.toFixed(2);
     }

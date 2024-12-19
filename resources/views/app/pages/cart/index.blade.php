@@ -5,12 +5,12 @@
     <x-page-layout :props="['title' => 'Shopping Cart', 'breadcrumbs' => $breadcrumbs]">
         
         @if ($shipping_setting)
-            <p class="font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10">
-                Limite minimo di ordine: {{$shipping_setting->minimum_order}}€
+            <p id="shipping-limit-p" class="font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10">
+                {{-- Limite minimo di ordine: {{$shipping_setting->minimum_order}}€ --}}
             </p>
         @else
             <p class="font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10">
-                Limite minimo di ordine non disponibile.
+                Non ci sono metodi di spedizione disponibili su questa piattaforma.
             </p>
         @endif
         
@@ -62,7 +62,47 @@
     </x-page-layout>
 </x-app-guest-layout>
 <script>
-    getCart('cart-page-loading')
+    
+    async function cart (){
+        await getCart('cart-page-loading');
+        updateShippingLimit(window.all_cart);
+    }
+    cart();
+
+    const shippingSetting = {
+        minimumOrder: {{ $shipping_setting ? $shipping_setting->minimum_order : 0 }},
+    };
+
+    function updateShippingLimit(cartItems) {
+        const shippingLimitP = document.getElementById('shipping-limit-p');
+        
+        // Calculate the total cart value
+        const cartTotal = Object.values(cartItems).reduce((total, item) => {
+            return total + (item.quantity * item.price);
+        }, 0);
+        
+        // Update the shipping limit message based on the cart total
+        if (cartTotal >= shippingSetting.minimumOrder) {
+            shippingLimitP.className = "font-semibold text-green-800 bg-green-500 py-1 px-3 rounded-md mb-5 -mt-10 flex items-center";
+            shippingLimitP.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Limite minimo di ordine raggiunto: ${shippingSetting.minimumOrder}€
+            `;
+        } else if (shippingSetting.minimumOrder > 0) {
+            shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10";
+            shippingLimitP.innerHTML = `Limite minimo di ordine: ${shippingSetting.minimumOrder}€`;
+        } else {
+            shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10";
+            shippingLimitP.innerHTML = "Non ci sono metodi di spedizione disponibili su questa piattaforma.";
+        }
+    }
+
+    // function getCartTotal() {
+    //     // Replace this with your actual cart total calculation logic
+    //     return window.all_cart.reduce((total, item) => total + (item.quantity * item.price), 0);
+    // }
 
     function updateQuantity(id, quantity) {
         console.log(`Updating server with quantity ${quantity} for product ${id}`);
@@ -81,9 +121,10 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
+                    // console.log(data.cart_items);
                     if (data.success) {
                         window.all_cart = data.cart_items;
+                        updateShippingLimit(data.cart_items);
                     }
                     quantitySpinUpdate(id, 'invisible');
                     render()
