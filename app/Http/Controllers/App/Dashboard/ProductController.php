@@ -34,8 +34,10 @@ class ProductController
                 $product['FOTO'] = count($product['FOTO']) ? $product['FOTO'][0]:null;
             }
 
-            $categoriesHierarchy = count($product['CATEGORIEESOTTOCATEGORIE']) 
-            ? $product['CATEGORIEESOTTOCATEGORIE']  : [];
+            $categoriesHierarchy = !empty($product['CATEGORIEESOTTOCATEGORIE']) && is_array($product['CATEGORIEESOTTOCATEGORIE']) 
+            ? $product['CATEGORIEESOTTOCATEGORIE'] 
+            : [];
+
             $product['category'] = $this->getCategoryInfo($categoriesHierarchy);
         }
 

@@ -6,8 +6,11 @@
         alt="">
     <h4
         class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg text-white font-bold z-20 drop-shadow-2xl">
-        {{ $category->nome }}</h4>
+        {{isset($category->img) ? "" : $category->nome }}</h4>
+     @if (!isset($category->img))
+         
+     @endif   
     <div
-        class="absolute w-full h-full top-0 left-0 bg-[#000000ee] rounded-lg z-10 transition-all ease-in-out opacity-30 group-hover:opacity-70">
+        class="absolute w-full h-full top-0 left-0 {{isset($category->img) ? "hover:bg-black": "bg-[#000000ee] group-hover:opacity-70"}} rounded-lg z-10 transition-all ease-in-out opacity-10">
     </div>
 </a>

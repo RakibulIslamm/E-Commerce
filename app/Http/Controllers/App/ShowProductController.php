@@ -79,8 +79,9 @@ class ShowProductController
                 $product['FOTO'] = count($product['FOTO']) ? $product['FOTO'][0]:null;
             }
 
-            $categoriesHierarchy = count($product['CATEGORIEESOTTOCATEGORIE']) 
-            ? $product['CATEGORIEESOTTOCATEGORIE']  : [];
+            $categoriesHierarchy = !empty($product['CATEGORIEESOTTOCATEGORIE']) && is_array($product['CATEGORIEESOTTOCATEGORIE']) 
+            ? $product['CATEGORIEESOTTOCATEGORIE'] 
+            : [];
             $product['category'] = $this->getCategoryInfo($categoriesHierarchy);
         }
 
@@ -95,8 +96,10 @@ class ShowProductController
         $product_breadcrumbs = Breadcrumbs::generate('product', $product);
         $product['FOTO'] = json_decode($product['FOTO'], true);
 
-        $categoriesHierarchy = count($product['CATEGORIEESOTTOCATEGORIE']) 
-            ? $product['CATEGORIEESOTTOCATEGORIE']  : [];
+        $categoriesHierarchy = !empty($product['CATEGORIEESOTTOCATEGORIE']) && is_array($product['CATEGORIEESOTTOCATEGORIE']) 
+        ? $product['CATEGORIEESOTTOCATEGORIE'] 
+        : [];
+
         $product['category'] = $this->getCategoryInfo($categoriesHierarchy);
 
         return view("app.pages.products.show", ["product" => $product, "breadcrumbs" => $product_breadcrumbs]);
