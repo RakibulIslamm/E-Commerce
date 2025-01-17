@@ -1,9 +1,3 @@
-<?php
-
-// $cart = session()->get('cart');
-// dd($cart);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,31 +9,30 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class=" bg-slate-50">
+<body class="bg-slate-50">
 
-    {{-- @if (isset($success))
-        @dd($success)
-        @dd($order)
-    @endif --}}
-
-    <div class="px-20 py-2 flex items-center justify-between border-b">
+    {{-- Navigation Bar --}}
+    <div class="px-5 py-2 sm:px-10 lg:px-20 flex items-center justify-between border-b">
         <a href="/" class="flex items-center gap-2">
-            <img class="h-12 w-auto object-cover" src="{{ '/images/logo.png' }}" alt="">
+            <img class="h-8 sm:h-10 lg:h-12 w-auto object-cover" src="{{ '/images/logo.png' }}" alt="Logo">
             {{-- <h2 class="text-lg font-bold">Company Name</h2> --}}
         </a>
 
-        <div class="flex items-center gap-5 text-sm text-gray-500">
+        <div class="flex items-center gap-3 sm:gap-5 text-xs sm:text-sm text-gray-500">
             <a href="{{ route('app.cart') }}">Cart</a>
-            <x-ri-arrow-drop-right-fill class="w-5 h-5" />
-            <p class="{{ Request::is('cart/checkout') ? 'font-bold text-xl text-gray-700' : '' }} text-gray-500">
+            <x-ri-arrow-drop-right-fill class="w-4 h-4 sm:w-5 sm:h-5" />
+            <p class="{{ Request::is('cart/checkout') ? 'font-bold text-gray-700 sm:text-base' : '' }} text-gray-500">
                 Checkout</p>
-            <x-ri-arrow-drop-right-fill class="w-5 h-5" />
-            <p
-                class="{{ Request::is('cart/checkout/confirm') ? 'font-bold text-xl text-gray-700' : '' }} text-gray-500">
+            <x-ri-arrow-drop-right-fill class="w-4 h-4 sm:w-5 sm:h-5" />
+            <p class="{{ Request::is('cart/checkout/confirm') ? 'font-bold text-gray-700 sm:text-base' : '' }} text-gray-500">
                 Confirmation</p>
         </div>
     </div>
-    {{ $slot }}
+
+    {{-- Slot for Content --}}
+    <div>
+        {{ $slot }}
+    </div>
 </body>
 
 </html>

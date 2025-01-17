@@ -1,7 +1,7 @@
 {{-- @dd($shipping_settings) --}}
 <x-app-checkout-layout>
     <form action="{{ route('app.place-order') }}" method="POST"
-        class="flex items-start justify-between py-10 px-5 sm:px-10 lg:px-20" onsubmit="disableSubmitButton()">
+        class="flex flex-col lg:flex-row items-start justify-between py-10 px-5 sm:px-10 lg:px-20 gap-10" onsubmit="disableSubmitButton()">
         @csrf
         <div class="flex-1">
             <div>
@@ -136,10 +136,10 @@
         </div>
 
 
-        <div class="flex-1 px-10">
+        <div class="flex-1 w-full">
             <div>
                 <label for="spedizione" class="block text-lg font-medium text-gray-900 mb-2">Courier</label>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     @if (isset($shipping_settings))
                         @foreach ($shipping_settings as $index => $item)
                             <div class="relative w-full ">
@@ -158,32 +158,6 @@
                     @else
                         <p>Not found</p>
                     @endif
-                    {{-- <div class="relative w-full ">
-                        <input type="radio" name="spedizione" value="standard" id="shipping_standard"
-                            class="hidden checked:block absolute top-4 right-4 peer/standard" checked required>
-                        <div
-                            class="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition peer-checked/standard:border-blue-500 peer-checked/standard:shadow">
-
-                            <label for="shipping_standard" class="block w-full cursor-pointer">
-                                <span class="block text-lg font-semibold">Standard</span>
-                                <span class="block text-sm text-gray-500">4-10 giorni lavorativi</span>
-                                <span class="block mt-2 text-lg font-medium">€5.00</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="w-full relative">
-                        <input type="radio" name="spedizione" value="express" id="shipping_express"
-                            class="hidden checked:block absolute top-4 right-4 peer/express" required>
-                        <div
-                            class="w-full flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition peer-checked/express:border-blue-500 peer-checked/express:shadow">
-                            <label for="shipping_express" class="block w-full cursor-pointer">
-                                <span class="block text-lg font-semibold">Express</span>
-                                <span class="block text-sm text-gray-500">2-5 giorni lavorativi</span>
-                                <span class="block mt-2 text-lg font-medium">16.00</span>
-                            </label>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
             <h2 class="text-xl mt-5">Order summary</h2>

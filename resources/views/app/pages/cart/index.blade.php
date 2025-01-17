@@ -91,10 +91,10 @@
                 Limite minimo di ordine raggiunto: ${shippingSetting.minimumOrder}€
             `;
         } else if (shippingSetting.minimumOrder > 0) {
-            shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10";
+            shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 lg:-mt-10";
             shippingLimitP.innerHTML = `Limite minimo di ordine: ${shippingSetting.minimumOrder}€`;
         } else {
-            shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 -mt-10";
+            shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 lg:-mt-10";
             shippingLimitP.innerHTML = "Non ci sono metodi di spedizione disponibili su questa piattaforma.";
         }
     }

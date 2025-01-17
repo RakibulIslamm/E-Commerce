@@ -81,7 +81,7 @@
 </div>
 
 <script>
-    const categoriesButton = document.getElementById('categories-btn');
+const categoriesButton = document.getElementById('categories-btn');
 const categoryList = document.getElementById('category-list');
 
 // Toggle main dropdown visibility

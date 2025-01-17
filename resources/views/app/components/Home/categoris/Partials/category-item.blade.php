@@ -1,4 +1,4 @@
-<a href="{{ route('app.products', ['category' => $category->id]) }}"
+<a href="{{ route('app.products', ['category' => $category->codice]) }}"
     class="relative h-[100px] w-[500px] group rounded-lg overflow-hidden transition-all ease-in-out border swiper-slide bg-slate-300">
     {{-- @dd($category->img); --}}
     <img class="rounded-lg relative z-0 h-full object-cover w-full object-center"
