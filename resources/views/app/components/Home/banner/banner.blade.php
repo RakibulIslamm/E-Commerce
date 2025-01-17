@@ -1,8 +1,4 @@
-@php
-    // @dd($sliders);
-@endphp
-
-<div class="w-full lg:h-[530px] min-h-[450px] h-[430px] relative overflow-hidden swiper">
+<div class="w-full sm:h-[576px] h-[360px] relative overflow-hidden swiper">
     <div class="swiper-wrapper">
         @if (!$sliders->isEmpty())
             @foreach ($sliders as $item)

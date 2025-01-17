@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Models\Category;
 use App\Models\Product;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Illuminate\Http\Request;
@@ -18,15 +19,25 @@ class ShowProductController
 
         // Filter by category
         if (request()->filled('category')) {
+            // dd(request()->category);
             $query->whereJsonContains('CATEGORIEESOTTOCATEGORIE', request()->category);
         }
 
         // Order by specified column or default to created_at
-        if (request()->filled('order_by') && (request()->order_by == 'asc' || request()->order_by == 'desc')) {
-            $query->orderBy('DESCRIZIONEBREVE', request()->order_by);
+        if (request()->filled('order_by')) {
+            if (request()->order_by === 'price_low') {
+                $query->orderBy('PRE1IMP', 'asc');
+            } elseif (request()->order_by === 'price_high') {
+                $query->orderBy('PRE1IMP', 'desc');
+            } elseif (request()->order_by === 'asc' || request()->order_by === 'desc') {
+                $query->orderBy('DESCRIZIONEBREVE', request()->order_by);
+            } else {
+                $query->orderBy('created_at', 'desc');
+            }
         } else {
             $query->orderBy('created_at', 'desc');
         }
+
         if(request()->filled('q')){
             if(request()->q == 'new'){
                 $query->where('NOVITA', true);
@@ -49,7 +60,7 @@ class ShowProductController
             $query->where('NOVITA', true);
         }
 
-        // Set the number of items per page, default to 10 if not provided
+        // Set the number of items per page, default to 12 if not provided
         $perPage = request()->input('limit', 12);
 
         // Get paginated results
@@ -67,6 +78,10 @@ class ShowProductController
                 $product['FOTO'] = json_decode($product['FOTO'], true);
                 $product['FOTO'] = count($product['FOTO']) ? $product['FOTO'][0]:null;
             }
+
+            $categoriesHierarchy = count($product['CATEGORIEESOTTOCATEGORIE']) 
+            ? $product['CATEGORIEESOTTOCATEGORIE']  : [];
+            $product['category'] = $this->getCategoryInfo($categoriesHierarchy);
         }
 
         return view("app.pages.products.index", [
@@ -79,6 +94,31 @@ class ShowProductController
     {
         $product_breadcrumbs = Breadcrumbs::generate('product', $product);
         $product['FOTO'] = json_decode($product['FOTO'], true);
+
+        $categoriesHierarchy = count($product['CATEGORIEESOTTOCATEGORIE']) 
+            ? $product['CATEGORIEESOTTOCATEGORIE']  : [];
+        $product['category'] = $this->getCategoryInfo($categoriesHierarchy);
+
         return view("app.pages.products.show", ["product" => $product, "breadcrumbs" => $product_breadcrumbs]);
+    }
+
+
+    private function getCategoryInfo(array $categoriesHierarchy)
+    {
+        foreach ($categoriesHierarchy as $categoryCode) {
+            $category = Category::where('codice', $categoryCode)->first();
+
+            if ($category) {
+                $children = $category->children;
+
+                if ($children->isNotEmpty()) {
+                    return $children;
+                } else {
+                    return $category;
+                }
+            }
+        }
+
+        return null; // No valid categories found
     }
 }

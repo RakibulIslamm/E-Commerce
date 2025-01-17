@@ -25,4 +25,13 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
+    // public function children()
+    // {
+    //     return $this->hasMany(Category::class, 'codice', 'codice');
+    // }
+
+    // public function parent()
+    // {
+    //     return $this->belongsTo(Category::class, 'codice', 'codice');
+    // }
 }

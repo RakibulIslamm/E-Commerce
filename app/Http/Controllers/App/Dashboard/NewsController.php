@@ -4,7 +4,7 @@ namespace App\Http\Controllers\App\Dashboard;
 
 use App\Models\News;
 use Illuminate\Http\Request;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController
 {
@@ -13,7 +13,16 @@ class NewsController
      */
     public function index()
     {
-        $news = News::all();
+        $query = News::query();
+        $perPage = request()->input('limit', 50);
+
+        if($perPage > 50){
+            $perPage = 50;
+            request()->merge(['limit' => 50]);
+        }
+        $news = $query->paginate($perPage);
+        $news->appends(request()->all());
+
         return view("app.pages.dashboard.news.index", ["news" => $news]);
     }
 
@@ -35,7 +44,7 @@ class NewsController
         } else {
             $request->merge(['published' => false]);
         }
-        // dd($request->file('cover_img'));
+
         $validated = $request->validate([
             "title" => "required|string",
             "body" => "required|string",
@@ -45,16 +54,20 @@ class NewsController
             "end_date" => "required|date",
             'cover_img' => 'required|image',
         ]);
+        try {
 
-        // dd($validated['cover_img']);
+            if ($request->hasFile('cover_img')) {
+                $path = $request->file('cover_img')->store('news', 'public');
+                $validated['cover_img'] = $path;
+            }
 
-        if ($request->hasFile('cover_img')) {
-            $path = $request->file('cover_img')->store('news', 'public');
-            $validated['cover_img'] = $path;
+            News::create($validated);
+            return redirect()->route('app.dashboard.news')->with('success', 'Success');
+        } catch (\Exception $e) {
+            return back()->with(['error' => 'An error occurred: ' . $e->getMessage()])->withInput(request()->all());
         }
-        News::create($validated);
-        return redirect()->route('app.dashboard.news')->with('success', 'Success');
     }
+
 
     /**
      * Display the specified resource.
@@ -77,37 +90,40 @@ class NewsController
      */
     public function update(Request $request, News $news)
     {
-        if ($request->all('published')['published'] == 'on') {
-            $request->merge(['published' => true]);
-        } else {
-            $request->merge(['published' => false]);
-        }
-        // dd($request->all());
-        $validated = $request->validate([
-            "title" => "required|string",
-            "body" => "required|string",
-            "published" => "required|boolean",
-            "publication_date" => "required|date",
-            "start_date" => "required|date",
-            "end_date" => "required|date",
-            "cover_img" => "image",
-        ]);
-        // dd($validated);
-
-        if ($request->hasFile('cover_img')) {
-
-            $path = $request->file('cover_img')->store('news', 'public');
-            $validated['cover_img'] = $path;
-
-            if ($news->cover_img) {
-                $path = $news->img;
-                Storage::disk('public')->delete($path);
+        try {
+            if ($request->all('published')['published'] == 'on') {
+                $request->merge(['published' => true]);
+            } else {
+                $request->merge(['published' => false]);
             }
-        }
-        $news->update($validated);
 
-        return redirect()->route('app.dashboard.news')->with('success', 'Updated');
+            $validated = $request->validate([
+                "title" => "required|string",
+                "body" => "required|string",
+                "published" => "required|boolean",
+                "publication_date" => "required|date",
+                "start_date" => "required|date",
+                "end_date" => "required|date",
+                "cover_img" => "image",
+            ]);
+
+            if ($request->hasFile('cover_img')) {
+                $path = $request->file('cover_img')->store('news', 'public');
+                $validated['cover_img'] = $path;
+
+                if ($news->cover_img) {
+                    Storage::disk('public')->delete($news->cover_img);
+                }
+            }
+
+            $news->update($validated);
+
+            return redirect()->route('app.dashboard.news')->with('success', 'Updated');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'An error occurred: ' . $e->getMessage()]);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.

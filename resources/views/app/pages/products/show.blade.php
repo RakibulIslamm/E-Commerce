@@ -3,25 +3,22 @@
     <x-page-layout :props="['breadcrumbs' => $breadcrumbs, 'title' => 'Dettaglio prodotto']">
         @section('page_title', 'Dettaglio prodotto')
 
-
-
         <div class="flex items-start justify-between gap-5 overflow-hidden">
-
             <div class="w-4/12 overflow-hidden">
                 <div class="swiper-container gallery-slider relative">
                     <div class="swiper-wrapper">
-                        @if (isset($product->FOTO))
+                        {{-- @dd($product->FOTO) --}}
+                        @if (isset($product->FOTO) && count($product->FOTO))
                             @foreach ($product->FOTO as $img)
                                 <div class="swiper-slide">
-                                    <img class="w-full border float-right" src="{{ tenant_asset($img) }}"
-                                        alt="">
+                                    <img class="w-full border float-right" src="{{ tenant_asset($img) }}" alt="">
                                 </div>
                             @endforeach
                         @else
                             <div class="swiper-slide">
                                 <img class="w-full border float-right"
-                                    src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
-                                    alt="">
+                                     src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
+                                     alt="">
                             </div>
                         @endif
                     </div>
@@ -29,20 +26,30 @@
 
                 <div class="swiper-container gallery-thumbs mt-3">
                     <div class="swiper-wrapper">
-
-                        @if (isset($product->FOTO))
+                        @if (isset($product->FOTO) && (count($product->FOTO) > 1))
                             @foreach ($product->FOTO as $img)
                                 <div class="swiper-slide w-20">
-                                    <img class="w-full border" src="{{ tenant_asset($img) }}"
-                                        alt="">
+                                    <img class="w-full border" src="{{ tenant_asset($img) }}" alt="">
                                 </div>
                             @endforeach
                         @endif
                     </div>
                 </div>
             </div>
+
             <div class="w-8/12 text-gray-800 space-y-3">
                 <div>
+                    <p class="px-3 py-[1px] rounded bg-yellow-100 border border-gray-200 inline-block text-xs mb-1">
+                        @if ($product['category'] instanceof \Illuminate\Support\Collection)
+                            @foreach ($product['category'] as $child)
+                                {{ $child->nome }}
+                            @endforeach
+                        @elseif ($product['category'])
+                            {{ $product['category']->nome }}
+                        @else
+                            No Category
+                        @endif
+                    </p>
                     <div class="flex items-center justify-between gap-10 w-10/12 max-w-full">
                         <h1 class="text-2xl font-semibold">{{ $product['DESCRIZIONEBREVE'] }}</h1>
 
@@ -82,7 +89,7 @@
                 <div class="space-y-1">
                     <p>Code: <span class="font-semibold">290</span></p>
                     <p>Barcode: <span class="font-semibold">8003495106693</span></p>
-                    {{-- {{dd(tenant()->product_stock_display)}} --}}
+
                     @if (tenant()->product_stock_display == 'Text + Quantity')
                         <div>Availability:
                             @if ($product->GIACENZA > 0)
@@ -95,17 +102,14 @@
                             @else
                                 <span class="font-semibold text-red-500">Stock Out</span>
                             @endif
-
                         </div>
                     @elseif (tenant()->product_stock_display == 'Text Only')
                         <p>Availability:
-
                             @if ($product->GIACENZA > 0)
                                 <span class="font-semibold text-green-500">In Stock</span>
                             @else
                                 <span class="font-semibold text-red-500">Stock Out</span>
                             @endif
-
                         </p>
                     @endif
 
@@ -123,24 +127,23 @@
                             </p>
                         </div>
                     @endif
-                    
                 </div>
 
                 <div class="flex items-center gap-3">
                     @if ($product->GIACENZA > 0)
                         <button onclick="addToCart({{ $product->id }}, {{ $product }})"
-                            class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"><x-lucide-shopping-cart
-                                class="w-5 h-5" /> Aggiungi</button>
+                                class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}">
+                            <x-lucide-shopping-cart class="w-5 h-5" /> Aggiungi
+                        </button>
                     @else
                         <button
-                            class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"
-                            disabled><x-lucide-shopping-cart class="w-5 h-5" />Esaurito</button>
+                                class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"
+                                disabled>
+                            <x-lucide-shopping-cart class="w-5 h-5" />Esaurito
+                        </button>
                     @endif
-                    {{-- <button
-                        class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-wishlist-{{ $product->id }}">
-                        <x-heroicon-o-heart class="w-5 h-5" />
-                        Wishlist</button> --}}
                 </div>
+
                 <div class="w-full -ml-3">
                     <div id="editor">
                         {!! isset($product['DESCRIZIONEESTESA']) ? $product['DESCRIZIONEESTESA'] : '' !!}
@@ -149,11 +152,9 @@
             </div>
         </div>
 
-
-
-
     </x-page-layout>
 </x-app-guest-layout>
+
 
 <script>
     const quill = new Quill('#editor', {

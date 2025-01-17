@@ -9,7 +9,17 @@ class UserController
 {
     public function index()
     {
-        $customers = User::all();
+        $query = User::query();
+
+        $perPage = request()->input('limit', 50);
+
+        if($perPage > 50){
+            $perPage = 50;
+            request()->merge(['limit' => 50]);
+        }
+        $customers = $query->paginate($perPage);
+        $customers->appends(request()->all());
+
         return view('app.pages.dashboard.users.index', ['customers' => $customers]);
     }
 

@@ -2,7 +2,7 @@
     @include('app.components.Home.categoris.Partials.header')
     <div class="swiper-category">
         <div class="mt-4 swiper-wrapper">
-            @foreach ($categories as $item)
+            @foreach ($categories_home as $item)
                 @include('app.components.Home.categoris.Partials.category-item', ['category' => $item])
             @endforeach
         </div>

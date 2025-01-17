@@ -19,8 +19,8 @@
                         <option value="default">default</option>
                         <option value="asc">nome (A-Z)</option>
                         <option value="desc">nome (Z-A)</option>
-                        {{-- <option value="price_low">Low to high (price)</option>
-                        <option value="price_high">High to low (price)</option> --}}
+                        <option value="price_low">Low to high (price)</option>
+                        <option value="price_high">High to low (price)</option>
                     </select>
                 </div>
                 <span class="hidden sm:block">|</span>
@@ -73,7 +73,7 @@
                 @endif
 
                 @if ($products->hasPages())
-                    <ul class="flex items-center gap-3 m-0 p-0">
+                    <ul class="flex items-center flex-wrap gap-3 m-0 p-0">
                         {{-- Previous Page Link --}}
                         @if ($products->onFirstPage())
                             <li class="py-1 px-3">

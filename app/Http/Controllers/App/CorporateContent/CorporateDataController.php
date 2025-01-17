@@ -91,7 +91,6 @@ class CorporateDataController
     }
     public function update_address(Request $request)
     {
-        // dd(request()->all());
         $validateData = $request->validate([
             'city' => 'nullable|string',
             'state' => 'nullable|string',

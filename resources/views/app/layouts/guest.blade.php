@@ -164,7 +164,7 @@
             const cartItemHtml = `
                         <div class="flex items-center gap-3">
                             <img src="${FOTO}"
-                                alt="product-image" class="w-full rounded-lg sm:w-[100px] w-[70px] border" />
+                                alt="product-image" class="rounded-lg lg:w-[150px] w-[100px] border" />
                             <div class="sm:ml-4 flex w-full justify-between">
                                 <div>
                                     <h2 class="sm:text-lg font-bold text-sm text-gray-900 line-clamp-1">${items[item].name}</h2>
@@ -176,6 +176,7 @@
                                             <x-lucide-trash-2 class="sm:w-5 sm:h-5 w-4 h-4 text-red-500" />
                                         </button>
                                     </div>
+                                </div>
                                 </div>
                                 <div class="flex items-center sm:flex-row flex-col gap-1">
                                     <div class="flex items-center gap-1">
@@ -197,7 +198,6 @@
                                             d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
                                     </svg>
                                 </div>
-                            </div>
                         </div>
                         <hr class="my-2" />
             `;
