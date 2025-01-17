@@ -1,17 +1,12 @@
 @section('title', 'Products')
 <x-app-layout>
     <div class="w-full flex items-center justify-end">
-        {{-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Sliders') }}
-        </h2> --}}
-        <div class="relative w-full max-w-full flex-grow flex-1 text-right">
+        {{-- <div class="relative w-full max-w-full flex-grow flex-1 text-right">
             <a href="{{ route('app.dashboard.product.create') }}"
                 class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold  px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
                 Add New
             </a>
-        </div>
-        {{-- @if ($user->role == 1 || $user->role == 3)
-            @endif --}}
+        </div> --}}
     </div>
 
     <section class="py-1  w-full">
@@ -31,7 +26,7 @@
                     <x-lucide-x-circle class="w-4 h-4 cursor-pointer" id="icon" />
                 </div>
             @endif
-            <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+            <div class="relative flex flex-col min-w-0 break-words bg-white w-full shadow-lg rounded">
                 <div class="block w-full overflow-x-auto">
                     <table class="items-center bg-transparent w-full border-collapse">
                         <thead>
@@ -52,10 +47,10 @@
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                     Giacenza
                                 </th>
-                                <th
+                                {{-- <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                     Action
-                                </th>
+                                </th> --}}
                             </tr>
                         </thead>
 
@@ -74,6 +69,34 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="py-5 space-y-3">
+                @if ($products->total() > 0)
+                    <p>
+                        Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }}
+                        items
+                    </p>
+                @endif
+
+                @if ($products->hasPages())
+                    <ul class="flex items-center flex-wrap gap-3 m-0 p-0">
+                        {{-- Pagination Elements --}}
+                        @foreach ($products->links()->elements as $element)
+                            {{-- Array Of Links --}}
+                            @if (is_array($element))
+                                @foreach ($element as $page => $url)
+                                    @if ($page == $products->currentPage())
+                                        <li class="text-gray-400 py-1 px-1"><span>{{ $page }}</span></li>
+                                    @else
+                                        <li class="text-gray-900"><a class="py-1 px-3 border"
+                                                href="{{ $products->appends(request()->all())->url($page) }}">{{ $page }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </ul>
+                @endif
             </div>
         </div>
     </section>

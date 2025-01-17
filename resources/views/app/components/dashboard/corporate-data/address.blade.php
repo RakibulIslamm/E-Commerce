@@ -34,7 +34,26 @@ if (isset($site_settings->corporate_data)) {
         <h2 class="text-xl font-semibold pb-2">Corporate Data</h2>
         <button id="edit-address" class="px-5 py-1 border rounded">Edit</button>
     </div>
-    <p>address goes here</p>
+    <div class="mt-4 space-y-3 text-gray-700">
+        <p><span class="font-semibold">City:</span> {{ $city ?? 'N/A' }}</p>
+        <p><span class="font-semibold">State:</span> {{ $state ?? 'N/A' }}</p>
+        <p><span class="font-semibold">Country:</span> {{ $country ?? 'N/A' }}</p>
+        <p><span class="font-semibold">Street:</span> {{ $street ?? 'N/A' }}</p>
+        <p><span class="font-semibold">Email:</span> 
+            {{ $email ?? 'N/A' }}
+        </p>
+        <p><span class="font-semibold">Telephone:</span> {{ $telephone ?? 'N/A' }}</p>
+        <p><span class="font-semibold">Fax:</span> {{ $fax ?? 'N/A' }}</p>
+        <p><span class="font-semibold">IBAN:</span> {{ $iban ?? 'N/A' }}</p>
+        @if($map_iframe)
+        <div class="mt-3">
+            <span class="font-semibold">Location:</span>
+            <div class="mt-2 border rounded-lg overflow-hidden">
+                {!! $map_iframe !!}
+            </div>
+        </div>
+        @endif
+    </div>
 </div>
 <div id="address-edit" class="w-full hidden p-5 bg-white rounded-lg shadow mt-4 border">
     <h2 class="text-xl font-semibold pb-2">Edit Corporate Data</h2>
@@ -44,7 +63,7 @@ if (isset($site_settings->corporate_data)) {
         <div class="w-full flex justify-between items-start gap-3">
             <div class="w-full">
                 <label for="city" class="block text-gray-700 text-sm font-bold mb-2">City</label>
-                <input id="city" name="city" type="text" value="{{ old('city', $city ?? '') }}" required
+                <input id="city" name="city" type="text" value="{{ old('city', $city ?? '') }}" 
                     placeholder="Ex: Palermo"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
@@ -66,13 +85,13 @@ if (isset($site_settings->corporate_data)) {
         <div class="w-full flex justify-between items-start gap-3">
             <div class="w-8/12">
                 <label for="street" class="block text-gray-700 text-sm font-bold mb-2">Street</label>
-                <input id="street" name="street" type="text" value="{{ old('street', $street ?? '') }}" required
+                <input id="street" name="street" type="text" value="{{ old('street', $street ?? '') }}" 
                     placeholder="Ex: Piazza Uditore, 18 90145 Palermo (ITALY)"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="w-4/12">
                 <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                <input id="email" name="email" type="email" value="{{ old('email', $email ?? '') }}" required
+                <input id="email" name="email" type="email" value="{{ old('email', $email ?? '') }}" 
                     placeholder="example@gmail.com"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
@@ -81,18 +100,18 @@ if (isset($site_settings->corporate_data)) {
             <div class="w-full">
                 <label for="telephone" class="block text-gray-700 text-sm font-bold mb-2">Telephone</label>
                 <input id="telephone" name="telephone" type="text" value="{{ old('telephone', $telephone ?? '') }}"
-                    required placeholder="091315093"
+                     placeholder="091315093"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="w-full">
                 <label for="fax" class="block text-gray-700 text-sm font-bold mb-2">Fax</label>
-                <input id="fax" name="fax" type="text" value="{{ old('fax', $fax ?? '') }}" required
+                <input id="fax" name="fax" type="text" value="{{ old('fax', $fax ?? '') }}" 
                     placeholder=""
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="w-full">
                 <label for="iban" class="block text-gray-700 text-sm font-bold mb-2">IBAN</label>
-                <input id="iban" name="iban" type="text" value="{{ old('iban', $iban ?? '') }}" required
+                <input id="iban" name="iban" type="text" value="{{ old('iban', $iban ?? '') }}" 
                     placeholder=""
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>

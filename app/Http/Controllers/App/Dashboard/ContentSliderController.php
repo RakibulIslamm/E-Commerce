@@ -22,12 +22,14 @@ class ContentSliderController
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'link' => 'required|string|max:255',
-            'link_text' => 'required|string|max:255',
+            'link' => 'nullable|string|max:255',
+            'link_text' => 'nullable|string|max:255',
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'img' => 'required|image|max:2048'
+            'description' => 'nullable|string',
+            'img' => 'nullable|image|max:2048'
         ]);
+
+        
 
         // $validated['position'] = (int)$validated['position'];
 
@@ -36,9 +38,11 @@ class ContentSliderController
         // dd($maxPosition);    
         // Shift existing sliders down by one position
         ContentSlider::query()->increment('position');
-
-        $path = $request->file('img')->store('sliders', 'public');
-        $url = tenant_asset($path);
+        $url ='';
+        if(isset($validated['img'])){
+            $path = $request->file('img')->store('sliders', 'public');
+            $url = tenant_asset($path);
+        }
 
         ContentSlider::create([
             'name' => $validated['name'],
@@ -62,13 +66,14 @@ class ContentSliderController
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'link' => 'required|string|max:255',
-            'link_text' => 'required|string|max:255',
+            'link' => 'nullable|string|max:255',
+            'link_text' => 'nullable|string|max:255',
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'img' => 'nullable|image|max:2048',
-            'position' => 'required|integer',
+            'position' => 'nullable|integer',
         ]);
+        // dd($validated);
 
         // Check if the new position value is already taken by another slider
         if ($slider->position !== $validated['position'] && ContentSlider::where('position', $validated['position'])->exists()) {

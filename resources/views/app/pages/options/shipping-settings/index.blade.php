@@ -17,11 +17,11 @@
                     </div>
                     <div>
                         <span class="text-gray-600 font-semibold">Minimum Order:</span>
-                        <span class="text-gray-800">${{ $setting->minimum_order }}</span>
+                        <span class="text-gray-800">€{{ $setting->minimum_order }}</span>
                     </div>
                     <div>
                         <span class="text-gray-600 font-semibold">COD Fee:</span>
-                        <span class="text-gray-800">${{ $setting->cod_fee }}</span>
+                        <span class="text-gray-800">€{{ $setting->cod_fee }}</span>
                     </div>
                     <div>
                         <span class="text-gray-600 font-semibold">VAT Rate:</span>
@@ -44,8 +44,8 @@
                                                 Spedizione Isole minori
                                             @endif
                                         </h3>
-                                        <div><span class="font-semibold">Fino a: </span> ${{ $rule->threshold }}</div>
-                                        <div><span class="font-semibold">addebito di:</span> ${{ $rule->fee }}</div>
+                                        <div><span class="font-semibold">Fino a: </span> €{{ $rule->threshold }}</div>
+                                        <div><span class="font-semibold">addebito di:</span> €{{ $rule->fee }}</div>
                                     </div>
                                 @endforeach
                             </div>

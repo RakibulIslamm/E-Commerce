@@ -16,17 +16,32 @@ class ProductController
      */
     public function index()
     {
-        $products = Product::all();
+        $query = Product::query();
+
+        // Set the number of items per page, default to 12 if not provided
+        $perPage = request()->input('limit', 50);
+
+        if($perPage > 50){
+            $perPage = 50;
+            request()->merge(['limit' => 50]);
+        }
+        $products = $query->paginate($perPage);
+        $products->appends(request()->all());
 
         foreach ($products as $product) {
             if (isset($product['FOTO'])) {
                 $product['FOTO'] = json_decode($product['FOTO'], true);
                 $product['FOTO'] = count($product['FOTO']) ? $product['FOTO'][0]:null;
             }
+
+            $categoriesHierarchy = count($product['CATEGORIEESOTTOCATEGORIE']) 
+            ? $product['CATEGORIEESOTTOCATEGORIE']  : [];
+            $product['category'] = $this->getCategoryInfo($categoriesHierarchy);
         }
 
         return view("app.pages.dashboard.products.index", ["products" => $products]);
     }
+
     function products_api()
     {
         try {
@@ -888,5 +903,24 @@ class ProductController
         }
 
         return false;
+    }
+
+    private function getCategoryInfo(array $categoriesHierarchy)
+    {
+        foreach ($categoriesHierarchy as $categoryCode) {
+            $category = Category::where('codice', $categoryCode)->first();
+
+            if ($category) {
+                $children = $category->children;
+
+                if ($children->isNotEmpty()) {
+                    return $children;
+                } else {
+                    return $category;
+                }
+            }
+        }
+
+        return null; // No valid categories found
     }
 }

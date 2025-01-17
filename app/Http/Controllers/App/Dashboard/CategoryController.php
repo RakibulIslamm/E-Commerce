@@ -12,7 +12,15 @@ class CategoryController
 {
     public function index()
     {
-        $categories = Category::all();
+        $query = Category::query();
+        $perPage = request()->input('limit', 50);
+
+        if($perPage > 50){
+            $perPage = 50;
+            request()->merge(['limit' => 50]);
+        }
+        $categories = $query->paginate($perPage);
+        $categories->appends(request()->all());
         return view('app.pages.dashboard.categories.index', ['dashboard_categories' => $categories]);
     }
 

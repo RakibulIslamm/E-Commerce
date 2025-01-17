@@ -25,7 +25,7 @@
                     <x-lucide-x-circle class="w-4 h-4 cursor-pointer" id="icon" />
                 </div>
             @endif
-            <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+            <div class="relative flex flex-col min-w-0 break-words bg-white w-full  shadow-lg rounded">
                 <div class="block w-full overflow-x-auto">
                     <table class="items-center bg-transparent w-full border-collapse">
                         <thead>
@@ -64,6 +64,34 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="py-5 space-y-3">
+                @if ($dashboard_categories->total() > 0)
+                    <p>
+                        Showing {{ $dashboard_categories->firstItem() }} to {{ $dashboard_categories->lastItem() }} of {{ $dashboard_categories->total() }}
+                        items
+                    </p>
+                @endif
+
+                @if ($dashboard_categories->hasPages())
+                    <ul class="flex items-center flex-wrap gap-3 m-0 p-0">
+                        {{-- Pagination Elements --}}
+                        @foreach ($dashboard_categories->links()->elements as $element)
+                            {{-- Array Of Links --}}
+                            @if (is_array($element))
+                                @foreach ($element as $page => $url)
+                                    @if ($page == $dashboard_categories->currentPage())
+                                        <li class="text-gray-400 py-1 px-1"><span>{{ $page }}</span></li>
+                                    @else
+                                        <li class="text-gray-900"><a class="py-1 px-3 border"
+                                                href="{{ $dashboard_categories->appends(request()->all())->url($page) }}">{{ $page }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </ul>
+                @endif
             </div>
         </div>
     </section>

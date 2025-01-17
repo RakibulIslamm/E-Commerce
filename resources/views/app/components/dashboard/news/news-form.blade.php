@@ -1,8 +1,12 @@
 <form action="{{ $mode == 'edit' ? route('app.dashboard.news.update', $news) : route('app.dashboard.news.store') }}"
     id="news-submit" method="POST" class="w-full flex items-start gap-3" enctype="multipart/form-data">
+    {{-- @dd($errors->get('title')) --}}
     @csrf
     @method($mode == 'edit' ? 'PUT' : 'POST')
     <div class="flex-1 w-full">
+        @if (session()->has('error'))
+            <p class="text-red-600 font-semibold py-3 px-5">{{ session('error') }}</p>
+        @endif
         <input type="text" name="title" value="{{ old('title', $news['title'] ?? '') }}"
             class="px-5 py-2 outline-none focus:ring-0 bg-transparent text-3xl font-bold text-gray-700 border-0 w-full"
             placeholder="Title...">

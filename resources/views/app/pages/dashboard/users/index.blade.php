@@ -10,7 +10,7 @@
                 </div>
             @endif
             {{-- @dd($users) --}}
-            <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+            <div class="relative flex flex-col min-w-0 break-words bg-white w-full shadow-lg rounded">
                 <div class="block w-full overflow-x-auto">
                     <table class="items-center bg-transparent w-full border-collapse">
                         <thead>
@@ -61,6 +61,34 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="py-5 space-y-3">
+                @if ($customers->total() > 0)
+                    <p>
+                        Showing {{ $customers->firstItem() }} to {{ $customers->lastItem() }} of {{ $customers->total() }}
+                        items
+                    </p>
+                @endif
+
+                @if ($customers->hasPages())
+                    <ul class="flex items-center flex-wrap gap-3 m-0 p-0">
+                        {{-- Pagination Elements --}}
+                        @foreach ($customers->links()->elements as $element)
+                            {{-- Array Of Links --}}
+                            @if (is_array($element))
+                                @foreach ($element as $page => $url)
+                                    @if ($page == $customers->currentPage())
+                                        <li class="text-gray-400 py-1 px-1"><span>{{ $page }}</span></li>
+                                    @else
+                                        <li class="text-gray-900"><a class="py-1 px-3 border"
+                                                href="{{ $customers->appends(request()->all())->url($page) }}">{{ $page }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </ul>
+                @endif
             </div>
         </div>
     </section>

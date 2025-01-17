@@ -49,7 +49,7 @@ class IndexController
             'sliders' => $sliders,
             'newArrivals' => $newArrivals,
             'bestSellers' => $bestSellers,
-            'categories' => $categories,
+            'categories_home' => $categories,
             'promotion' => $promotion,
         ]);
     }

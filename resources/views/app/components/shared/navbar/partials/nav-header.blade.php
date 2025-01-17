@@ -32,13 +32,14 @@ if (isset($site_settings->brand_info)) {
                       focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10 appearance-none max-w-[200px]">
                     <option value="" class="px-2 py-1">Tutti</option>
                     @foreach ($categories as $item)
-                        <option value="{{ $item->id }}" class="px-2 py-1">{{ $item->nome }}</option>
+                        <option value="{{ $item->codice }}" class="px-2 py-1">{{ $item->nome }}</option>
                     @endforeach
                 </select>
             </div>
             <input type="text" name="search" id="search-text"
                 class="relative grow rounded-r-md py-2 pl-3 pr-8 text-gray-900 border border-gray-200 outline-none
                       focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10"
+                onkeydown="if (event.key === 'Enter') { handleSearch(); event.preventDefault(); }"
                 placeholder="Ricerca prodotto...">
 
             <button onclick="handleSearch()">

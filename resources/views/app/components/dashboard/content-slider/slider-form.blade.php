@@ -17,21 +17,19 @@
         <div class="w-full">
             <label for="slide_title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
             <input id="slide_title" name="title" type="text" value="{{ old('title', $slider['title'] ?? '') }}"
-                required
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
         </div>
     </div>
     <div class="w-full flex items-center gap-3">
         <div class="w-full">
             <label for="slide_link" class="block text-gray-700 text-sm font-bold mb-2">Link</label>
             <input id="slide_link" name="link" type="text" value="{{ old('link', $slider['link'] ?? '') }}"
-                required
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
         <div class="w-full">
             <label for="link_text" class="block text-gray-700 text-sm font-bold mb-2">Link Text</label>
             <input id="link_text" name="link_text" type="text"
-                value="{{ old('link_text', $slider['link_text'] ?? '') }}" required
+                value="{{ old('link_text', $slider['link_text'] ?? '') }}"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
     </div>

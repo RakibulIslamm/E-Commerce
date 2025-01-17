@@ -23,7 +23,7 @@ if (isset($site_settings->brand_info)) {
 
 <div class="w-full">
     <div id="logo" class="w-full flex items-center justify-between gap-2 p-5 bg-white rounded-lg shadow border">
-        <div class="flex items-center gap-2">
+        <div class=" space-y-2">
             <img class="w-auto" style="height: {{ $logo_height }}px" src="{{ $logo }}" alt="">
             <div>
                 <h3 class="text-xl font-bold text-gray-700">{{ $name ?? 'Company Name' }}</h3>
@@ -54,7 +54,7 @@ if (isset($site_settings->brand_info)) {
                     </div>
                     <button type="button"
                         class="w-full px-5 py-1 border rounded bg-sky-600 text-white disabled:bg-sky-300 mt-2"
-                        onclick="document.getElementById('upload-logo-input').click()">Upload</button>
+                        onclick="document.getElementById('upload-logo-input').click()">scelto</button>
                 </div>
 
 
