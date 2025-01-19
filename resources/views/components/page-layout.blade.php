@@ -1,9 +1,9 @@
 <div
-    class="w-full lg:h-[150px] sm:h-[100px] h-[80px] lg:px-20 sm:px-10 px-5 bg-slate-200 flex items-center sm:justify-start justify-center">
+    class="w-full lg:px-20 sm:px-10 px-5 py-5 bg-slate-200 flex items-center sm:justify-start justify-center">
     <div>
         <h2 class="lg:text-3xl sm:text-2xl text-xl font-bold lg:py-3 sm:text-left text-center">
             {{ $props['title'] ?? '' }}</h2>
-        <div class="flex items-center">
+        <div class="flex items-center flex-wrap justify-center">
             <div class="flex items-center">
                 <a href="/" class="flex items-start gap-1">
                     <x-heroicon-s-home class="w-5 h-5" />

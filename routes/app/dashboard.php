@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\App\Dashboard\DashboardController;
 use App\Http\Controllers\App\Dashboard\OrderController;
-
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'admin'])->prefix('dashboard')->group(function () {
 

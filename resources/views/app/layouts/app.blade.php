@@ -20,6 +20,7 @@
 </head>
 
 <body class="font-sans antialiased flex items-start justify-start bg-gray-100">
+
     @include('app.layouts.Partials.sidebar')
     <main class="w-[calc(100%_-_320px)] h-full">
         {{-- px-10 bg-white border shadow-sm rounded-xl sticky top-0 --}}

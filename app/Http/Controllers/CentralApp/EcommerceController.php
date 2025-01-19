@@ -187,6 +187,27 @@ class EcommerceController extends Controller
         return redirect()->route('ecommerce.index')->with('success', 'eCommerce updated successfully');
     }
 
+    public function suspend(Request $request, Tenant $ecommerce)
+    {
+        if ($request->all('suspend_tenant')['suspend_tenant'] == 'on') {
+            $request->merge(['suspend_tenant' => false]);
+        } else {
+            $request->merge(['suspend_tenant' => true]);
+        }
+        if (auth()->user()->role != 1 && auth()->user()->role != 2) {
+            abort(403, "Unauthorize access");
+        }
+        
+        $validatedData = $request->validate([
+            'suspend_tenant' => 'required|boolean',
+        ]);
+
+        $str = $validatedData['suspend_tenant'] ? "Tenant suspended successfully":"Tenant permitted successfully";
+
+        $ecommerce->update($validatedData);
+        return redirect()->route('ecommerce.index')->with('success', $str);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

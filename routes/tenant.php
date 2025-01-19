@@ -27,9 +27,9 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
+    Route::get('/contact', [ContactController::class, 'index'])->name('app.contact');
     Route::middleware(['registration_process', 'track_user'])->group(function () {
         Route::get('/', [IndexController::class, 'index']);
-        Route::get('/contact', [ContactController::class, 'index'])->name('app.contact');
         Route::middleware(['auth'])->group(function () {
             Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile.edit');
             Route::patch('/profile', [ProfileController::class, 'update'])->name('app.profile.update');

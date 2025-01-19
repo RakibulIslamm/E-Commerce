@@ -17,6 +17,8 @@ Route::middleware(['auth'])->prefix('ecommerces')->group(function () {
     Route::get('/edit/{ecommerce}', [EcommerceController::class, 'edit'])->name('ecommerce.edit');
 
     Route::put('/update/{ecommerce}', [EcommerceController::class, 'update'])->name('ecommerce.update');
+
+    Route::put('/suspend_tenant/{ecommerce}', [EcommerceController::class, 'suspend'])->name('ecommerce.suspend_tenant');
 });
 
 

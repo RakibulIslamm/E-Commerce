@@ -23,9 +23,6 @@
             <x-lucide-edit class="w-4 h-4" />
         </a>
         @include('central_app.ecommerces.partials.delete')
-        <a href="#" class="text-gray-100 hover:text-white bg-yellow-500 hover:bg-yellow-600 p-1 rounded"
-            type="button">
-            <x-lucide-lock class="w-4 h-4" />
-        </a>
+        @include('central_app.ecommerces.partials.suspend')
     </td>
 </tr>

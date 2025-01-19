@@ -10,7 +10,6 @@
 </head>
 
 <body class="bg-slate-50">
-
     {{-- Navigation Bar --}}
     <div class="px-5 py-2 sm:px-10 lg:px-20 flex items-center justify-between border-b">
         <a href="/" class="flex items-center gap-2">

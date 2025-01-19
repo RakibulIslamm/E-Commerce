@@ -2,9 +2,13 @@
     @include('app.components.Home.categoris.Partials.header')
     <div class="swiper-category">
         <div class="mt-4 swiper-wrapper">
-            @foreach ($categories_home as $item)
-                @include('app.components.Home.categoris.Partials.category-item', ['category' => $item])
-            @endforeach
+            @if (!empty($socialLinks))
+                @foreach ($categories_home as $item)
+                    @include('app.components.Home.categoris.Partials.category-item', ['category' => $item])
+                @endforeach
+            @else
+                <p>No category found</p>
+            @endif
         </div>
     </div>
 </div>

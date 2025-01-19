@@ -120,6 +120,10 @@ if (isset($site_settings->brand_info)) {
         // }
     }
 
-    if (category) categoryElement.value = category;
+    if (category) {
+        categoryElement.value = category;
+        if(!categoryElement.value) categoryElement.value = ""
+    }
+
     if (search) searchTextElement.value = search;
 </script>

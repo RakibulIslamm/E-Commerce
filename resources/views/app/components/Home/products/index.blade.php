@@ -10,6 +10,6 @@
             @endif
         </div>
         @if ($bestSellers->isEmpty())
-            <h2 class="text-gray-300 font-semibold text-2xl w-full">Nessun prodotto trovato.</h2>
+            <h2 class="text-gray-300 font-semibold text-2xl w-full mt-10">Nessun prodotto trovato</h2>
         @endif
     </div>
