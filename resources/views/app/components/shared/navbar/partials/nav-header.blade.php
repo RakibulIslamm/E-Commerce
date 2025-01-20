@@ -58,16 +58,14 @@ if (isset($site_settings->brand_info)) {
             <div class="flex items-center gap-3">
                 @if (!$user)
                     <div class="flex items-center gap-3">
-                        <a href="/login" class="text-sm font-medium text-gray-700 hover:text-gray-800">Accedi
-                            in</a>
+                        <a href="/login" class="text-sm font-medium text-gray-700 hover:text-gray-800">Accedi</a>
                         <span class="h-6 w-px bg-gray-200"></span>
                         <a href="/register" class="text-sm font-medium text-gray-700 hover:text-gray-800">Registrati</a>
                     </div>
                 @endif
                 @if ($user && $user->role != 1)
                     <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                        <a href="/account/summary" class="text-sm font-medium text-gray-700 hover:text-gray-800">My
-                            Account</a>
+                        <a href="/account/summary" class="text-sm font-medium text-gray-700 hover:text-gray-800">Account</a>
                         <form action="{{ route('app.logout') }}" method="post">
                             @csrf
                             <button type="submit">

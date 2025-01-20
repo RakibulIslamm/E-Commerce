@@ -29,14 +29,16 @@
         </a>
 
         <div class="flex items-center gap-5 text-sm text-gray-500">
-            <a href="{{ route('app.cart') }}">Cart</a>
+            <a href="{{ route('app.cart') }}">Carrello</a>
             <x-ri-arrow-drop-right-fill class="w-5 h-5" />
             <p class="{{ Request::is('cart/checkout') ? 'font-bold text-xl text-gray-700' : '' }} text-gray-500">
-                Checkout</p>
+                Checkout
+            </p>
             <x-ri-arrow-drop-right-fill class="w-5 h-5" />
             <p
                 class="{{ Request::is('cart/checkout/confirm') ? 'font-bold text-xl text-gray-700' : '' }} text-gray-500">
-                Confirmation</p>
+                Conferma
+            </p>
         </div>
     </div>
     {{ $slot }}
