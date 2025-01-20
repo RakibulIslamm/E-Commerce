@@ -73,7 +73,7 @@
                     </div>
 
                     <!-- Rating -->
-                    <div class="flex items-center gap-2 mt-2">
+                    {{-- <div class="flex items-center gap-2 mt-2">
                         <p class="text-sm">5.0</p>
                         <div class="flex items-center gap-1 text-yellow-400">
                             @for ($i = 0; $i < 5; $i++)
@@ -81,7 +81,7 @@
                             @endfor
                         </div>
                         <p class="text-sm">See all 512 reviews</p>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <!-- Product Info -->

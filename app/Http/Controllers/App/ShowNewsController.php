@@ -13,11 +13,17 @@ class ShowNewsController
 {
     public function index()
     {
-
         $breadcrumbs = Breadcrumbs::generate('news');
-        $news = News::all();
-        return view("app.pages.news.index", ["news" => $news, "breadcrumbs" => $breadcrumbs]);
+        
+        // Retrieve paginated news items, e.g., 10 per page
+        $news = News::paginate(10); // Adjust the number as needed
+
+        return view("app.pages.news.index", [
+            "news" => $news,
+            "breadcrumbs" => $breadcrumbs
+        ]);
     }
+
 
     public function show(News $news)
     {

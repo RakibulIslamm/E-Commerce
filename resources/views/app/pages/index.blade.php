@@ -5,5 +5,5 @@
     @include('app.components.Home.new-arrivals.new-arrivals')
     @include('app.components.Home.promotion.promotion')
     @include('app.components.Home.products.index')
-    @include('app.components.Home.blogs.index')
+    {{-- @include('app.components.Home.blogs.index') --}}
 </x-app-guest-layout>

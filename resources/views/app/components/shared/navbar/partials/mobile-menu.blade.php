@@ -51,7 +51,7 @@ if (isset($site_settings->brand_info)) {
             focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10 appearance-none">
                 <option value="" class="px-2 py-1">Tutti</option>
                 @foreach ($categories as $item)
-                    <option value="{{ $item->id }}" class="px-2 py-1">{{ $item->nome }}
+                    <option value="{{ $item->codice }}" class="px-2 py-1">{{ $item->nome }}
                     </option>
                 @endforeach
             </select>
