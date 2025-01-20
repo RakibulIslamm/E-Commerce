@@ -67,8 +67,8 @@
             <div class="py-5 space-y-3">
                 @if ($products->total() > 0)
                     <p>
-                        Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }}
-                        items
+                    Visualizzazione da {{ $products->firstItem() }} a {{ $products->lastItem() }} di {{ $products->total() }}
+                        elementi
                     </p>
                 @endif
 

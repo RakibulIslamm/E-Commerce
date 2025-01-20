@@ -7,7 +7,7 @@
     <div class="flex items-start gap-4">
         <!-- Name -->
         <div class="w-8/12">
-            <x-input-label for="name" :value="__('Name*')" />
+            <x-input-label for="name" :value="__('Nome*')" />
             <x-text-input id="name" class="block w-full" type="text" name="name" :value="old('name')" required
                 autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
@@ -15,7 +15,7 @@
 
         {{-- Date Of Birth --}}
         <div class="w-4/12">
-            <x-input-label for="date_of_birth" :value="__('Date Of Birth*')" />
+            <x-input-label for="date_of_birth" :value="__('Data di nascita*')" />
             <x-text-input id="date_of_birth" class="block w-full" type="date" name="date_of_birth" :value="old('date_of_birth')"
                 required autofocus />
             <x-input-error :messages="$errors->get('date_of_birth')" class="mt-2" />
@@ -33,7 +33,7 @@
 
         <!-- Telephone -->
         <div class="w-full">
-            <x-input-label for="telephone" :value="__('Telephone*')" />
+            <x-input-label for="telephone" :value="__('Telefono*')" />
             <x-text-input id="telephone" class="block w-full" type="text" name="telephone" :value="old('telephone')"
                 required autocomplete="username" />
             <x-input-error :messages="$errors->get('telephone')" class="mt-2" />
@@ -53,7 +53,7 @@
 
         <!-- Confirm Password -->
         <div class="w-full">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password*')" />
+            <x-input-label for="password_confirmation" :value="__('Conferma Password*')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
                 name="password_confirmation" required autocomplete="new-password" />
@@ -64,7 +64,7 @@
 
     <!-- Address -->
     <div class="w-full">
-        <x-input-label for="address" :value="__('Address*')" />
+        <x-input-label for="address" :value="__('Indirizzo*')" />
         <x-text-input id="address" class="block w-full" type="text" name="address" :value="old('address')" required
             autocomplete="username" />
         <x-input-error :messages="$errors->get('address')" class="mt-2" />
@@ -75,16 +75,16 @@
         <div class="flex items-start gap-4">
             <!-- Postal Code -->
             <div class="w-full">
-                <x-input-label for="postal_code" :value="__('Postal Code*')" />
+                <x-input-label for="postal_code" :value="__('Codice postale*')" />
                 <x-text-input id="postal_code" class="block w-full mt-1" type="text" name="postal_code" required />
             </div>
 
             <!-- City -->
             <div class="w-full">
-                <label for="city" class="block font-medium text-sm text-gray-700">City</label>
+                <label for="city" class="block font-medium text-sm text-gray-700">Città</label>
                 <select name="city" id="city" required
                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1">
-                    <option value="">Enter post code</option>
+                    <option value="">Scegli il codice postale</option>
                 </select>
             </div>
 
@@ -97,7 +97,7 @@
     </div>
 
 
-    <h3 class="pt-5 text-2xl font-semibold uppercase">Billing Information</h3>
+    <h3 class="pt-5 text-2xl font-semibold uppercase">Dati di fatturazione</h3>
     <div class="flex items-start gap-4">
         <!-- Tax Id -->
         <div class="w-full">
@@ -109,7 +109,7 @@
 
         <!-- Business Name -->
         <div class="w-full">
-            <x-input-label for="business_name" :value="__('Business Name*')" />
+            <x-input-label for="business_name" :value="__('Nome*')" />
             <x-text-input id="business_name" class="block w-full" type="text" name="business_name"
                 :value="old('business_name')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('business_name')" class="mt-2" />
@@ -121,7 +121,7 @@
     <div class="flex items-start gap-4">
         <!-- Vat number -->
         <div class="w-full">
-            <x-input-label for="vat_number" :value="__('Vat Number*')" />
+            <x-input-label for="vat_number" :value="__('Partita iva*')" />
             <x-text-input id="vat_number" class="block w-full" type="text" name="vat_number" :value="old('vat_number')"
                 required autocomplete="username" />
             <x-input-error :messages="$errors->get('vat_number')" class="mt-2" />
@@ -137,7 +137,7 @@
 
         <!-- SDI Code -->
         <div class="w-full">
-            <x-input-label for="sdi_code" :value="__('SDI Code*')" />
+            <x-input-label for="sdi_code" :value="__('SDI codice*')" />
             <x-text-input id="sdi_code" class="block w-full" type="text" name="sdi_code" :value="old('sdi_code')"
                 autocomplete="username" />
             <x-input-error :messages="$errors->get('sdi_code')" class="mt-2" />
@@ -153,11 +153,11 @@
     <div class="flex items-center justify-end mt-4">
         <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             href="{{ route('app.login') }}">
-            {{ __('Already registered?') }}
+            {{ __('Già registrato?') }}
         </a>
 
         <x-primary-button class="ms-4">
-            {{ __('Register') }}
+            {{ __('Registrati') }}
         </x-primary-button>
     </div>
 </form>

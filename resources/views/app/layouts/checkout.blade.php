@@ -23,13 +23,13 @@
         </a>
 
         <div class="flex items-center gap-3 sm:gap-5 text-xs sm:text-sm text-gray-500">
-            <a href="{{ route('app.cart') }}">Cart</a>
+            <a href="{{ route('app.cart') }}">Carrello</a>
             <x-ri-arrow-drop-right-fill class="w-4 h-4 sm:w-5 sm:h-5" />
             <p class="{{ Request::is('cart/checkout') ? 'font-bold text-gray-700 sm:text-base' : '' }} text-gray-500">
                 Checkout</p>
             <x-ri-arrow-drop-right-fill class="w-4 h-4 sm:w-5 sm:h-5" />
             <p class="{{ Request::is('cart/checkout/confirm') ? 'font-bold text-gray-700 sm:text-base' : '' }} text-gray-500">
-                Confirmation</p>
+                Conferma</p>
         </div>
     </div>
 

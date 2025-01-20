@@ -70,7 +70,7 @@
                         <span class="font-semibold text-green-500">{{$product->GIACENZA}}</span>
                     </div>
                 @else
-                    <span class="font-semibold text-red-500">Esauritot</span>
+                    <span class="font-semibold text-red-500">Esaurito</span>
                 @endif
 
             </div>
