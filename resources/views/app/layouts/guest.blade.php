@@ -2,6 +2,7 @@
     $tenant = tenant();
     // Check if brand_info exists, then if name exists and is not empty
     $brand_title = !empty($tenant->brand_info['name'] ?? null) ? $tenant->brand_info['name'] : 'Ecommerce';
+    $favicon = isset($tenant->brand_info['favicon']) ? asset($tenant->brand_info['favicon']) : url('/images/favicon.png');
 @endphp
 
 
@@ -14,6 +15,7 @@
     {{-- @dd($tenant->brand_info['name']) --}}
     
     <title>@yield('title') | {{ $brand_title ?? config('app.name') }}</title>
+    <link rel="icon" href="{{ $favicon }}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.bubble.css" rel="stylesheet" />

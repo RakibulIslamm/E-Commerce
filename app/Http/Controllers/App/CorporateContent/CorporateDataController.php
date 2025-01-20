@@ -54,41 +54,74 @@ class CorporateDataController
      */
     public function update_brand(Request $request)
     {
-        // dd(request()->all());
+        // Validate the request data
         $request->validate([
             'logo' => 'nullable|image|mimes:png,svg|max:2048',
+            'favicon' => 'nullable|image|mimes:ico,png,svg|max:100',
             'logo_height' => 'nullable|integer',
             'name' => 'nullable|string|max:255',
             'tagline' => 'nullable|string|max:255',
             'description' => 'nullable|string',
         ]);
 
-        $data = $request->only(['logo_height', 'name', 'tagline', 'description']);
+        // Retrieve the tenant instance
         $tenant = tenant();
-        // $folder = strtok($tenant->domain, ".");
+        if (!$tenant) {
+            return redirect()->route('app.corporate-data')->withErrors('Tenant not found.');
+        }
 
+        // Initialize data array
+        $data = $request->only(['logo_height', 'name', 'tagline', 'description']);
+
+        // Handle logo upload
         if ($request->hasFile('logo')) {
             $logo = $request->file('logo');
-            // $stored = \Storage::disk('public')->put("$folder/logos", $logo);
+            
+            // Validate logo
+            if (!$logo->isValid()) {
+                return redirect()->route('app.corporate-data')->withErrors('Logo upload failed. Please try again.');
+            }
+
+            // Store the logo and update the URL
             $path = $logo->store("logos", 'public');
-            $url = tenant_asset($path);
-            // dd($url);
-            $data['logo'] = $url;
+            if ($path) {
+                $data['logo'] = tenant_asset($path);
+            } else {
+                return redirect()->route('app.corporate-data')->withErrors('Failed to store logo.');
+            }
         }
 
-        if (isset($tenant->brand_info)) {
-            $newData = array_merge($tenant->brand_info, $data);
-            $tenant->update([
-                "brand_info" => $newData
-            ]);
-            return redirect()->route('app.corporate-data');
+        // Handle favicon upload
+        if ($request->hasFile('favicon')) {
+            $favicon = $request->file('favicon');
+
+            // Validate favicon
+            if (!$favicon->isValid()) {
+                return redirect()->route('app.corporate-data')->withErrors('Favicon upload failed. Please try again.');
+            }
+
+            // Store the favicon and update the URL
+            $faviconPath = $favicon->store("favicons", 'public');
+            if ($faviconPath) {
+                $data['favicon'] = tenant_asset($faviconPath);
+            } else {
+                return redirect()->route('app.corporate-data')->withErrors('Failed to store favicon.');
+            }
         }
 
+        // Merge existing brand_info with new data
+        $brand_info = $tenant->brand_info ?? [];
+        $newData = array_merge($brand_info, $data);
+
+        // Update the tenant's brand_info
         $tenant->update([
-            "brand_info" => $data
+            "brand_info" => $newData
         ]);
-        return redirect()->route('app.corporate-data');
+
+        return redirect()->route('app.corporate-data')->with('success', 'Brand information updated successfully.');
     }
+
+
     public function update_address(Request $request)
     {
         $validateData = $request->validate([

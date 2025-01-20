@@ -16,7 +16,6 @@ class ShowNewsController
 
         $breadcrumbs = Breadcrumbs::generate('news');
         $news = News::all();
-        // dd($breadcrumbs);
         return view("app.pages.news.index", ["news" => $news, "breadcrumbs" => $breadcrumbs]);
     }
 

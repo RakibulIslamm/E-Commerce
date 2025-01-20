@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Models\Category;
 use App\Models\ContentSlider;
+use App\Models\News;
 use App\Models\Product;
 use App\Models\Promotion;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class IndexController
     public function index(Request $request)
     {
         $sliders = ContentSlider::orderBy('position')->get();
-
+        $news = News::orderBy('created_at', 'desc')->take(6)->get();
         // Fetch New Arrivals (limit 8)
         $newArrivals = Product::where('NOVITA', true)
             ->orderBy('created_at', 'desc')
@@ -51,6 +52,7 @@ class IndexController
             'bestSellers' => $bestSellers,
             'categories_home' => $categories,
             'promotion' => $promotion,
+            'news'=> $news,
         ]);
     }
 }

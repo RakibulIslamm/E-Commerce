@@ -5,6 +5,7 @@ $logo = '/images/logo.png';
 $name = null;
 $description = null;
 $tagline = null;
+$favicon = null;
 
 // dd($site_settings);
 
@@ -17,11 +18,22 @@ if (isset($site_settings->brand_info)) {
     $name = isset($brand_info['name']) ? $brand_info['name'] : null;
     $description = isset($brand_info['description']) ? $brand_info['description'] : null;
     $tagline = isset($brand_info['tagline']) ? $brand_info['tagline'] : null;
+
+    $favicon = isset($site_settings->brand_info['favicon']) ? asset($site_settings->brand_info['favicon']) : url('/images/favicon.png');
 }
 
 ?>
 
 <div class="w-full">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li class=" italic text-sm text-red-600 font-semibold">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div id="logo" class="w-full flex items-center justify-between gap-2 p-5 bg-white rounded-lg shadow border">
         <div class=" space-y-2">
             <img class="w-auto" style="height: {{ $logo_height }}px" src="{{ $logo }}" alt="">
@@ -55,6 +67,17 @@ if (isset($site_settings->brand_info)) {
                     <button type="button"
                         class="w-full px-5 py-1 border rounded bg-sky-600 text-white disabled:bg-sky-300 mt-2"
                         onclick="document.getElementById('upload-logo-input').click()">scelto</button>
+
+                    <div class="mt-2 flex items-center gap-2 group/fav cursor-pointer">
+                        <h3 class="">Favicon:</h3>
+                        <div class="w-8 h-8 relative group/favicon">
+                            <img id="favicon-preview" class="w-full h-full border rounded-full" src="{{ $favicon }}" alt="">
+                            <label for="upload-favicon-input" class="absolute top-0 left-0 w-full h-full bg-slate-900 bg-opacity-50 rounded-full flex justify-center items-center invisible group-hover/favicon:visible cursor-pointer">
+                                <x-heroicon-o-plus class="w-6 h-6 text-white" />
+                                <input accept="image/*" class="sr-only" type="file" name="favicon" id="upload-favicon-input">
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -102,12 +125,20 @@ if (isset($site_settings->brand_info)) {
     });
 
 
-    document.getElementById('upload-logo-input').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('logo-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
+    setupFilePreview('upload-logo-input', 'logo-preview');
+    setupFilePreview('upload-favicon-input', 'favicon-preview');
+
+
+    function setupFilePreview(inputId, previewId) {
+        document.getElementById(inputId).addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(previewId).src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
 </script>

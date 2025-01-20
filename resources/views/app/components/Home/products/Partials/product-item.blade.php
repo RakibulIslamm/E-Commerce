@@ -28,10 +28,10 @@
 
                 @if (isset($section))
                 @endif
-                <button class="px-4 py-1 group/wish-list text-red-500 cursor-pointer ml-auto" title="Add to wishlist">
+                {{-- <button class="px-4 py-1 group/wish-list text-red-500 cursor-pointer ml-auto" title="Add to wishlist">
                     <x-heroicon-o-heart class="w-6 h-6 group-hover/wish-list:hidden group-hover/product:text-white" />
                     <x-heroicon-s-heart class="w-6 h-6 hidden group-hover/wish-list:block " />
-                </button>
+                </button> --}}
             </div>
             <div
                 class="flex flex-col items-center gap-2 invisible opacity-0 group-hover/product:opacity-100 group-hover/product:visible transition-all ease-in-out">
