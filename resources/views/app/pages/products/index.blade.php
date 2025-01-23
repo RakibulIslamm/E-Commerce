@@ -1,4 +1,4 @@
-@section('title', 'Products')
+@section('title', 'Prodotti')
 {{-- @dd($products) --}}
 <x-app-guest-layout>
     {{-- @dd($breadcrumbs) --}}

@@ -26,6 +26,11 @@ Breadcrumbs::for('news', function (BreadcrumbTrail $trail) {
     $trail->push('News', route('app.news'));
 });
 
+Breadcrumbs::for('newsDetail', function (BreadcrumbTrail $trail, $news) {
+    $trail->parent('news');
+    $trail->push($news->title, route('app.news.show', $news));
+});
+
 
 // Breadcrumbs::for('post', function (BreadcrumbTrail $trail, $post) {
 //     $trail->parent('home');

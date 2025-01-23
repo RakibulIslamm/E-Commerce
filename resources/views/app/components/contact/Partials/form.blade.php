@@ -1,4 +1,5 @@
-<form action="#" method="POST" class="p-5 bg-white rounded-lg shadow">
+<form action="{{ route('app.contact.send') }}" method="POST" class="p-5 bg-white rounded-lg shadow">
+    @csrf
     <div class="space-y-4">
         <div class="w-full flex items-center gap-3">
             <div class="w-full">

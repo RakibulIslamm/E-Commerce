@@ -23,27 +23,27 @@
                             <tr>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Title
+                                    Titolo
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Start Date
+                                    Data di inizio
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    End Date
+                                    Data di fine
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Publication date
+                                    Data di pubblicazione
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Published
+                                    Pubblicato
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Action
+                                    Azione
                                 </th>
                             </tr>
                         </thead>

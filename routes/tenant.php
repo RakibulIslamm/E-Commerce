@@ -28,6 +28,9 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
     Route::get('/contact', [ContactController::class, 'index'])->name('app.contact');
+    Route::post('/contact/send', [ContactController::class, 'send'])->name('app.contact.send');
+
+
     Route::middleware(['registration_process', 'track_user'])->group(function () {
         Route::get('/', [IndexController::class, 'index']);
         Route::middleware(['auth'])->group(function () {

@@ -12,7 +12,7 @@
         <div class="relative w-full max-w-full flex-grow flex-1 text-right">
             <a href="{{ route('app.dashboard.slider.create') }}"
                 class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold  px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
-                Add New
+                Aggiungi nuovo
             </a>
         </div>
         {{-- @if ($user->role == 1 || $user->role == 3)
@@ -34,23 +34,23 @@
                             <tr>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Name
+                                    Nome
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Image
+                                    Immagine
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Link
+                                    Collegamento
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Title
+                                    Titolo
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Action
+                                    Azione
                                 </th>
                             </tr>
                         </thead>

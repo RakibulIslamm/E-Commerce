@@ -11,7 +11,7 @@ Route::prefix("products")->group(function () {
 
 Route::prefix("news")->group(function () {
     Route::get('', [ShowNewsController::class, 'index'])->name('app.news');
-    Route::get('/show/{id}', [ShowNewsController::class, 'show'])->name('app.news.show');
+    Route::get('/show/{news}', [ShowNewsController::class, 'show'])->name('app.news.show');
 });
 
 Route::prefix("agency")->group(function () {

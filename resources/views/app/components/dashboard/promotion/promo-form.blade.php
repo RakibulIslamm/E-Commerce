@@ -17,7 +17,7 @@
 
 
         <div class="w-full">
-            <label for="code" class="block text-gray-700 text-sm font-bold mb-2">Promo Code</label>
+            <label for="code" class="block text-gray-700 text-sm font-bold mb-2">Codice promozionale</label>
             <input id="code" name="code" type="text" value="{{ old('code', $promotion['code'] ?? '') }}"
                 required
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -43,7 +43,7 @@
         </div>
 
         <div class="w-full mt-4">
-            <label for="minimum_spend" class="block text-gray-700 text-sm font-bold mb-2">Minimum Spend</label>
+            <label for="minimum_spend" class="block text-gray-700 text-sm font-bold mb-2">Spesa minima</label>
             <input id="minimum_spend" name="minimum_spend" type="number" step="0.01" min="0"
                 value="{{ old('minimum_spend', $promotion['minimum_spend'] ?? '') }}"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">

@@ -32,10 +32,7 @@
                         id="create-category-image-input">
                 </label>
                 <x-input-error :messages="$errors->get('img')" class="mt-2" />
-                <p class="my-1 text-sm text-gray-600 font-bold">Change image
-                    Mandatory dimensions: 500 X100px
-                    Attention, the writing must be max 225 px wide and centered within the image.
-                </p>
+                <p class="my-1 text-sm text-gray-600 font-bold">Cambia immagine Dimensioni obbligatorie: 500 X100px Attenzione, la scritta deve essere larga max 225 px e centrata all'interno dell'immagine.</p>
                 <img id="create-category-image-preview" src="" class="mt-3 w-1/2 object-cover object-center"
                     alt="">
             </div>
@@ -43,11 +40,11 @@
 
         <div class="mt-6 flex items-center gap-3">
             <a href="{{ route('app.dashboard.categories') }}">
-                Cancel
+                Cancellare
             </a>
 
             <x-primary-button class="ms-3" type="submit">
-                {{ __('Create') }}
+                {{ __('Creare') }}
             </x-primary-button>
         </div>
     </form>

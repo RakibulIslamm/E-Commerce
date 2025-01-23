@@ -39,10 +39,10 @@ if (isset($site_settings->brand_info)) {
             <img class="w-auto" style="height: {{ $logo_height }}px" src="{{ $logo }}" alt="">
             <div>
                 <h3 class="text-xl font-bold text-gray-700">{{ $name ?? 'Company Name' }}</h3>
-                <div class="flex items-center gap-2">
+                {{-- <div class="flex items-center gap-2">
                     <input type="checkbox" name="" id="brand_name_show">
-                    <label for="brand_name_show" class="text-sm">Show company name on navbar</label>
-                </div>
+                    <label for="brand_name_show" class="text-sm">Mostra il nome dell'azienda sulla barra di navigazione</label>
+                </div> --}}
             </div>
         </div>
         <button id="edit-logo" class="px-5 py-1 border rounded">Edit</button>

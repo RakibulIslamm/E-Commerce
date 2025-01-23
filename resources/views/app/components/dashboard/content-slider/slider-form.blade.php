@@ -9,13 +9,13 @@
 
     <div class="w-full flex items-center gap-3">
         <div class="w-full">
-            <label for="slide_name" class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+            <label for="slide_name" class="block text-gray-700 text-sm font-bold mb-2">Nome</label>
             <input id="slide_name" name="name" type="text" value="{{ old('name', $slider['name'] ?? '') }}"
                 required
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
         <div class="w-full">
-            <label for="slide_title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
+            <label for="slide_title" class="block text-gray-700 text-sm font-bold mb-2">Titolo</label>
             <input id="slide_title" name="title" type="text" value="{{ old('title', $slider['title'] ?? '') }}"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
         </div>
@@ -35,15 +35,15 @@
     </div>
 
     <div class="w-full">
-        <label class="block text-gray-700 text-sm font-bold mb-2">Short Description</label>
+        <label class="block text-gray-700 text-sm font-bold mb-2">Breve descrizione</label>
         <textarea name="description"
             class="shadow appearance-none border rounded w-full h-[105px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             maxlength="100">{{ old('description', $slider['description'] ?? '') }}</textarea>
-        <span class="text-xs text-red-800 block -mt-2">Max length 100 character</span>
+        <span class="text-xs text-red-800 block -mt-2">Lunghezza massima 100 caratteri</span>
     </div>
     @if ($mode == 'edit')
         <div class="w-full">
-            <label class="block text-gray-700 text-sm font-bold mb-2">Position</label>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Posizione</label>
             <input name="position" type="number" value="{{ old('position', $slider['position'] ?? '') }}"
                 class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 maxlength="100">
@@ -53,13 +53,13 @@
         <label id="upload-slide-image"
             class="px-5 py-2 border rounded-md cursor-pointer flex items-center justify-start gap-2 w-max">
             <x-lucide-image-up class="w-5 h-5" />
-            Upload Image
+            Carica immagine
             <input accept="image/*" class="sr-only" type="file" name="img" id="upload-slide-input">
         </label>
-        <span class="text-sm text-red-800 block mt-2">Image size 1920x500</span>
+        <span class="text-sm text-red-800 block mt-2">Dimensione immagine 1920x500</span>
         <img id="slide-image-preview" src="{{ $slider['img'] ?? '' }}" class="mt-3 w-full object-cover object-center"
             alt="">
     </div>
 
-    <button type="submit" class="px-5 py-1 border rounded bg-sky-500 text-white">Create</button>
+    <button type="submit" class="px-5 py-1 border rounded bg-sky-500 text-white">Creare</button>
 </form>

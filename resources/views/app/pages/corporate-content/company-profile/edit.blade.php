@@ -1,4 +1,4 @@
-@section('title', 'Edit Company Profile')
+@section('title', 'Modifica profilo aziendale')
 <x-app-layout>
     <form action="{{ route('app.corporate-content.company-profile.update') }}" method="POST" id="company-profile-form">
         @csrf
@@ -8,7 +8,7 @@
         </div>
         <button
             class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold  px-5 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mt-2"
-            type="submit">Update</button>
+            type="submit">Aggiornamento</button>
     </form>
 </x-app-layout>
 

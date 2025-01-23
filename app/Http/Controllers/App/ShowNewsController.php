@@ -27,6 +27,15 @@ class ShowNewsController
 
     public function show(News $news)
     {
+        $breadcrumbs = Breadcrumbs::generate('newsDetail', $news);
+        $relatedNews = News::where('id', '!=', $news->id)->latest()->take(3)->get();
+
+        // Return the view with the necessary data
+        return view('app.pages.news.show', [
+            'newsItem' => $news,
+            'relatedNews' => $relatedNews,
+            'breadcrumbs' => $breadcrumbs
+        ]);
 
     }
 }

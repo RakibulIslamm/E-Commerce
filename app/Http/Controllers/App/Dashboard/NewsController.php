@@ -120,6 +120,7 @@ class NewsController
 
             return redirect()->route('app.dashboard.news')->with('success', 'Updated');
         } catch (\Exception $e) {
+            // dd($e->getMessage());
             return back()->withErrors(['error' => 'An error occurred: ' . $e->getMessage()]);
         }
     }

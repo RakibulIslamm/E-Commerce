@@ -32,11 +32,11 @@
                             <tr>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Image
+                                    Immagine
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Category Name
+                                    Nome della categoria
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -44,7 +44,7 @@
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Action
+                                    Azione
                                 </th>
                             </tr>
                         </thead>

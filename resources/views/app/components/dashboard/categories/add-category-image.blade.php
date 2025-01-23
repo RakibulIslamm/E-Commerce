@@ -4,13 +4,10 @@
         @csrf
         @method('PUT')
         <h2 class="text-lg font-medium text-gray-900">
-            'Update {{ $category['nome'] }} category image
+            'Aggiornamento {{ $category['nome'] }} immagine della categoria
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 font-bold">Change image
-            Mandatory dimensions: 500 X100px
-            Attention, the writing must be max 225 px wide and centered within the image.
-        </p>
+        <p class="mt-1 text-sm text-gray-600 font-bold">Cambia immagine Dimensioni obbligatorie: 500 X100px Attenzione, la scritta deve essere larga max 225 px e centrata all'interno dell'immagine.</p>
 
         <div class="my-6">
             <div class="w-full mt-3">
@@ -30,11 +27,11 @@
 
         <div class="mt-6 flex justify-end">
             <x-secondary-button x-on:click="$dispatch('close')">
-                {{ __('Cancel') }}
+                {{ __('Cancellare') }}
             </x-secondary-button>
 
             <x-primary-button class="ms-3">
-                {{ __('Update') }}
+                {{ __('Aggiornamento') }}
             </x-primary-button>
         </div>
     </form>

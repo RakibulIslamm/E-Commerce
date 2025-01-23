@@ -17,15 +17,15 @@
                             <tr>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Name
+                                    Nome
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Vat No.
+                                    Partita IVA
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Tax Code
+                                    Codice Fiscale
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -33,11 +33,11 @@
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Status
+                                    Stato
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    List
+                                    Lista
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
@@ -55,7 +55,7 @@
                                 @endforeach
                             @else
                                 <tr class="p-3 block">
-                                    <td>No user found</td>
+                                    <td>Nessun utente trovato</td>
                                 </tr>
                             @endif
                         </tbody>

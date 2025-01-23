@@ -12,7 +12,7 @@ if (isset($site_settings->social_links)) {
 
 <div id="social" class="w-full p-5 bg-white rounded-lg shadow border mt-4">
     <div class="flex justify-between items-center">
-        <h2 class="text-xl font-semibold pb-2">Social Media Links</h2>
+        <h2 class="text-xl font-semibold pb-2">Collegamenti ai social media</h2>
         <button id="social-edit-btn" class="px-5 py-1 border rounded">Edit</button>
     </div>
     <div class="flex flex-col items-start gap-3">

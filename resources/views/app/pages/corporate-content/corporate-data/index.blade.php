@@ -1,4 +1,4 @@
-@section('title', 'Corporate Data')
+@section('title', 'Dati aziendali')
 <x-app-layout>
     {{-- {{ dd($settings->domain) }} --}}
     @include('app.components.dashboard.corporate-data.brand')

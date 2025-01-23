@@ -1,6 +1,4 @@
 @section('title', 'News')
-{{-- @dd($breadcrumbs[0]->title) --}}
-{{-- @dd($news) --}}
 <x-app-guest-layout>
     <x-page-layout :props="['breadcrumbs' => $breadcrumbs, 'title' => 'News']">
         @if (!empty($news))
