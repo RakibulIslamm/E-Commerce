@@ -1,5 +1,8 @@
 {{-- @dd($shipping_settings) --}}
 <x-app-checkout-layout>
+    @error('cap_not_available')
+        <h3 class="bg-red-500 text-white py-2 rounded-md text-lg font-bold my-3 text-center">{{ $message }}</h3>
+    @enderror
     <form action="{{ route('app.place-order') }}" method="POST"
         class="flex flex-col lg:flex-row items-start justify-between py-10 px-5 sm:px-10 lg:px-20 gap-10" onsubmit="disableSubmitButton()">
         @csrf
@@ -247,10 +250,6 @@
                 </div>
             </div>
             <button class="px-10 py-3 rounded-lg border w-full mt-4 bg-slate-800 text-white" id="order_submit_btn">Effettuare l'ordine</button>
-
-            @error('cap_not_available')
-                <h3 class="text-red-500 text-xl font-bold my-3">{{ $message }}</h3>
-            @enderror
         </div>
     </form>
 

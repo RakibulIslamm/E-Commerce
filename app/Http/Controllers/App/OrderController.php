@@ -123,6 +123,8 @@ class OrderController
         $city = $validate['citta'];
         $province = $validate['provincia'];
 
+        $allLocations = AvailableLocation::all();
+
         $availableLocations = AvailableLocation::where('postal_code', $postal)->with('location')->get();
 
         // Check if any location matches the provided city and province
@@ -130,7 +132,7 @@ class OrderController
             return $location->location->place === $city && $location->location->province === $province;
         });
 
-        if (!$locationMatch) {
+        if (!$locationMatch && (count($allLocations) > 0)) {
             return redirect()->back()
                 ->withErrors(['cap_not_available' => 'Al momento non siamo disponibili nella tua zona'])
                 ->withInput();
