@@ -90,6 +90,22 @@ if (isset($site_settings->corporate_data)) {
 
             <!-- Contact Form -->
             <div class="w-full md:w-7/12">
+                @if (session()->has('success'))
+                    <div class="px-10 py-2 bg-green-500 text-white font-semibold flex items-center justify-between"
+                        id="session_status">
+                        <p>{{ session('success') }}</p>
+                        <x-lucide-x-circle class="w-4 h-4 cursor-pointer" id="icon" />
+                    </div>
+                @endif
+                @if (session()->has('error'))
+                    <div class="px-10 py-2 bg-red-500 text-white font-semibold flex items-center justify-between"
+                        id="session_status">
+                        <p>{{ session('error') }}</p>
+                        <x-lucide-x-circle class="w-4 h-4 cursor-pointer" id="icon" />
+                    </div>
+                @endif
+                
+                {{-- Contact Form --}}
                 @include('app.components.contact.Partials.form')
             </div>
         </div>

@@ -58,7 +58,7 @@ class OrderController
         $proceed = $request->input('proceed') ?? null;
         if (!Auth::check()) {
             if ($proceed == 'proceed-checkout') {
-                return view("app.pages.checkout.index", ["shipping_settings"=>$shippingSettings]);
+                return view("app.pages.checkout.index", ["shipping_settings"=>$validShippingSettings]);
             }
             return view("app.pages.checkout.login-or-register");
         }

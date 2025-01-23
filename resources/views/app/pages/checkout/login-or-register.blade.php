@@ -8,7 +8,7 @@
                 </div>
             </div>
             <p class="text-xl">OR</p>
-            <form action="{{ route('app.checkout') }}" method="POST">
+            <form action="{{ route('app.checkout') }}" method="GET">
                 @csrf
                 <input type="text" class="sr-only" name="proceed" value="proceed-checkout">
                 <x-secondary-button type='submit'>
