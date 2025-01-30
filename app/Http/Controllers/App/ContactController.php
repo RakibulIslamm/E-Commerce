@@ -5,6 +5,8 @@ namespace App\Http\Controllers\App;
 use App\Mail\ContactMail;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ContactController
@@ -14,7 +16,62 @@ class ContactController
         return view("app.pages.contact");
     }
 
+
     public function send(Request $request)
+    {
+        $tenant = tenant();
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'message' => 'required|string',
+        ]);
+
+        $data = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'text' => $validated['message'],
+            'business_name' => $tenant->business_name,
+        ];
+
+        $smtp = $tenant->smtp;
+
+        if (isset($smtp) && $smtp['mail_host'] && $smtp['mail_port'] && $smtp['mail_username'] && $smtp['mail_password'] && $smtp['mail_from_address']){
+            Config::set('mail.mailers.smtp.host', $smtp['mail_host']);
+            Config::set('mail.mailers.smtp.port', $smtp['mail_port']);
+            Config::set('mail.mailers.smtp.username', $smtp['mail_username']);
+            Config::set('mail.mailers.smtp.password', $smtp['mail_password']);
+            // Config::set('mail.mailers.smtp.encryption', $smtp['mail_encryption']);
+            Config::set('mail.from.address', $smtp['mail_from_address']);
+            Config::set('mail.from.name', $tenant->business_name ?? "Ecommerce");
+        }
+        else{
+            Log::error("Error: ", ['request' => $request->all(), 'errore' => [
+                'numero' => 500,
+                'msg' => "SMTP not setup yet",
+                'extra_msg' => ""
+            ]]);
+            return redirect()->back()->with('error', 'Something went wrong, Please try again later.');
+        }
+
+
+        // Send the email
+        try {
+            Mail::send('app.emails.contact', $data, function ($message) use ($data, $smtp) {
+                $message->from($smtp['mail_from_address'], $data['business_name']);
+                $message->to($smtp['mail_from_address']);
+                $message->subject('Contact Form Message');
+            });
+
+            return redirect()->back()->with('success', 'Your message has been sent successfully!');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong, Please try again later.');
+        }
+    }
+
+
+
+    /* public function send(Request $request)
     {
         $tenant = tenant();
         $validated = $request->validate([
@@ -42,6 +99,5 @@ class ContactController
         catch(Exception $e){
             return redirect()->back()->with('error', 'Something went wrong, Please try gain later');
         }
-    }
-
+    } */
 }

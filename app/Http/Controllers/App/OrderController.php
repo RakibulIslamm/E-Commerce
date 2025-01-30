@@ -9,6 +9,9 @@ use App\Models\Product;
 use App\Models\ShippingSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController
 {
@@ -154,14 +157,13 @@ class OrderController
             if (Auth::check()) {
                 $validate['user_id'] = auth()->user()->id;
             }
-
+        
             $filledValues = array_filter($validate, function ($value) {
                 return !is_null($value) && $value !== '';
             });
-
+        
             $order = Order::create($filledValues);
             foreach ($cart as $item) {
-                // dd($item['product_id']);
                 $order->order_items()->create([
                     'order_id' => $order->id,
                     'product_id' => $item['product_id'],
@@ -175,8 +177,9 @@ class OrderController
                 ]);
             }
             $order->load('order_items.product');
+            $this->sendOrderConfirmationEmail($order);
             session()->forget('cart');
-            return redirect()->route('app.confirm-order')->with('order', $order)->with('success', true);
+            return redirect()->route('app.confirm-order')->with(['order' => $order, 'success' => true]);
         } catch (\Exception $e) {
             return redirect()->route('app.confirm-order')->with('message', "Internal Server Error")->with('success', false);
         }
@@ -233,5 +236,45 @@ class OrderController
     public function destroy(Order $order)
     {
         //
+    }
+
+    private function sendOrderConfirmationEmail($order)
+    {
+        $smtp = tenant()->smtp;
+
+        $data = [
+            'id'=> $order->id,
+            'created_at'=> $order->created_at,
+            'totale_netto'=> $order->totale_netto,
+            'spese_spedizione'=> $order->spese_spedizione,
+            'totale_iva'=> $order->totale_iva,
+            'cod_fee'=> $order->cod_fee,
+            'order_items'=> $order->order_items,
+            'nominativo_spedizione'=> $order->nominativo_spedizione,
+            'indirizzo_spedizione'=> $order->indirizzo_spedizione,
+            'citta_spedizione'=> $order->citta_spedizione,
+            'shipping_state'=> $order->shipping_state,
+            'cap_spedizione'=> $order->cap_spedizione,
+            'provincia_spedizione'=> $order->provincia_spedizione,
+            'telefono'=> $order->telefono,
+            'email'=> $order->email,
+        ];
+        
+        if (isset($smtp) && $smtp['mail_host'] && $smtp['mail_port'] && $smtp['mail_username'] && $smtp['mail_password'] && $smtp['mail_from_address']) {
+            Config::set('mail.mailers.smtp.host', $smtp['mail_host']);
+            Config::set('mail.mailers.smtp.port', $smtp['mail_port']);
+            Config::set('mail.mailers.smtp.username', $smtp['mail_username']);
+            Config::set('mail.mailers.smtp.password', $smtp['mail_password']);
+            Config::set('mail.from.address', $smtp['mail_from_address']);
+            Config::set('mail.from.name', tenant()->business_name ?? "Ecommerce");
+
+            Mail::send('app.emails.order-confirmation', $data, function ($message) use ($smtp, $data) {
+                $message->from($smtp['mail_from_address'], tenant()->business_name);
+                $message->to($data['email']);
+                $message->subject('Order Confirmation');
+            });
+        } else {
+            Log::error("Error: SMTP not set up for order confirmation email", ['order_id' => $order->id]);
+        }
     }
 }

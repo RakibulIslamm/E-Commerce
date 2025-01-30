@@ -15,6 +15,8 @@ Route::prefix('corporate-content')->group(function () {
 
         Route::put('/corporate-data', [CorporateDataController::class, 'update_address'])->name('app.corporate-data.update-corporate-data');
 
+        Route::put('/smtp', [CorporateDataController::class, 'update_smtp'])->name('app.corporate-data.update-smtp');
+
         Route::put('/social', [CorporateDataController::class, 'update_social'])->name('app.corporate-data.update-social');
     });
 

@@ -143,6 +143,24 @@ class CorporateDataController
         ]);
         return redirect()->route('app.corporate-data');
     }
+
+    public function update_smtp(Request $request)
+    {
+        $validateData = $request->validate([
+            'mail_host' => 'nullable|string',
+            'mail_port' => 'nullable|string',
+            'mail_username' => 'nullable|string',
+            'mail_password' => 'nullable|string',
+            'mail_from_address' => 'nullable|string'
+        ]);
+
+        $tenant = tenant();
+        $tenant->update([
+            "smtp" => $validateData
+        ]);
+        return redirect()->route('app.corporate-data');
+    }
+
     public function update_social(Request $request)
     {
         $tenant = tenant();

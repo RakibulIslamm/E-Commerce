@@ -20,7 +20,7 @@
                 <div class="flex justify-between items-center border-b py-3">
                     <p class="text-gray-600">Data</p>
                     <div class="font-medium text-gray-800">
-                        <p class="text-sm">{{ $order->created_at->format('F j, Y, g:i a') }}</p>
+                        <p class="text-sm">{{ \Carbon\Carbon::parse($order->created_at)->locale('it')->translatedFormat('j F Y, H:i') }}</p>
                     </div>
                 </div>
                 <div class="flex justify-between items-center border-b py-3">
@@ -107,5 +107,5 @@
 
 <script>
     const order = @json($order);
-    console.log(order);
+    // console.log(order);
 </script>

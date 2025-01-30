@@ -31,7 +31,7 @@
 
         <!-- Footer -->
         <div style="background-color: #f3f4f6; text-align: center; padding: 10px; font-size: 14px; color: #6b7280;">
-            <p style="margin: 0;">&copy; 2025 Your Company Name. All rights reserved.</p>
+            <p style="margin: 0;">&copy; 2025 {{config('app.name')}}. All rights reserved.</p>
         </div>
     </div>
 </body>
