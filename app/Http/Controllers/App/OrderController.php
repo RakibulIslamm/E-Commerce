@@ -163,6 +163,11 @@ class OrderController
             });
         
             $order = Order::create($filledValues);
+
+            $order->n_ordine = $order->id;
+            $order->data_ordine = $order->created_at;
+            $order->save();
+
             foreach ($cart as $item) {
                 $order->order_items()->create([
                     'order_id' => $order->id,
@@ -177,11 +182,12 @@ class OrderController
                 ]);
             }
             $order->load('order_items.product');
+            
             $this->sendOrderConfirmationEmail($order);
             session()->forget('cart');
             return redirect()->route('app.confirm-order')->with(['order' => $order, 'success' => true]);
         } catch (\Exception $e) {
-            return redirect()->route('app.confirm-order')->with('message', "Internal Server Error")->with('success', false);
+            return redirect()->route('app.confirm-order')->with('message', "Internal Server Error")->with('success', false)->with('error', true);
         }
     }
 
@@ -189,8 +195,9 @@ class OrderController
     {
         $order = session('order');
         $success = session('success');
+        $error = session('error');
 
-        if (!$order) {
+        if (!$order && !$error) {
             return redirect()->route('app.cart');
         }
 

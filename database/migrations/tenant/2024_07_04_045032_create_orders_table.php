@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('n_ordine')->nullable();
             $table->foreignId('user_id')->default(0);
             $table->string('nominativo')->nullable();
             $table->foreignId('promotion_id')->default(0);
@@ -38,6 +39,7 @@ return new class extends Migration {
             $table->string('corriere')->nullable();
             $table->boolean('nuovi')->default(false);
             $table->timestamps();
+            $table->timestamp('data_ordine')->nullable();
         });
     }
 

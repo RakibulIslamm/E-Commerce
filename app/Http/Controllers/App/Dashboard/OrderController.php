@@ -26,7 +26,7 @@ class OrderController
             if (!$order) {
                 return response()->json(['error' => 'Incorrect order ID'], 400);
             }
-            return response()->json(['Codice' => 'OK', 'n_ordini' => 1, 'ordini' => [$order]]);
+            return response()->json(['codice' => 'OK', 'n_ordini' => 1, 'ordini' => [$order]]);
         }
 
         if ($request->filled('DATAORDINE')) {
@@ -46,7 +46,7 @@ class OrderController
             if (!$order) {
                 return response()->json(['error' => 'Incorrect order number'], 420);
             }
-            return response()->json(['Codice' => 'OK', 'n_ordini' => 1, 'ordini' => [$order]]);
+            return response()->json(['codice' => 'OK', 'n_ordini' => 1, 'ordini' => [$order]]);
         }
 
         if ($request->filled('STATO')) {
@@ -68,7 +68,7 @@ class OrderController
 
         dd($orders);
 
-        return response()->json(['Codice' => 'OK', 'n_ordini' => $orders->count(), 'ordini' => $orders]);
+        return response()->json(['codice' => 'OK', 'n_ordini' => $orders->count(), 'ordini' => $orders]);
     }
 
     public function get_orders(Request $request)
