@@ -341,7 +341,16 @@ class ProductController
         
         $validated = $validator->validated();
 
-        if (!empty($validated['BARCODE'])) {
+        // Check if product exists
+        $product = Product::where('BARCODE', $validated['BARCODE'])->first();
+
+        if (!$product) {
+            $product = Product::where('DESCRIZIONEBREVE', $validated['DESCRIZIONEBREVE'])
+                ->whereJsonContains('CATEGORIEESOTTOCATEGORIE', $validated['CATEGORIEESOTTOCATEGORIE'])
+                ->first();
+        }
+
+        /* if (!empty($validated['BARCODE'])) {
             if (Product::where('BARCODE', $validated['BARCODE'])->exists()) {
                 Log::info("A product with this BARCODE already exists: ", ['payload' => [...$request->all()], 'url'=> request()->url()]);
                 return response()->json([
@@ -367,7 +376,7 @@ class ProductController
                     ]
                 ], 409);
             }
-        }        
+        }  */       
 
 
         // Handle `CATEGORIEESOTTOCATEGORIE`
@@ -454,13 +463,18 @@ class ProductController
         }
         $validated['FOTO'] = json_encode($imagePaths);
         try {
-            $product = Product::create($validated);
-            $product->FOTO = json_decode($product->FOTO);
-            Log::info("Success Add new product");
+            if ($product) {
+                $product->update($validated);
+                Log::info("Product updated successfully");
+            } else {
+                $product = Product::create($validated);
+                Log::info("New product added successfully");
+            }
+            
             return response()->json([
                 "codice" => "OK",
                 "articolo" => $product,
-                "numero"=> 201
+                "numero" => $product->wasRecentlyCreated ? 201 : 200
             ]);
         } catch (\Exception $e) {
             Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
