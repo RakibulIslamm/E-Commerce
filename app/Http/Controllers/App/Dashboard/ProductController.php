@@ -89,7 +89,7 @@ class ProductController
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'BARCODE' => 'nullable|string',
+            'BARCODE' => 'required|string',
             'DESCRIZIONEBREVE' => 'required|string',
             'DESCRIZIONEESTESA' => 'required|string',
             'ALIQUOTAIVA' => 'required|numeric|min:0|max:100',
@@ -109,7 +109,7 @@ class ProductController
             'TAGLIA' => 'nullable|string',
             'COLORE' => 'nullable|string',
             'PRE1IMP' => 'required|string|min:0',
-            'PRE1IVA' => 'nullable|numeric|min:0',
+            'PRE1IVA' => 'required|numeric|min:0',
             'PRE2IMP' => 'nullable|numeric|min:0',
             'PRE2IVA' => 'nullable|numeric|min:0',
             'PRE3IMP' => 'nullable|numeric|min:0',
@@ -119,6 +119,23 @@ class ProductController
             'DATAINIZIOPROMO' => 'nullable|date',
             'DATAFINEPROMO' => 'nullable|date',
         ]);
+
+
+        if (!empty($validated['BARCODE'])) {
+            if (Product::where('BARCODE', $validated['BARCODE'])->exists()) {
+                Log::info("A product with this BARCODE already exists: ", ['payload' => [...$request->all()], 'url'=> request()->url()]);
+                $bar = $validated['BARCODE'];
+                return redirect()->route('app.dashboard.product.create')->with('error', "A product with this BARCODE: $bar already exists")->withInput(request()->all());
+            }
+        } else {
+            if (Product::where('DESCRIZIONEBREVE', $validated['DESCRIZIONEBREVE'])
+                ->whereJsonContains('CATEGORIEESOTTOCATEGORIE', $validated['CATEGORIEESOTTOCATEGORIE'])
+                ->exists()) {
+                Log::info("A similar product already exists in this category: ", ['payload' => [...$request->all()], 'url'=> request()->url()]);
+                return redirect()->route('app.dashboard.product.create')->with('error', "A similar product already exists in the selected category")->withInput(request()->all());
+            }
+        }
+
 
         $validated['NOVITA'] = $request->input('NOVITA', false) ? true : false;
         $validated['PIUVENDUTI'] = $request->input('PIUVENDUTI', false) ? true : false;
@@ -270,7 +287,7 @@ class ProductController
         // dd($request->all('FOTO'));
 
         $rules = [
-            'BARCODE' => 'nullable|string',
+            'BARCODE' => 'required|string',
             'DESCRIZIONEBREVE' => 'required|string',
             'DESCRIZIONEESTESA' => 'nullable|string',
             'ALIQUOTAIVA' => 'required|numeric|min:0|max:100',
@@ -289,14 +306,14 @@ class ProductController
             'PESOARTICOLO' => 'nullable|numeric|min:0',
             'TAGLIA' => 'nullable|string',
             'COLORE' => 'nullable|string',
-            'PRE1IMP' => 'nullable|string',
-            'PRE1IVA' => 'nullable|string',
-            'PRE2IMP' => 'nullable|string',
-            'PRE2IVA' => 'nullable|string',
-            'PRE3IMP' => 'nullable|string',
-            'PRE3IVA' => 'nullable|string',
-            'PREPROMOIMP' => 'nullable|string',
-            'PREPROMOIVA' => 'nullable|string',
+            'PRE1IMP' => 'required|numeric',
+            'PRE1IVA' => 'required|numeric',
+            'PRE2IMP' => 'nullable|numeric',
+            'PRE2IVA' => 'nullable|numeric',
+            'PRE3IMP' => 'nullable|numeric',
+            'PRE3IVA' => 'nullable|numeric',
+            'PREPROMOIMP' => 'nullable|numeric',
+            'PREPROMOIVA' => 'nullable|numeric',
             'DATAINIZIOPROMO' => 'nullable|date',
             'DATAFINEPROMO' => 'nullable|date',
         ];
@@ -323,6 +340,34 @@ class ProductController
         }
         
         $validated = $validator->validated();
+
+        if (!empty($validated['BARCODE'])) {
+            if (Product::where('BARCODE', $validated['BARCODE'])->exists()) {
+                Log::info("A product with this BARCODE already exists: ", ['payload' => [...$request->all()], 'url'=> request()->url()]);
+                return response()->json([
+                    "codice" => "OK",
+                    "errore" => [
+                        "numero" => 409,
+                        "msg" => "A product with this BARCODE already exists.",
+                        "extra_msg" => ''
+                    ]
+                ], 409);
+            }
+        } else {
+            if (Product::where('DESCRIZIONEBREVE', $validated['DESCRIZIONEBREVE'])
+                ->whereJsonContains('CATEGORIEESOTTOCATEGORIE', $validated['CATEGORIEESOTTOCATEGORIE'])
+                ->exists()) {
+                Log::info("A similar product already exists in this category: ", ['payload' => [...$request->all()], 'url'=> request()->url()]);
+                return response()->json([
+                    "codice" => "OK",
+                    "errore" => [
+                        "numero" => 409,
+                        "msg" => "A similar product already exists in this category.",
+                        "extra_msg" => ''
+                    ]
+                ], 409);
+            }
+        }        
 
 
         // Handle `CATEGORIEESOTTOCATEGORIE`

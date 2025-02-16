@@ -87,7 +87,7 @@
                 <!-- Product Info -->
                 <div class="space-y-1">
                     <p>Code: <span class="font-semibold">290</span></p>
-                    <p>Barcode: <span class="font-semibold">8003495106693</span></p>
+                    <p>Barcode: <span class="font-semibold">{{$product->BARCODE ?? "N/A"}}</span></p>
                     <div>
                         Availability:
                         @if ($product->GIACENZA > 0)
