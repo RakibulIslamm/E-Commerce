@@ -86,7 +86,7 @@
 
                 <!-- Product Info -->
                 <div class="space-y-1">
-                    <p>Code: <span class="font-semibold">290</span></p>
+                    {{-- <p>Code: <span class="font-semibold">290</span></p> --}}
                     <p>Barcode: <span class="font-semibold">{{$product->BARCODE ?? "N/A"}}</span></p>
                     <div>
                         Availability:
