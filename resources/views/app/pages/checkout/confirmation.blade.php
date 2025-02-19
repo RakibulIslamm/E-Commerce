@@ -46,7 +46,7 @@
         <div class="bg-white rounded-lg shadow-md mt-6 p-6">
             <h2 class="text-lg font-semibold text-gray-800">Articoli nel tuo Ordine</h2>
             <div class="mt-4 space-y-4">
-                @foreach ($order->order_items as $item)
+                @foreach ($order->articoli as $item)
                     <div class="flex items-center">
                         <!-- Product Image (Placeholder) -->
                         @php
@@ -62,9 +62,9 @@
                         </div>
                         
                         <div class="text-right">
-                            <p class="text-gray-800 font-medium">€{{ number_format($item['price'], 2) }}</p>
-                            <p class="text-gray-600">x{{ $item['quantity'] }}</p>
-                            <p class="text-gray-800 font-medium">€{{ number_format($item['price'] * $item['quantity'], 2) }}</p>
+                            <p class="text-gray-800 font-medium">€{{ number_format($item['imponibile'], 2) }}</p>
+                            <p class="text-gray-600">x{{ $item['qta'] }}</p>
+                            <p class="text-gray-800 font-medium">€{{ number_format($item['imponibile'] * $item['qta'], 2) }}</p>
                         </div>
                     </div>
                 @endforeach

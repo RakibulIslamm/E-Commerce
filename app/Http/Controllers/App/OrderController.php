@@ -104,7 +104,6 @@ class OrderController
             'cap_spedizione' => 'nullable|string', // shipping postal code
             'citta_spedizione' => 'nullable|string', // shipping city
             'provincia_spedizione' => 'nullable|string', // shipping province
-            'spedizione' => 'nullable|string', // shipping
             'corriere' => 'nullable|string', // courier
             'note' => 'nullable|string',
         ]);
@@ -148,9 +147,7 @@ class OrderController
         $validate['cap_spedizione'] = $validate['cap_spedizione'] ? $validate['cap_spedizione'] : $validate['cap'];
         $validate['citta_spedizione'] = $validate['citta_spedizione'] ? $validate['citta_spedizione'] : $validate['citta'];
         $validate['provincia_spedizione'] = $validate['provincia_spedizione'] ? $validate['provincia_spedizione'] : $validate['provincia'];
-        $validate['promotion_id'] = $validate['promotion_id'] ?? '';
-
-        $validate['promotion_id'] = $validate['promotion_id'] ? $validate['promotion_id'] : 0;
+        $validate['promo'] = $validate['promo'] ?? '';
 
 
         try {
@@ -169,24 +166,25 @@ class OrderController
             $order->save();
 
             foreach ($cart as $item) {
-                $order->order_items()->create([
+                $order->articoli()->create([
                     'order_id' => $order->id,
                     'product_id' => $item['product_id'],
-                    'vat' => $item['vat'],
-                    'price' => $item['price'],
-                    'quantity' => $item['quantity']
+                    'ivato' => $item['vat'],
+                    'imponibile' => $item['price'],
+                    'qta' => $item['quantity']
                 ]);
                 $product = Product::find($item['product_id']);
                 $product->update([
                     "GIACENZA" => $product->GIACENZA - $item['quantity']
                 ]);
             }
-            $order->load('order_items.product');
+            $order->load('articoli.product');
             
             $this->sendOrderConfirmationEmail($order);
             session()->forget('cart');
             return redirect()->route('app.confirm-order')->with(['order' => $order, 'success' => true]);
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->route('app.confirm-order')->with('message', "Internal Server Error")->with('success', false)->with('error', true);
         }
     }
@@ -197,7 +195,7 @@ class OrderController
         $success = session('success');
         $error = session('error');
 
-        if (!$order && !$error) {
+        if (!$order && !$error && !$success) {
             return redirect()->route('app.cart');
         }
 
@@ -209,15 +207,14 @@ class OrderController
      */
     public function show(Order $order)
     {
-        try {
-            // Correct eager loading when retrieving the order from the database
-            $order = Order::with('order_items.product')->findOrFail($order->id);
-            
-            return view("app.pages.my-account.show-order", ["order" => $order]);
-        } catch (\Exception $e) {
-            // Handle the exception (optional: log the error, return a meaningful response, etc.)
-            // Example: return redirect()->route('app.confirm-order')->with('message', "Internal Server Error")->with('success', false);
+        if(!Auth::check()){
+            return redirect()->back();
         }
+        $order = Order::with('articoli.product')->findOrFail($order->id);
+        abort_if($order->user_id !== auth()->user()->id, 404);
+        
+        return view("app.pages.my-account.show-order", ["order" => $order]);
+        
     }
 
 
@@ -256,7 +253,7 @@ class OrderController
             'spese_spedizione'=> $order->spese_spedizione,
             'totale_iva'=> $order->totale_iva,
             'cod_fee'=> $order->cod_fee,
-            'order_items'=> $order->order_items,
+            'articoli'=> $order->articoli,
             'nominativo_spedizione'=> $order->nominativo_spedizione,
             'indirizzo_spedizione'=> $order->indirizzo_spedizione,
             'citta_spedizione'=> $order->citta_spedizione,

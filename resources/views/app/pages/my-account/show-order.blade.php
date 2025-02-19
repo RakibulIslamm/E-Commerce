@@ -43,7 +43,7 @@
             <div class="bg-white rounded-lg shadow-md mt-6 p-6 border">
               <h2 class="text-lg font-semibold text-gray-800">Articoli nel tuo ordine</h2>
               <div class="mt-4 space-y-4">
-                @foreach ($order->order_items ?? [] as $item)
+                @foreach ($order->articoli ?? [] as $item)
                   <div class="flex items-center">
                     @php
                         if(isset($item->product->FOTO)){
@@ -54,9 +54,9 @@
                     <img src="{{$FOTO}}" alt="Immagine del prodotto" class="w-20 h-20 object-cover rounded-md shadow">
                     <div class="ml-4 flex-grow">
                       <h3 class="text-gray-800 font-medium">{{$item->product->DESCRIZIONEBREVE ?? 'Descrizione non disponibile'}}</h3>
-                      <p class="text-sm text-gray-600">Quantità: {{$item->quantity ?? '0'}}</p>
+                      <p class="text-sm text-gray-600">Quantità: {{$item->qta ?? '0'}}</p>
                     </div>
-                    <p class="text-gray-800 font-medium">{{$item->price ?? '0'}}€</p>
+                    <p class="text-gray-800 font-medium">{{$item->imponibile ?? '0'}}€</p>
                   </div>
                 @endforeach
               </div>

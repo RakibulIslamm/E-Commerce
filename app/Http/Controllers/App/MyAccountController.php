@@ -22,15 +22,11 @@ class MyAccountController
         if (!Auth::check()) {
             return redirect()->route('app.login');
         }
-        $my_orders = Order::where('user_id', Auth::user()->id)->with('order_items.product')->get();
-
-        // foreach ($my_orders as $order) {
-        //     foreach ($order->order_items as $item) {
-        //         // dd(gettype($item->product->FOTO) == 'string');
-        //         // $item->product->FOTO = json_decode($item->product->FOTO);
-        //     }
-        // }
-        // dd($my_orders);
+        $my_orders = Order::where('user_id', Auth::user()->id)
+        ->with('articoli.product')
+        ->orderBy('created_at', 'desc')
+        ->limit(20)
+        ->get();
         return view('app.pages.my-account.orders', ['orders' => $my_orders]);
     }
 

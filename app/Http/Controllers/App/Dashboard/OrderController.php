@@ -15,7 +15,7 @@ class OrderController
      */
     public function index(Request $request)
     {
-        $query = Order::with('order_items');
+        $query = Order::with('articoli');
 
         if ($request->filled('NUOVI')) {
             $query->where('nuovi', false);
@@ -76,7 +76,7 @@ class OrderController
         $tenant = tenant();
         Log::info("Start get_orders(): ", ['payload' => $request->all(), 'url'=> request()->url()]);
     
-        $query = Order::with('order_items');
+        $query = Order::with('articoli');
 
         // dd($request->NUOVI);
 
@@ -155,7 +155,7 @@ class OrderController
         }
 
         $orders = $query->get();
-        return response()->json(['Codice' => 'OK', 'n_ordini' => $orders->count(), 'ordini' => $orders]);
+        return response()->json(['codice' => 'OK', 'n_ordini' => $orders->count(), 'ordini' => $orders]);
     }
 
 

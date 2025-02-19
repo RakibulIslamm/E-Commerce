@@ -39,7 +39,7 @@ class Order extends Model
         'cod_fee'
     ];
 
-    public function order_items()
+    public function articoli()
     {
         return $this->hasMany(OrderItem::class);
     }

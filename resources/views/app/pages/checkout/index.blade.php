@@ -146,7 +146,7 @@
                     @if (isset($shipping_settings))
                         @foreach ($shipping_settings as $index => $item)
                             <div class="relative w-full ">
-                                <input type="radio" name="spedizione" value="{{$item->courier}}" id="shipping_{{$item->courier}}"
+                                <input type="radio" name="corriere" value="{{$item->courier}}" id="shipping_{{$item->courier}}"
                                     class="hidden checked:block absolute top-4 right-4 peer/{{$item->courier}}" 
                                     {{$index === 0 ? 'checked' : ''}} required>
                                 <div class="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition peer-checked/{{$item->courier}}:border-blue-500 peer-checked/{{$item->courier}}:shadow">

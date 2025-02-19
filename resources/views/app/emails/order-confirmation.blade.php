@@ -97,14 +97,14 @@
 
         <div class="product-summary">
             <h2>Articoli nel tuo Ordine</h2>
-            @foreach ($order_items as $item)
+            @foreach ($articoli as $item)
                 <div class="product-item">
                     <div>
                         <strong style="margin-left: 10px;">{{$item->product->DESCRIZIONEBREVE}}</strong>
                     </div>
                     <div style="text-align: right;">
-                        <div> €{{ number_format($item['price'], 2) }} x{{ $item['quantity'] }}</div>
-                        <div style="font-weight: strong;"> €{{ number_format($item['price'] * $item['quantity'], 2) }}</div>
+                        <div> €{{ number_format($item['imponibile'], 2) }} x{{ $item['qta'] }}</div>
+                        <div style="font-weight: strong;"> €{{ number_format($item['imponibile'] * $item['qta'], 2) }}</div>
                     </div>
                 </div>
             @endforeach
