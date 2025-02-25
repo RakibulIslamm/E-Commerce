@@ -66,24 +66,104 @@ class OrderController
             $order['promotion'] = $promotion ? $promotion : null;
         }
 
-        dd($orders);
-
         return response()->json(['codice' => 'OK', 'n_ordini' => $orders->count(), 'ordini' => $orders]);
     }
+
+    // public function get_orders(Request $request)
+    // {
+    //     $tenant = tenant();
+    //     Log::info("Start get_orders(): ", ['payload' => $request->all(), 'url'=> request()->url()]);
+    
+    //     $query = Order::with('articoli');
+
+    //     if ($request->filled('NUOVI')) {
+    //         $query->where('nuovi', false);
+    //     }
+
+    //     if ($request->filled('IDORDINE')) {
+    //         $order = $query->find($request->IDORDINE);
+    //         if (!$order) {
+    //             Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
+    //                 "numero" => 400,
+    //                 "msg" => "ID ordine errato",
+    //                 "errors" => "",
+    //                 "extra_msg" => ''
+    //             ]]);
+    //             return response()->json([
+    //                 "codice" => "OK",
+    //                 "errore" => [
+    //                     "numero" => 400,
+    //                     "msg" => "ID ordine errato",
+    //                     "extra_msg" => ""
+    //                 ]
+    //             ]);
+    //         }
+    //         return response()->json([
+    //             "codice" => "OK",
+    //             "n_ordini" => 1,
+    //             "array ordini" => [$order]
+    //         ]);
+    //     }
+
+    //     if ($request->filled('DATAORDINE')) {
+    //         $query->whereDate('data_ordine', $request->DATAORDINE);
+    //     }
+
+    //     if ($request->filled('DATAORDINEDA')) {
+    //         $query->whereDate('data_ordine', '>=', $request->DATAORDINEDA);
+    //     }
+
+    //     if ($request->filled('DATAORDINEA')) {
+    //         $query->whereDate('data_ordine', '<=', $request->DATAORDINEA);
+    //     }
+
+    //     if ($request->filled('N_ORDINE')) {
+    //         $order = $query->find($request->N_ORDINE);
+    //         if (!$order) {
+    //             Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
+    //                 "numero" => 400,
+    //                 "msg" => "Numero d'ordine errato",
+    //                 "errors" => "",
+    //                 "extra_msg" => ''
+    //             ]]);
+    //             return response()->json([
+    //                 "codice" => "OK",
+    //                 "errore" => [
+    //                     "numero" => 400,
+    //                     "msg" => "Numero d'ordine errato",
+    //                     "extra_msg" => ""
+    //                 ]
+    //             ]);
+    //         }
+    //         return response()->json([
+    //             "codice" => "OK",
+    //             "n_ordini" => 1,
+    //             "array ordini" => [$order]
+    //         ]);
+    //     }
+
+    //     if ($request->filled('STATO')) {
+    //         $query->where('stato', $request->STATO);
+    //     }
+
+    //     if ($request->filled('PAGATO')) {
+    //         $query->where('pagato', $request->PAGATO);
+    //     }
+
+    //     $orders = $query->get();
+    //     return response()->json(['codice' => 'OK', 'n_ordini' => $orders->count(), 'ordini' => $orders]);
+    // }
 
     public function get_orders(Request $request)
     {
         $tenant = tenant();
         Log::info("Start get_orders(): ", ['payload' => $request->all(), 'url'=> request()->url()]);
-    
         $query = Order::with('articoli');
-
-        // dd($request->NUOVI);
-
+    
         if ($request->filled('NUOVI')) {
             $query->where('nuovi', false);
         }
-
+    
         if ($request->filled('IDORDINE')) {
             $order = $query->find($request->IDORDINE);
             if (!$order) {
@@ -103,24 +183,24 @@ class OrderController
                 ]);
             }
             return response()->json([
-                "codice" => "OK",
-                "n_ordini" => 1,
-                "array ordini" => [$order]
+                'codice' => 'OK',
+                'n_ordini' => 1,
+                'ordini' => [$this->formatOrder($order)]
             ]);
         }
-
+    
         if ($request->filled('DATAORDINE')) {
             $query->whereDate('data_ordine', $request->DATAORDINE);
         }
-
+    
         if ($request->filled('DATAORDINEDA')) {
             $query->whereDate('data_ordine', '>=', $request->DATAORDINEDA);
         }
-
+    
         if ($request->filled('DATAORDINEA')) {
             $query->whereDate('data_ordine', '<=', $request->DATAORDINEA);
         }
-
+    
         if ($request->filled('N_ORDINE')) {
             $order = $query->find($request->N_ORDINE);
             if (!$order) {
@@ -140,22 +220,35 @@ class OrderController
                 ]);
             }
             return response()->json([
-                "codice" => "OK",
-                "n_ordini" => 1,
-                "array ordini" => [$order]
+                'codice' => 'OK',
+                'n_ordini' => 1,
+                'ordini' => [$this->formatOrder($order)]
             ]);
         }
-
+    
         if ($request->filled('STATO')) {
             $query->where('stato', $request->STATO);
         }
-
+    
         if ($request->filled('PAGATO')) {
             $query->where('pagato', $request->PAGATO);
         }
+        $query->orderBy('created_at', 'desc');
+        $perPage = $request->get('limit', 100);
+        $currentPage = $request->get('page', 1);
+        $orders = $query->paginate($perPage, ['*'], 'page', $currentPage);
 
-        $orders = $query->get();
-        return response()->json(['codice' => 'OK', 'n_ordini' => $orders->count(), 'ordini' => $orders]);
+        $formattedOrders = $orders->items();
+        $formattedOrders = collect($formattedOrders)->map(fn($order) => $this->formatOrder($order));
+    
+        return response()->json([
+            'codice' => 'OK',
+            'n_ordini' => $formattedOrders->count(),
+            'ordini' => $formattedOrders,
+            'current_page' => $orders->currentPage(),
+            'last_page' => $orders->lastPage(),
+            'total' => $orders->total(),
+        ]);
     }
 
 
@@ -262,5 +355,46 @@ class OrderController
     public function destroy(Order $order)
     {
         //
+    }
+
+    private function formatOrder($order)
+    {
+        return [
+            'id' => $order->id,
+            'n_ordine' => $order->n_ordine,
+            'user_id' => $order->user_id,
+            'nominativo' => $order->nominativo,
+            'promo' => $order->promo,
+            'ragione_sociale' => $order->ragione_sociale,
+            'indirizzo' => $order->indirizzo,
+            'cap' => $order->cap,
+            'citta' => $order->citta,
+            'provincia' => $order->provincia,
+            'email' => $order->email,
+            'telefono' => $order->telefono,
+            'stato' => $order->stato,
+            'pagato' => $order->pagato,
+            'totale_netto' => $order->totale_netto,
+            'totale_iva' => $order->totale_iva,
+            'promo_netto' => $order->promo_netto,
+            'promo_iva' => $order->promo_iva,
+            'spese_spedizione' => $order->spese_spedizione,
+            'nominativo_spedizione' => $order->nominativo_spedizione,
+            'ragione_sociale_spedizione' => $order->ragione_sociale_spedizione,
+            'indirizzo_spedizione' => $order->indirizzo_spedizione,
+            'cap_spedizione' => $order->cap_spedizione,
+            'citta_spedizione' => $order->citta_spedizione,
+            'provincia_spedizione' => $order->provincia_spedizione,
+            'pec' => $order->pec,
+            'sdi' => $order->sdi,
+            'note' => $order->note,
+            'corriere' => $order->corriere,
+            'nuovi' => $order->nuovi,
+            'created_at' => $order->created_at,
+            'data_ordine' => $order->data_ordine,
+            'updated_at' => $order->updated_at,
+            'cod_fee' => $order->cod_fee,
+            'articoli' => $order->articoli_formatted,
+        ];
     }
 }
