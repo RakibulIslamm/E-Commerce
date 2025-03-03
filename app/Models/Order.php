@@ -37,7 +37,9 @@ class Order extends Model
         'note',
         'corriere',
         'nuovi',
-        'cod_fee'
+        'cod_fee',
+        'piva',
+        'cf'
     ];
 
     public function articoli()

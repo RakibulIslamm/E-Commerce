@@ -34,6 +34,8 @@ return new class extends Migration {
             $table->string('cap_spedizione')->nullable();
             $table->string('citta_spedizione')->nullable();
             $table->string('provincia_spedizione')->nullable();
+            $table->string('piva')->nullable();
+            $table->string('cf')->nullable();
             $table->string('spedizione')->nullable();
             $table->text('note')->nullable();
             $table->string('corriere')->nullable();

@@ -56,7 +56,7 @@ class RegisteredUserController extends Controller
             $from = $request->input('from') ?? null;
             if (isset($from)) {
                 if ($from == 'checkout') {
-                    return view("app.pages.checkout.index");
+                    return redirect()->route('app.checkout');
                 }
             }
             return redirect(route('app.summary', absolute: false));

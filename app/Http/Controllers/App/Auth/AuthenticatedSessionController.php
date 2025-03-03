@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App\Auth;
 
 use App\Http\Controllers\App\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\ShippingSetting;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -37,9 +38,11 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $from = $request->input('from') ?? null;
+
+
         if (isset($from)) {
             if ($from == 'checkout') {
-                return view("app.pages.checkout.index");
+                return redirect()->route('app.checkout');
             }
         }
 

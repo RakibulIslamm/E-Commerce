@@ -107,6 +107,7 @@ class OrderController
             'corriere' => 'nullable|string', // courier
             'note' => 'nullable|string',
         ]);
+        $validate['note'] = isset($validate['note']) ? $validate['note'] : "";
 
 
         $total = 0;
