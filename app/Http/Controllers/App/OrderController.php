@@ -107,7 +107,6 @@ class OrderController
             'corriere' => 'nullable|string', // courier
             'note' => 'nullable|string',
         ]);
-        $validate['note'] = isset($validate['note']) ? $validate['note'] : "";
 
 
         $total = 0;
@@ -149,11 +148,14 @@ class OrderController
         $validate['citta_spedizione'] = $validate['citta_spedizione'] ? $validate['citta_spedizione'] : $validate['citta'];
         $validate['provincia_spedizione'] = $validate['provincia_spedizione'] ? $validate['provincia_spedizione'] : $validate['provincia'];
         $validate['promo'] = $validate['promo'] ?? '';
+        $validate['note'] = isset($validate['note']) ? $validate['note'] : "";
 
 
         try {
             if (Auth::check()) {
                 $validate['user_id'] = auth()->user()->id;
+                $validate['piva'] = auth()->user()->vat_number;
+                $validate['cf'] = auth()->user()->tax_id;
             }
         
             $filledValues = array_filter($validate, function ($value) {
