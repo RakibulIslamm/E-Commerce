@@ -395,6 +395,8 @@ class OrderController
             'updated_at' => $order->updated_at,
             'cod_fee' => $order->cod_fee,
             'articoli' => $order->articoli_formatted,
+            'piva' => $order->piva,
+            'cf' => $order->cf,
         ];
     }
 }
