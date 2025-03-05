@@ -39,7 +39,9 @@ class Order extends Model
         'nuovi',
         'cod_fee',
         'piva',
-        'cf'
+        'cf',
+        'pec',
+        'sdi'
     ];
 
     public function articoli()

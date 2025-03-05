@@ -148,7 +148,8 @@ class OrderController
         $validate['citta_spedizione'] = $validate['citta_spedizione'] ? $validate['citta_spedizione'] : $validate['citta'];
         $validate['provincia_spedizione'] = $validate['provincia_spedizione'] ? $validate['provincia_spedizione'] : $validate['provincia'];
         $validate['promo'] = $validate['promo'] ?? '';
-        $validate['note'] = isset($validate['note']) ? $validate['note'] : "";
+
+        
 
 
         try {
@@ -156,12 +157,15 @@ class OrderController
                 $validate['user_id'] = auth()->user()->id;
                 $validate['piva'] = auth()->user()->vat_number;
                 $validate['cf'] = auth()->user()->tax_id;
+                $validate['pec'] = auth()->user()->pec_address;
+                $validate['sdi'] = auth()->user()->pec_address;
             }
         
             $filledValues = array_filter($validate, function ($value) {
                 return !is_null($value) && $value !== '';
             });
-        
+            $filledValues['note'] = $validate['note'] ?? "";
+            
             $order = Order::create($filledValues);
 
             $order->n_ordine = $order->id;
