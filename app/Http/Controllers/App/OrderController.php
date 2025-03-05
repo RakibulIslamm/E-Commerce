@@ -164,7 +164,7 @@ class OrderController
             $filledValues = array_filter($validate, function ($value) {
                 return !is_null($value) && $value !== '';
             });
-            $filledValues['note'] = $validate['note'] ?? "";
+            $filledValues['note'] = $validate['note'] ?? " ";
             
             $order = Order::create($filledValues);
 
