@@ -48,8 +48,8 @@ if (isset($site_settings->corporate_data)) {
         @if($map_iframe)
         <div class="mt-3">
             <span class="font-semibold">Posizione:</span>
-            <div class="mt-2 border rounded-lg overflow-hidden">
-                {!! $map_iframe !!}
+            <div class="mt-2 border rounded-lg overflow-hidden w-full">
+                {!! preg_replace('/width="\d+"/', 'width="100%"', $map_iframe) !!}
             </div>
         </div>
         @endif
