@@ -160,11 +160,11 @@ class OrderController
         Log::info("Start get_orders(): ", ['payload' => $request->all(), 'url'=> request()->url()]);
         $query = Order::with('articoli');
     
-        if ($request->filled('NUOVI')) {
+        if ($request->input('NUOVI')) {
             $query->where('nuovi', false);
         }
     
-        if ($request->filled('IDORDINE')) {
+        if ($request->input('IDORDINE')) {
             $order = $query->find($request->IDORDINE);
             if (!$order) {
                 Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
@@ -189,19 +189,19 @@ class OrderController
             ]);
         }
     
-        if ($request->filled('DATAORDINE')) {
+        if ($request->input('DATAORDINE')) {
             $query->whereDate('data_ordine', $request->DATAORDINE);
         }
     
-        if ($request->filled('DATAORDINEDA')) {
+        if ($request->input('DATAORDINEDA')) {
             $query->whereDate('data_ordine', '>=', $request->DATAORDINEDA);
         }
     
-        if ($request->filled('DATAORDINEA')) {
+        if ($request->input('DATAORDINEA')) {
             $query->whereDate('data_ordine', '<=', $request->DATAORDINEA);
         }
     
-        if ($request->filled('N_ORDINE')) {
+        if ($request->input('N_ORDINE')) {
             $order = $query->find($request->N_ORDINE);
             if (!$order) {
                 Log::error("Error -> (Tenant ID: {$tenant->id})", ["errore" => [
@@ -226,11 +226,11 @@ class OrderController
             ]);
         }
     
-        if ($request->filled('STATO')) {
+        if ($request->input('STATO')) {
             $query->where('stato', $request->STATO);
         }
     
-        if ($request->filled('PAGATO')) {
+        if ($request->input('PAGATO')) {
             $query->where('pagato', $request->PAGATO);
         }
         $query->orderBy('created_at', 'desc');
