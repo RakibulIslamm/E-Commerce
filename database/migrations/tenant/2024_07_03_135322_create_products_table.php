@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->integer('PXC')->default(1);
             $table->string('CODICELEGAME')->nullable();
             $table->string('MARCA')->nullable();
-            $table->foreignId('CATEGORIEESOTTOCATEGORIE')->constrained('categories');
+            $table->json('CATEGORIEESOTTOCATEGORIE')->nullable();
             $table->integer('GIACENZA')->default(0);
             $table->string('ARTICOLIALTERNATIVI')->nullable();
             $table->string('ARTICOLICORRELATI')->nullable();
