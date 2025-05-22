@@ -5,7 +5,6 @@
 - Composer >= 2.x
 - MySQL or MariaDB
 - Node.js & NPM (or Yarn)
-- Redis (if used)
 - A local development server (e.g., Laravel Valet, XAMPP, Laravel Sail, etc.)
 
 ## Installation
