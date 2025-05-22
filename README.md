@@ -68,8 +68,31 @@ Then update the .env file with your environment settings. Here's a sample based 
 
   ```
 
+5. **Generate the application key**
 
-## Steps for Each Instance
+   ```bash
+   php artisan key:generate
+   ```
+
+6. **Run database migrations**
+
+   ```bash
+   php artisan migrate
+   ```
+
+
+**🌐 Run the Application**
+  ```bash
+  php artisan serve
+  ```
+
+**⚙️ Frontend Assets**
+  ```bash
+  npm run dev
+  ```
+
+
+## Steps for Each Instance (Plesk)
 
 1. **Buy or Transfer the Domain**  
    Purchase a new domain or transfer an existing one to your preferred registrar.
