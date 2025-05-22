@@ -82,13 +82,13 @@ Then update the .env file with your environment settings. Here's a sample based 
 
 **🌐 Run the Application**
   ```bash
-  php artisan serve
+   php artisan serve
   ```
 
 **⚙️ Frontend Assets**
-  ```bash
-  npm run dev
-  ```
+   ```bash
+    npm run dev
+   ```
 
 
 ## Steps for Each Instance (Plesk)
