@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if(!Schema::hasColumn('products', 'CATEGORIEESOTTOCATEGORIE')){
-            Schema::table('products', function (Blueprint $table) {
-                $table->json('CATEGORIEESOTTOCATEGORIE')->nullable()->change();
-            });
-        }
+        Schema::table('products', function (Blueprint $table) {
+        // Drop index or foreign key if it exists
+            $table->dropForeign(['CATEGORIEESOTTOCATEGORIE']); // if it was a foreign key
+            $table->dropIndex(['CATEGORIEESOTTOCATEGORIE']);   // if it was a plain index
+        });
+
+        Schema::table('products', function (Blueprint $table) {
+            $table->json('CATEGORIEESOTTOCATEGORIE')->nullable()->change();
+        });
     }
 
     /**
