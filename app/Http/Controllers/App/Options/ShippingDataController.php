@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\App\Options;
 
 use App\Models\ShippingData;
 use Illuminate\Http\Request;

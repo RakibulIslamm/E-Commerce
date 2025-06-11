@@ -11,17 +11,22 @@ class UserController
     {
         $query = User::query();
 
+        // Exclude the currently authenticated user
+        $query->where('id', '!=', auth()->id());
+
         $perPage = request()->input('limit', 50);
 
-        if($perPage > 50){
+        if ($perPage > 50) {
             $perPage = 50;
             request()->merge(['limit' => 50]);
         }
+
         $customers = $query->paginate($perPage);
         $customers->appends(request()->all());
 
         return view('app.pages.dashboard.users.index', ['customers' => $customers]);
     }
+
 
     /**
      * Show the form for creating a new resource.

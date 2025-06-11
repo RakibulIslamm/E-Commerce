@@ -27,16 +27,37 @@
                             </div>
 
                             @php
-                                function renderCategoryDropdown($categories)
+                                // function renderCategoryDropdown($categories)
+                                // {
+                                //     $html = '<ul class="">';
+                                //     foreach ($categories as $category) {
+                                //         $html .= "<li class='relative'>";
+                                //         $html .= '<a href="/products?category=' . $category->codice . '" class="px-4 py-3 block hover:bg-gray-200 text-lg rounded-lg">' . $category->nome .'</a>';
+
+                                //         if (!empty($category->children)) {
+                                //             $html .= "<div class='ml-4'>";
+                                //             $html .= renderCategoryDropdown($category->children);
+                                //             $html .= '</div>';
+                                //         }
+
+                                //         $html .= '</li>';
+                                //     }
+                                //     $html .= '</ul>';
+                                //     return $html;
+                                // }
+                                function renderCategoryDropdown($categories, $depth = 0)
                                 {
                                     $html = '<ul class="">';
                                     foreach ($categories as $category) {
                                         $html .= "<li class='relative'>";
-                                        $html .= '<a href="/products?category=' . $category->codice . '" class="px-4 py-3 block hover:bg-gray-200 text-lg rounded-lg">' . $category->nome .'</a>';
+                                        
+                                        // Only bold if it's the top level (depth = 0)
+                                        $boldClass = ($depth === 0) ? 'font-bold' : '';
+                                        $html .= '<a href="/products?category=' . $category->codice . '" class="px-4 py-3 block hover:bg-gray-200 rounded-lg ' . $boldClass . '">' . $category->nome . '</a>';
 
                                         if (!empty($category->children)) {
                                             $html .= "<div class='ml-4'>";
-                                            $html .= renderCategoryDropdown($category->children);
+                                            $html .= renderCategoryDropdown($category->children, $depth + 1); // Increment depth
                                             $html .= '</div>';
                                         }
 

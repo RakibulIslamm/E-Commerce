@@ -34,6 +34,23 @@ if (isset($site_settings->corporate_data)) {
 
 @section('title', 'Contact')
 <x-app-guest-layout>
+    <style>
+        .iframe-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 45%;
+        }
+        
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
     <div class="p-6 md:p-10 bg-slate-100">
         <div class="flex flex-col md:flex-row items-start justify-between gap-6 md:gap-10">
             <!-- Left Section -->
@@ -111,7 +128,7 @@ if (isset($site_settings->corporate_data)) {
         </div>
         @if($map_iframe)
         <div class="mt-8">
-            <div class="mt-2 border rounded-lg overflow-hidden">
+            <div class="iframe-container mt-2 border rounded-lg">
                 {!! $map_iframe !!}
             </div>
         </div>

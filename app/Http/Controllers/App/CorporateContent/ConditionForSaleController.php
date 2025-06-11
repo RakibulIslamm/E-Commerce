@@ -38,7 +38,9 @@ class ConditionForSaleController
      */
     public function show()
     {
-        // 
+        $tenant = tenant();
+        $condition_for_sale = $tenant['condition_for_sale'] ?? '';
+        return view('app.pages.terms.condition-for-sale', ['condition_for_sale' => $condition_for_sale]);
     }
 
     /**

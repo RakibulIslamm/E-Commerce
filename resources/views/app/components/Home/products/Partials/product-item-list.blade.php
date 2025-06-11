@@ -1,6 +1,6 @@
-<div class="flex items-start gap-5 w-full">
+<div class="flex items-center gap-5 w-full border rounded h-[170px]">
 
-    <div class="relative border aspect-square max-w-[300px] min-w-[300px] min-h-[300px]">
+    <div class="relative border aspect-square max-w-[170px] min-w-[170px] min-h-[170px]">
         <img src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
             alt="" class="h-full w-full object-cover object-center">
 
@@ -22,8 +22,8 @@
         </div>
     </div>
 
-    <div class="py-3 w-[calc(100%_-_300px)]">
-        <div class="flex items-center gap-10 justify-between w-4/6">
+    <div class="py-3 w-[calc(100%_-_170px)]">
+        <div class="flex items-center gap-5 justify-between">
             <a href="{{ route('app.products.show', $product) }}">
                 <h3 class="font-semibold text-gray-600 text-2xl group-hover/product:text-white line-clamp-1 flex-1">
                     {{ $product['DESCRIZIONEBREVE'] }}
@@ -35,7 +35,7 @@
                 : false;
             @endphp
             @if (tenant()->offer_display === 'View cut price')
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 pr-5">
                     @if ($PREPROMOIMP)
                         <h3 class="text-lg font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
                         <h3 class="text-2xl text-gray-600 font-semibold">{{ $PREPROMOIMP }}€</h3>

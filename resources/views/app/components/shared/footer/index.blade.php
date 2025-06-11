@@ -41,22 +41,28 @@ if (isset($site_settings->corporate_data)) {
             <p class="mt-2 text-sm text-gray-500">Breve descrizione qui</p> --}}
             <div class="w-full">
                 <h2 class="mb-3 text-lg font-medium tracking-widest text-gray-900 uppercase title-font">Indirizzo</h2>
-                <nav class="list-none space-y-2">
-                    <li class="text-center lg:text-left">
-                        {{-- <x-heroicon-s-map-pin class="w-6 h-6" /> --}}
-                        <span>Address: </span>
-                        <span class="text-gray-500 cursor-pointer hover:text-gray-900">{{$street}}</span>
-                    </li>
-                    <li class="text-center lg:text-left">
-                        {{-- <x-heroicon-s-envelope class="w-6" /> --}}
-                        <span>Email: </span>
-                        <span class="text-gray-500 cursor-pointer hover:text-gray-900">{{$email}}</span>
-                    </li>
-                    <li class="text-center lg:text-left">
-                        {{-- <x-heroicon-s-phone class="w-6" /> --}}
-                        <span>Phone: </span>
-                        <span class="text-gray-500 cursor-pointer hover:text-gray-900">{{$telephone}}</span>
-                    </li>
+                <nav class="list-none space-y-4">
+                    @if ($street || $city || $country)
+                        <li class="text-center lg:text-left flex items-center gap-2">
+                            <x-heroicon-s-map-pin class="w-6 h-6" />
+                            <span>Indirizzo: </span>
+                            <span class="text-gray-500 cursor-pointer hover:text-gray-900">{{$street}} {{$city}} {{$country}}</span>
+                        </li>
+                    @endif
+                    @if ($email)
+                        <li class="text-center lg:text-left flex items-center gap-2">
+                            <x-heroicon-s-envelope class="w-6" />
+                            <span>Email: </span>
+                            <span class="text-gray-500 cursor-pointer hover:text-gray-900">{{$email}}</span>
+                        </li>
+                    @endif
+                    @if ($telephone)
+                        <li class="text-center lg:text-left flex items-center gap-2">
+                            <x-heroicon-s-phone class="w-6" />
+                            <span>Telefono: </span>
+                            <span class="text-gray-500 cursor-pointer hover:text-gray-900">{{$telephone}}</span>
+                        </li>
+                    @endif
                 </nav>
             </div>
             <div class="mt-4">
@@ -125,11 +131,11 @@ if (isset($site_settings->corporate_data)) {
                         <a href="/contact" class="text-gray-500 cursor-pointer hover:text-gray-900">Contatti</a>
                     </li>
                     <li class="mt-3">
-                        <a class="text-gray-500 cursor-pointer hover:text-gray-900">Condizioni di vendita</a>
+                        <a href="/condition-for-sale" class="text-gray-500 cursor-pointer hover:text-gray-900">Condizioni di vendita</a>
                     </li>
-                    <li class="mt-3">
+                    {{-- <li class="mt-3">
                         <a class="text-gray-500 cursor-pointer hover:text-gray-900">Privacy e cookie policy</a>
-                    </li>
+                    </li> --}}
                 </nav>
             </div>
         </div>

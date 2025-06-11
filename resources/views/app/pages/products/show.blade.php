@@ -88,18 +88,31 @@
                 <div class="space-y-1">
                     {{-- <p>Code: <span class="font-semibold">290</span></p> --}}
                     <p>Barcode: <span class="font-semibold">{{$product->BARCODE ?? "N/A"}}</span></p>
-                    <div>
-                        Availability:
-                        @if ($product->GIACENZA > 0)
-                            <span class="font-semibold text-green-500">In Stock</span>
-                            <br>
-                            <span class="mt-1 block">
-                                Quantity: <span class="font-semibold text-green-500">{{$product->GIACENZA}}</span>
-                            </span>
-                        @else
-                            <span class="font-semibold text-red-500">Stock Out</span>
-                        @endif
-                    </div>
+                    @if (tenant()->product_stock_display == 'Text + Quantity')
+                        <div class="mt-1">Disponibilità:
+                            @if ($product->GIACENZA > 0)
+                                <span class="font-semibold text-green-500">In magazzino</span>
+                                <br>
+                                <div class="mt-1">
+                                    <span class="">Quantità:</span>
+                                    <span class="font-semibold text-green-500">{{$product->GIACENZA}}</span>
+                                </div>
+                            @else
+                                <span class="font-semibold text-red-500">Esaurito</span>
+                            @endif
+
+                        </div>
+                    @elseif (tenant()->product_stock_display == 'Text Only')
+                        <p>Disponibilità:
+
+                            @if ($product->GIACENZA > 0)
+                                <span class="font-semibold text-green-500">In magazzino</span>
+                            @else
+                                <span class="font-semibold text-red-500">Esaurito</span>
+                            @endif
+
+                        </p>
+                    @endif
                 </div>
 
                 <!-- Size and Color -->

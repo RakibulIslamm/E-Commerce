@@ -24,7 +24,7 @@ class ContentSliderController
             'name' => 'required|string|max:255',
             'link' => 'nullable|string|max:255',
             'link_text' => 'nullable|string|max:255',
-            'title' => 'required|string|max:255',
+            'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'img' => 'nullable|image|max:2048'
         ]);

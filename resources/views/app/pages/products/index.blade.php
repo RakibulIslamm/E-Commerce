@@ -4,37 +4,41 @@
     {{-- @dd($breadcrumbs) --}}
     <x-page-layout :props="['breadcrumbs' => $breadcrumbs, 'title' => 'Shop']">
         <div class="w-full">
-
-            <div
-                class="py-2 flex sm:items-center items-start sm:justify-end justify-center flex-col sm:flex-row sm:gap-5 gap-2">
-                <div class="sm:flex items-center gap-4 hidden">
-                    <button onclick="setProductView('grid')"><x-ri-layout-grid-fill
-                            class="w-5 h-5 text-gray-900" /></button>
-                    <button onclick="setProductView('list')"><x-ri-list-check-2 class="w-5 h-5 text-gray-600" /></button>
-                </div>
-                <span class="hidden sm:block">|</span>
-                <div class="flex items-center gap-2">
-                    <label for="order_by" class="text-sm">Ordina per</label>
-                    <select name="" id="order_by" class="text-sm py-1 rounded-md">
-                        <option value="default">default</option>
-                        <option value="asc">nome (A-Z)</option>
-                        <option value="desc">nome (Z-A)</option>
-                        <option value="price_low">Low to high (price)</option>
-                        <option value="price_high">High to low (price)</option>
-                    </select>
-                </div>
-                <span class="hidden sm:block">|</span>
-                <div class="flex items-center gap-2">
-                    <label for="items_per_page" class="text-sm">Per page</label>
-                    <select name="" id="items_per_page" class="text-sm py-1 rounded-md">
-                        <option value="12">12</option>
-                        <option value="2">2 (Test)</option>
-                        <option value="20">20</option>
-                        <option value="28">28</option>
-                    </select>
+            <div class="flex flex-col-reverse lg:flex-row lg:justify-between items-center gap-8 w-full">
+                @if ($selectedCategory?->nome)
+                    <h2 class="break-keep text-xl font-semibold px-5 py-2 rounded-lg bg-gray-200">{{$selectedCategory?->nome}}</h2>
+                @endif
+                <div
+                    class="py-2 flex-1 flex sm:items-center items-start lg:justify-end justify-center flex-col sm:flex-row sm:gap-5 gap-2 w-full">
+                    <div class="sm:flex items-center gap-4 hidden">
+                        <button onclick="setProductView('grid')"><x-ri-layout-grid-fill
+                                class="w-5 h-5 text-gray-900" /></button>
+                        <button onclick="setProductView('list')"><x-ri-list-check-2 class="w-5 h-5 text-gray-600" /></button>
+                    </div>
+                    <span class="hidden sm:block">|</span>
+                    <div class="flex items-center gap-2">
+                        <label for="order_by" class="text-sm">Ordina per</label>
+                        <select name="" id="order_by" class="text-sm py-1 rounded-md">
+                            <option value="default">default</option>
+                            <option value="asc">nome (A-Z)</option>
+                            <option value="desc">nome (Z-A)</option>
+                            <option value="price_low">Low to high (price)</option>
+                            <option value="price_high">High to low (price)</option>
+                        </select>
+                    </div>
+                    <span class="hidden sm:block">|</span>
+                    <div class="flex items-center gap-2">
+                        <label for="items_per_page" class="text-sm">Per page</label>
+                        <select name="" id="items_per_page" class="text-sm py-1 rounded-md">
+                            <option value="12">12</option>
+                            <option value="2">2 (Test)</option>
+                            <option value="20">20</option>
+                            <option value="28">28</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-
+            
             <div class="w-full block" id="grid">
                 <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                     @if (!$products->isEmpty())
@@ -51,7 +55,7 @@
             </div>
 
             <div class="w-full hidden" id="list">
-                <div class="mt-6 space-y-4">
+                <div class="mt-6 grid grid-cols-1 lg:grid-cols-2">
                     @if (!$products->isEmpty())
                         @foreach ($products as $item)
                             @include('app.components.Home.products.Partials.product-item-list', [

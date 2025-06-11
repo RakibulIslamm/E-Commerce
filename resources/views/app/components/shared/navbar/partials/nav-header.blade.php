@@ -6,18 +6,18 @@ $logo = null;
 
 if (isset($site_settings->brand_info)) {
     $brand_info = $site_settings->brand_info;
-
     $logo = isset($brand_info['logo']) ? $brand_info['logo'] : null;
+    $logo_height = isset($brand_info['logo_height']) ? $brand_info['logo_height'] : '56';
 }
 
 ?>
 
 
 <div class="px-20 bg-white w-full hidden lg:block">
-    <div class="h-[80px] flex items-center justify-center gap-10 w-full border-b">
+    <div class="flex items-center justify-center gap-10 w-full border-b py-3">
         <div>
             <a href="/" class="flex items-center gap-2">
-                <img class="h-12 w-auto object-cover" src="{{ $logo ?? '/images/logo.png' }}" alt="">
+                <img class="h-12 w-auto object-cover" style="height: {{ $logo_height }}px" src="{{ $logo ?? '/images/logo.png' }}" alt="">
                 {{-- <h2 class="text-lg font-bold">Company Name</h2> --}}
             </a>
         </div>

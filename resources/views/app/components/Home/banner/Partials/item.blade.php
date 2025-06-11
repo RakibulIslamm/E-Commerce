@@ -6,7 +6,7 @@
     $img = $slider['img'];
 @endphp
 
-<div class="swiper-slide flex justify-start items-center relative">
+<a href="{{$link ?? '#'}}" class="swiper-slide flex justify-start items-center relative">
     {{-- @dd($slider) --}}
     <img class="z-0 w-full lg:h-[576px] h-[360px] object-cover object-center" src="{{ $img ? $img : 'https://fakeimg.pl/1920x1080/dbdbdb/909090?text=16:9' }}" alt="">
     <div class="w-full sm:h-[576px] h-[360px] absolute top-0 left-0 bg-gradient-to-r from-[#25365E] to-transparent">
@@ -20,6 +20,7 @@
             data-swiper-parallax-x="-400" data-swiper-parallax-opacity="0">
             {{ $description ?? '' }}
         </p>
+        @if ($link_text and $link)
         <a href="{{ $link }}"
             class="relative inline-flex items-center gap-1 leading-normal pb-1 text-gray-100 font-thin lg:text-2xl sm:text-xl hover:text-neutral-200 transition group mt-4"
             data-swiper-parallax-duration="2000" data-swiper-parallax-opacity="0">
@@ -30,5 +31,6 @@
             <span
                 class="absolute bottom-0 left-0 w-full h-0.5 bg-neutral-200 origin-bottom-right transform transition duration-200 ease-out scale-x-0 group-hover:scale-x-100 group-hover:origin-bottom-left"></span>
         </a>
+        @endif
     </div>
-</div>
+</a>

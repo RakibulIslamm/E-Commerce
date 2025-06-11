@@ -46,6 +46,7 @@
                     </div>
                     <div class="w-full">
                         <p class="text-red-500 italic text-sm" id="cap_error"></p>
+                        <p class="text-red-500 italic text-sm" id="cap_loading"></p>
                         <div class="w-full flex items-center gap-3">
                             <div class="w-full">
                                 <x-input-label for="cap" :value="__('Cap')" />
@@ -266,7 +267,9 @@
         document.getElementById('grand_total').innerText = `${grandTotal.toFixed(2)}€`;
 
         const shippings = @json($shipping_settings) || [];
-        document.querySelectorAll('input[name="spedizione"]').forEach(function(radio) {
+
+        
+        document.querySelectorAll('input[name="corriere"]').forEach(function(radio) {
             radio.addEventListener('change', function() {
                 const shipping = shippings.find(item=> item.courier === this.value)
                 const vatRate = parseFloat(shipping.vat_rate)/100;
@@ -297,7 +300,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            const firstShipping = document.querySelector('input[name="spedizione"]:first-child');
+            const firstShipping = document.querySelector('input[name="corriere"]:first-child');
             if (firstShipping) {
                 firstShipping.checked = true;
                 firstShipping.dispatchEvent(new Event('change'));
@@ -333,9 +336,11 @@
         const province = document.getElementById('provincia');
         const state_code = document.getElementById('stato');
         const capError = document.getElementById('cap_error');
+        const capLoading = document.getElementById('cap_loading');
 
         function handleLocation(value) {
             capError.innerText = '';
+            capLoading.innerText = 'Loading...';
             fetch(`/api/location/${value}`)
                 .then(res => res.json())
                 .then(data => {
@@ -360,6 +365,10 @@
                 .catch(error => {
                     console.log(error);
                 })
+                .finally(() => {
+                    capLoading.innerText = '';
+                })
+
         }
 
 

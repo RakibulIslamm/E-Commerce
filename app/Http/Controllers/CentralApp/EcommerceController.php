@@ -105,7 +105,7 @@ class EcommerceController extends Controller
 
         try {
             // Creating plesk db for tenant
-            $this->plesk->createDatabase($full_domain, 'mysql', 'asefecommerce.space', 40, 1);
+            // $this->plesk->createDatabase($full_domain, 'mysql', 'asefecommerce.space', 40, 1);
 
             $tenant = Tenant::create([...$validatedData, 'tenancy_db_name' => $full_domain, 'brand_info'=> $brand_info]);
 
@@ -118,7 +118,7 @@ class EcommerceController extends Controller
 
             return redirect()->route('ecommerce.index')->with('success', 'New eCommerce created successfully');
         } catch (Exception $e) {
-            return redirect()->route('ecommerces.create')->with('error', $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
     }
 

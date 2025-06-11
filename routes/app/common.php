@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\App\CorporateContent\CompanyProfileController;
+use App\Http\Controllers\App\CorporateContent\ConditionForSaleController;
 use App\Http\Controllers\App\ShowNewsController;
 use App\Http\Controllers\App\ShowProductController;
 use Illuminate\Support\Facades\Route;
@@ -17,3 +18,5 @@ Route::prefix("news")->group(function () {
 Route::prefix("agency")->group(function () {
     Route::get('', [CompanyProfileController::class, 'show_profile'])->name('app.profile');
 });
+
+Route::get('condition-for-sale', [ConditionForSaleController::class, 'show'])->name('app.terms.condition-for-sale');

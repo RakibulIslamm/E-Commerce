@@ -1,7 +1,11 @@
 <div class="flex flex-col md:flex-row items-center justify-between {{$loop->last ? '' : 'border-b'}} pb-4">
     <div>
         <p class="text-gray-600">ID Ordine: <span class="font-medium text-gray-800">#{{$order->id}}</span></p>
-        <p class="text-gray-600">Data: <span class="font-medium text-gray-800">{{ $order->created_at->format('F j, Y, g:i a') }}</span></p>
+        <p class="text-gray-600">Data: 
+            <span class="font-medium text-gray-800">
+                {{ \Carbon\Carbon::parse($order->created_at)->locale('it')->translatedFormat('j F Y, H:i') }}
+            </span>
+        </p>
         
         @php
             $total = $order->totale_netto + $order->spese_spedizione + $order->cod_fee + $order->totale_iva;

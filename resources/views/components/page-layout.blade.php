@@ -3,7 +3,7 @@
     <div>
         <h2 class="lg:text-3xl sm:text-2xl text-xl font-bold lg:py-3 sm:text-left text-center">
             {{ $props['title'] ?? '' }}</h2>
-        <div class="flex items-center flex-wrap justify-center">
+        <div class="flex items-center flex-wrap justify-start">
             <div class="flex items-center">
                 <a href="/" class="flex items-start gap-1">
                     <x-heroicon-s-home class="w-5 h-5" />

@@ -1,6 +1,8 @@
 <?php
 
 // routes/breadcrumbs.php
+
+use App\Models\Category;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
@@ -8,7 +10,34 @@ Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
     $trail->push('Dashboard', route('app.dashboard'));
 });
 
-Breadcrumbs::for('products', function (BreadcrumbTrail $trail) {
+Breadcrumbs::for('products', function (BreadcrumbTrail $trail, $categoryCode = null) {
+    if ($categoryCode) {
+        // Fetch the current category and build hierarchy
+        $category = Category::where('codice', $categoryCode)->first();
+
+        if ($category) {
+            $parents = [];
+            $current = $category;
+
+            // Loop to build parent hierarchy (assuming codice follows XXYYZZ format)
+            while ($current?->parent_id) {
+                $parent = Category::find($current->parent_id);
+                if ($parent) {
+                    $parents[] = $parent;
+                }
+                $current = $parent;
+            }
+
+            // Reverse to show top to bottom
+            foreach (array_reverse($parents) as $parentCategory) {
+                $trail->push($parentCategory->nome, route('app.products', ['category' => $parentCategory->codice]));
+            }
+
+            $trail->push($category->nome, route('app.products', ['category' => $category->codice]));
+        }
+    }
+
+
     $trail->push('Products', route('app.products'));
 });
 

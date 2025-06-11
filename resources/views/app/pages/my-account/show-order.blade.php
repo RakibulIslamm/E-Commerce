@@ -7,7 +7,12 @@
             <div class="bg-white rounded-lg shadow-md border p-6">
               <h1 class="text-xl font-bold text-gray-800">Ordine ID: #{{$order->id ?? 'N/A'}}</h1>
               
-              <p class="text-gray-600">Data dell'ordine: <span class="font-medium text-gray-800">{{ $order->created_at ? $order->created_at->format('F j, Y, g:i a') : 'N/A' }}</span></p>
+              <p class="text-gray-600">Data dell'ordine: 
+                  <span class="font-medium text-gray-800">
+                      {{ $order->created_at ? $order->created_at->locale('it')->translatedFormat('j F Y, H:i') : 'N/A' }}
+                  </span>
+              </p>
+
               <p class="text-gray-600">Spese di spedizione: <span class="font-medium text-gray-800">{{ $order->spese_spedizione ?? '0' }}€</span></p>
 
               <p class="text-gray-600">Spese per pagamento in contrassegno: <span class="font-medium text-gray-800">{{ $order->cod_fee ?? '0' }}€</span></p>

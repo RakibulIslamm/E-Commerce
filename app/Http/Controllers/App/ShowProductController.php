@@ -14,13 +14,16 @@ class ShowProductController
 {
     public function index()
     {
-        $products_breadcrumbs = Breadcrumbs::generate('products');
+        $categoryCode = request()->input('category');
+        $products_breadcrumbs = Breadcrumbs::generate('products', $categoryCode);
         $query = Product::query();
 
+        $selectedCategory = null;
         // Filter by category
-        if (request()->filled('category')) {
+        if ($categoryCode) {
             // dd(request()->category);
             $query->whereJsonContains('CATEGORIEESOTTOCATEGORIE', request()->category);
+            $selectedCategory = Category::where('codice', $categoryCode)->first();
         }
 
         // Order by specified column or default to created_at
@@ -87,7 +90,8 @@ class ShowProductController
 
         return view("app.pages.products.index", [
             "products" => $products,
-            "breadcrumbs" => $products_breadcrumbs
+            "breadcrumbs" => $products_breadcrumbs,
+            "selectedCategory" => $selectedCategory
         ]);
     }
 
