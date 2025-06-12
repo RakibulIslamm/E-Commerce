@@ -2,7 +2,7 @@
 {{-- @dd($products) --}}
 <x-app-guest-layout>
     {{-- @dd($breadcrumbs) --}}
-    <x-page-layout :props="['breadcrumbs' => $breadcrumbs, 'title' => 'Shop']">
+    <x-page-layout :props="['breadcrumbs' => $breadcrumbs, 'title' => 'Negozio']">
         <div class="w-full">
             <div class="flex flex-col-reverse lg:flex-row lg:justify-between items-center gap-8 w-full">
                 @if ($selectedCategory?->nome)
@@ -55,7 +55,7 @@
             </div>
 
             <div class="w-full hidden" id="list">
-                <div class="mt-6 grid grid-cols-1 lg:grid-cols-2">
+                <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-5">
                     @if (!$products->isEmpty())
                         @foreach ($products as $item)
                             @include('app.components.Home.products.Partials.product-item-list', [

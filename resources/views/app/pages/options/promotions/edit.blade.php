@@ -1,4 +1,4 @@
-@section('title', 'Update Promotions')
+@section('title', 'Aggiorna promozioni')
 <x-app-layout>
     @include('app.components.dashboard.promotion.promo-form')
 </x-app-layout>

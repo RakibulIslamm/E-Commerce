@@ -67,7 +67,6 @@ class EcommerceSettingsController
         //     abort(404);
 
         $validatedData = $request->validate([
-            'email' => 'required|email',
             'tax_code' => 'required|string',
             'phone' => 'required|string',
             'rest_api_user' => 'required|string',

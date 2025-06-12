@@ -1,4 +1,4 @@
-<div class="flex items-center gap-5 w-full border rounded h-[170px]">
+<div class="flex items-center gap-5 w-full border rounded overflow-hidden h-[170px]">
 
     <div class="relative border aspect-square max-w-[170px] min-w-[170px] min-h-[170px]">
         <img src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"

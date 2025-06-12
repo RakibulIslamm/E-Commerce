@@ -259,7 +259,7 @@
 
         <div class="flex items-center justify-end ">
             <button type="submit"
-                class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm my-4">{{ $mode == 'edit' ? 'Update' : 'Add Product' }}</button>
+                class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm my-4">{{ $mode == 'edit' ? 'Aggiornamento' : 'Aggiungi prodotto' }}</button>
         </div>
     </div>
 </form>

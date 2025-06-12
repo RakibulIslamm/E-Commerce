@@ -47,7 +47,7 @@ if (isset($site_settings->social_links)) {
     </div>
 </div>
 <div id="edit-social" class="w-full hidden p-5 bg-white rounded-lg shadow border mt-4">
-    <h2 class="text-xl font-semibold pb-2">Add Social Media</h2>
+    <h2 class="text-xl font-semibold pb-2">Aggiungi i social media</h2>
     <form id="socialMediaForm" class="w-full" method="POST" action="{{ route('app.corporate-data.update-social') }}">
         @method('PUT')
         @csrf

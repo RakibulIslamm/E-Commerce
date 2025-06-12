@@ -13,7 +13,7 @@
     <div class="relative w-full max-w-full flex-grow flex-1 text-right">
         <a href="{{ route('app.dashboard.categories.create') }}"
             class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold  px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
-            Add New
+            Aggiungi nuovo
         </a>
     </div>
     <section class="py-1  w-full">
@@ -68,8 +68,8 @@
             <div class="py-5 space-y-3">
                 @if ($dashboard_categories->total() > 0)
                     <p>
-                        Showing {{ $dashboard_categories->firstItem() }} to {{ $dashboard_categories->lastItem() }} of {{ $dashboard_categories->total() }}
-                        items
+                        Mostrare {{ $dashboard_categories->firstItem() }} to {{ $dashboard_categories->lastItem() }} of {{ $dashboard_categories->total() }}
+                        elementi
                     </p>
                 @endif
 

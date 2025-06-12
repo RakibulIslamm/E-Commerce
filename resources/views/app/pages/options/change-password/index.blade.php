@@ -1,4 +1,4 @@
-@section('title', 'Change Password')
+@section('title', 'Cambiare la password')
 <x-app-layout>
 
     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

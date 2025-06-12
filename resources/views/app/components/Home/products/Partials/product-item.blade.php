@@ -1,6 +1,6 @@
-<div class="bg-white dark:bg-card rounded-2xl p-3 border transition-all duration-300 transform mx-auto">
+<div class="bg-white dark:bg-card rounded-2xl overflow-hidden border transition-all duration-300 transform mx-auto">
     {{-- Product Image --}}
-    <div class="rounded-xl mb-6 relative overflow-hidden">
+    <div class="mb-3 relative">
         <img 
             src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}" 
             alt="{{ $product['DESCRIZIONEBREVE'] }}" 
@@ -9,7 +9,7 @@
     </div>
 
     {{-- Product Info --}}
-    <div class="space-y-3">
+    <div class="space-y-3 p-3">
         {{-- Title --}}
         <div>
             <a href="{{ route('app.products.show', $product) }}">

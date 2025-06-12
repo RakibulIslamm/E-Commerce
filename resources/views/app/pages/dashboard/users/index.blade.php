@@ -65,8 +65,8 @@
             <div class="py-5 space-y-3">
                 @if ($customers->total() > 0)
                     <p>
-                        Showing {{ $customers->firstItem() }} to {{ $customers->lastItem() }} of {{ $customers->total() }}
-                        items
+                        Mostrare {{ $customers->firstItem() }} to {{ $customers->lastItem() }} of {{ $customers->total() }}
+                        elementi
                     </p>
                 @endif
 

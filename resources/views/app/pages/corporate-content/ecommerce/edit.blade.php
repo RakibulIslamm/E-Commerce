@@ -1,4 +1,4 @@
-@section('title', 'Update Ecommerce Settings')
+@section("title", "Aggiorna le impostazioni dell'e-commerce")
 <x-app-layout>
 
     @include('app.components.dashboard.ecommerce.form')
