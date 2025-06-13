@@ -57,14 +57,24 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    window.all_cart = data.cart_items;
-                    quantitySpinUpdate(id, 'invisible');
+                    if (data.success) {
+                        window.all_cart = data.cart_items;
+                        render()
+                    }
+                    else{
+                        alert(data.message);
+                    }
                     render()
+                    quantitySpinUpdate(id, 'invisible');
                 })
                 .catch(error => {
                     console.log(error);
                     quantitySpinUpdate(id, 'invisible');
-                });
+                })
+                .finally(()=>{
+                    quantitySpinUpdate(id, 'invisible');
+                })
+            quantitySpinUpdate(id, 'invisible');
             console.log(`Server updated with quantity ${quantity} for product ${id}`);
         }, 1000);
     }

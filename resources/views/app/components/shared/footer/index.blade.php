@@ -133,9 +133,9 @@ if (isset($site_settings->corporate_data)) {
                     <li class="mt-3">
                         <a href="/condition-for-sale" class="text-gray-500 cursor-pointer hover:text-gray-900">Condizioni di vendita</a>
                     </li>
-                    {{-- <li class="mt-3">
-                        <a class="text-gray-500 cursor-pointer hover:text-gray-900">Privacy e cookie policy</a>
-                    </li> --}}
+                    <li class="mt-3">
+                        <a href="/privacy-and-cookie" class="text-gray-500 cursor-pointer hover:text-gray-900">Privacy e cookie policy</a>
+                    </li>
                 </nav>
             </div>
         </div>

@@ -130,7 +130,7 @@
                 <!-- Add to Cart Button -->
                 <div class="flex items-center gap-3">
                     <button 
-                        onclick="addToCart({{ $product->id }}, {{ $product }})" 
+                        onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})" 
                         class="px-5 py-2 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}" 
                         @if ($product->GIACENZA <= 0) disabled @endif>
                         <x-lucide-shopping-cart class="w-5 h-5" />
@@ -190,10 +190,13 @@
                 if (data.success) {
                     // alert('Product added to cart');
                     window.all_cart = data.cart_items;
+                    renderSidebarCart();
+                    renderSidebarSubtotal();
+                    setCartItemCount();
                 }
-                renderSidebarCart();
-                renderSidebarSubtotal();
-                setCartItemCount();
+                else{
+                    alert(data.message);
+                }
             });
     }
 </script>

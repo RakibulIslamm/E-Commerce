@@ -36,7 +36,7 @@
             <div
                 class="flex flex-col items-center gap-2 invisible opacity-0 group-hover/product:opacity-100 group-hover/product:visible transition-all ease-in-out">
                 @if ($product->GIACENZA > 0)
-                    <button onclick="addToCart({{ $product->id }}, {{ $product }})"
+                    <button onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})"
                         class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"><x-lucide-shopping-cart
                             class="w-5 h-5" /> Aggiungi</button>
                 @else
@@ -115,10 +115,13 @@
                     // alert('Product added to cart');
                     console.log(data);
                     window.all_cart = data.cart_items;
+                    renderSidebarCart();
+                    renderSidebarSubtotal();
+                    setCartItemCount();
                 }
-                renderSidebarCart();
-                renderSidebarSubtotal();
-                setCartItemCount();
+                else{
+                    alert(data.message);
+                }
             })
             .catch((err)=>{
                 console.log(err);

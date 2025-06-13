@@ -63,7 +63,6 @@ class CartController
     public function store(Request $request)
     {
         // Add to cart
-
         try {
             $product = Product::findOrFail($request->product_id);
             if (Auth::check()) {
@@ -102,43 +101,67 @@ class CartController
 
     public function storeNew(Request $request)
     {
+        $isB2B = tenant()?->business_type === 'B2B' || tenant()?->business_type === 'B2B Plus';
 
-        // session()->forget('cart');
-        // return response()->json(['request' => $request->all()]);
         try {
             $product = Product::findOrFail($request->product_id);
-            $cart = session()->get('cart', []);
-            if ($product->GIACENZA < $request->quantity) {
-                return response()->json(['success' => false, "message" => 'Items current not available in the requested quantity']);
+            $pxc = $product->PXC;
+            $unitamisura = $product->UNITAMISURA;
+
+            $requestedQuantity = (int) $request->quantity;
+
+            // Check B2B minimum quantity rule
+            if ($isB2B && $requestedQuantity < $pxc) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "You must order at least {$pxc} {$unitamisura} of this product"
+                ]);
             }
-            
+
+            // Check stock availability
+            if ($product->GIACENZA < $requestedQuantity) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Items currently not available in the requested quantity'
+                ]);
+            }
+
+            // Decode FOTO
             if (isset($product->FOTO) && is_string($product->FOTO)) {
-                $decodedFoto = json_decode($product->FOTO, true); // Decoding as associative array
+                $decodedFoto = json_decode($product->FOTO, true);
                 $product->FOTO = is_array($decodedFoto) && !empty($decodedFoto) ? $decodedFoto[0] : '';
             } else {
                 $product->FOTO = '';
             }
 
+            $cart = session()->get('cart', []);
+
+            // Update quantity if already in cart
             if (isset($cart[$product->id])) {
-                $cart[$product->id]['quantity'] = $request->quantity;
+                $cart[$product->id]['quantity'] = $requestedQuantity;
+
+                // Update stock info for all items
                 foreach ($cart as $cartItem) {
-                    $product = Product::find($cartItem['product_id']);
-                    if ($product) {
-                        $cart[$product->id]['stock'] = $product->GIACENZA;
+                    $prod = Product::find($cartItem['product_id']);
+                    if ($prod) {
+                        $cart[$prod->id]['stock'] = $prod->GIACENZA;
                     }
                 }
+
                 session()->put('cart', $cart);
                 return response()->json(['success' => true, 'cart_items' => $cart]);
             }
 
-            $PREPROMOIMP = isset($product['PREPROMOIMP']) && (float)$product['PREPROMOIMP'] > 0 
-                    ? (float)number_format((float)$product['PREPROMOIMP'], 2) 
-                    : false;
+            // Determine price (promo or regular)
+            $PREPROMOIMP = isset($product['PREPROMOIMP']) && (float)$product['PREPROMOIMP'] > 0
+                ? (float)number_format((float)$product['PREPROMOIMP'], 2)
+                : false;
 
+            // Add new product to cart
             $cart[$product->id] = [
                 "product_id" => $product->id,
                 "name" => $product->DESCRIZIONEBREVE,
-                "quantity" => 1,
+                "quantity" => $requestedQuantity,
                 "price" => $PREPROMOIMP ? $PREPROMOIMP : $product->PRE1IMP,
                 "photo" => $product->FOTO,
                 'stock' => $product->GIACENZA,
@@ -148,11 +171,15 @@ class CartController
 
             session()->put('cart', $cart);
             return response()->json(['success' => true, 'cart_items' => $cart]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'error' => $e->getMessage()]);
-        }
 
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
+
 
     /* 
     $cart[$product->id]->stock = [

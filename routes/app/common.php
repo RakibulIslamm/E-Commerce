@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\App\CorporateContent\CompanyProfileController;
 use App\Http\Controllers\App\CorporateContent\ConditionForSaleController;
+use App\Http\Controllers\App\CorporateContent\PrivacyAndCookiePolicy;
 use App\Http\Controllers\App\ShowNewsController;
 use App\Http\Controllers\App\ShowProductController;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,5 @@ Route::prefix("agency")->group(function () {
 });
 
 Route::get('condition-for-sale', [ConditionForSaleController::class, 'show'])->name('app.terms.condition-for-sale');
+
+Route::get('privacy-and-cookie', [PrivacyAndCookiePolicy::class, 'show'])->name('app.terms.privacy-and-cookie');

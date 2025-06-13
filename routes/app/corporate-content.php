@@ -4,6 +4,7 @@ use App\Http\Controllers\App\CorporateContent\CompanyProfileController;
 use App\Http\Controllers\App\CorporateContent\ConditionForSaleController;
 use App\Http\Controllers\App\CorporateContent\CorporateDataController;
 use App\Http\Controllers\App\CorporateContent\EcommerceSettingsController;
+use App\Http\Controllers\App\CorporateContent\PrivacyAndCookiePolicy;
 use Illuminate\Support\Facades\Route;
 
 
@@ -42,5 +43,13 @@ Route::prefix('corporate-content')->group(function () {
         Route::get('/edit', [ConditionForSaleController::class, 'edit'])->name('app.corporate-content.condition-for-sale.edit');
 
         Route::put('/edit', [ConditionForSaleController::class, 'update'])->name('app.corporate-content.condition-for-sale.update');
+    });
+    
+    Route::prefix('privacy-and-cookie')->group(function () {
+        Route::get('', [PrivacyAndCookiePolicy::class, 'index'])->name('app.corporate-content.privacy-and-cookie');
+
+        Route::get('/edit', [PrivacyAndCookiePolicy::class, 'edit'])->name('app.corporate-content.privacy-and-cookie.edit');
+
+        Route::put('/edit', [PrivacyAndCookiePolicy::class, 'update'])->name('app.corporate-content.privacy-and-cookie.update');
     });
 });

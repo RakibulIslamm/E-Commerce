@@ -124,15 +124,19 @@
                     // console.log(data.cart_items);
                     if (data.success) {
                         window.all_cart = data.cart_items;
-                        updateShippingLimit(data.cart_items);
                     }
-                    quantitySpinUpdate(id, 'invisible');
+                    else{
+                        alert(data.message);
+                        console.log();
+                    }
+                    updateShippingLimit(window.all_cart);
                     render()
                 })
                 .catch(error => {
                     console.log(error);
                     quantitySpinUpdate(id, 'invisible');
                 });
+            quantitySpinUpdate(id, 'invisible');
             console.log(`Server updated with quantity ${quantity} for product ${id}`);
         }, 1000);
     }

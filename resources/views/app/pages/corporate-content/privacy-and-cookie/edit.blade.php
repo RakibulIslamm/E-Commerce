@@ -1,10 +1,10 @@
-@section('title', 'Modifica condizione di vendita')
+@section("title", "Modifica l'informativa sulla privacy e sui cookie")
 <x-app-layout>
-    <form action="{{ route('app.corporate-content.condition-for-sale.update') }}" method="POST" id="company-profile-form">
+    <form action="{{ route('app.corporate-content.privacy-and-cookie.update') }}" method="POST" id="privacy-and-cookie-form">
         @csrf
         @method('PUT')
         <div id="editor">
-            {!! isset($condition_for_sale) ? $condition_for_sale : '' !!}
+            {!! isset($privacy_and_cookie) ? $privacy_and_cookie : '' !!}
         </div>
         <button
             class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold  px-5 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mt-2"
@@ -38,11 +38,11 @@
 
     const getData = () => {
         let editorHtml = quill.root.innerHTML;
-        console.log(editorHtml)
+        
     }
 
     // Intercept form submission
-    document.getElementById('company-profile-form').addEventListener('submit', function(e) {
+    document.getElementById('privacy-and-cookie-form').addEventListener('submit', function(e) {
         // Get HTML content from Quill editor
         let editorHtml = quill.root.innerHTML;
 
@@ -50,7 +50,7 @@
         let hiddenInput = document.createElement('input');
         hiddenInput.setAttribute('type', 'hidden');
         hiddenInput.setAttribute('name',
-            'condition_for_sale'); // Assuming 'editorHtml' is the field name in your Laravel controller
+            'privacy_and_cookie');
         hiddenInput.setAttribute('value', editorHtml);
 
         // Append the hidden input field to the form
