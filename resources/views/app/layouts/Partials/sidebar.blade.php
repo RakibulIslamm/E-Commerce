@@ -88,6 +88,12 @@
                     <x-heroicon-o-document-text class="w-5 h-5" />
                     <p class="text-sm leading-4">Condizioni di vendita</p>
                 </a>
+                
+                <a href="{{ route('app.corporate-content.privacy-and-cookie') }}"
+                    class="flex justify-start items-center gap-2 hover:text-gray-100 {{ Request::is('dashboard/corporate-content/privacy-and-cookie*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 rounded px-3 py-2 w-full my-2">
+                    <x-heroicon-o-document-text class="w-5 h-5" />
+                    <p class="text-sm leading-4">Privacy And Cookie</p>
+                </a>
             </div>
         </div>
         <div
