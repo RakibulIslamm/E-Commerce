@@ -380,37 +380,10 @@ class ProductController
 
 
         // Handle `CATEGORIEESOTTOCATEGORIE`
-        $categorieHierarchy = [];
         $codice = $request->CATEGORIEESOTTOCATEGORIE;
+        $categorieHierarchy = $this->getCategorieHierarchy($codice);
 
-        // Check for the current category
-        $currentCategory = Category::where('codice', $codice)->first();
-        if (!$currentCategory) {
-            // return response()->json([
-            //     "codice" => "OK",
-            //     "errore" => [
-            //         "numero" => 404,
-            //         "msg" => "Category with code {$codice} not found",
-            //         "extra_msg" => ''
-            //     ]
-            // ]);
-        }
-        $categorieHierarchy[] = $codice;
-
-        // Check for the parent category
-        if (substr($codice, -4) !== '0000') {
-            $parentCode = substr($codice, 0, -4) . '0000';
-            if (substr($codice, -2) !== '00') {
-                $parentCode = substr($codice, 0, -2) . '00';
-                $categorieHierarchy[] = $parentCode;
-            }
-
-            // Check for the grandparent category
-            if (strlen($codice) > 4) {
-                $grandParentCode = substr($parentCode, 0, -4) . '0000';
-                $categorieHierarchy[] = $grandParentCode;
-            }
-        }
+        
         $validated['CATEGORIEESOTTOCATEGORIE'] = json_encode($categorieHierarchy);
         // dd($validated['CATEGORIEESOTTOCATEGORIE']);
 
@@ -983,5 +956,37 @@ class ProductController
         }
 
         return null; // No valid categories found
+    }
+
+    function getCategorieHierarchy(string $code): array
+    {
+        $hierarchy = [];
+
+        $length = strlen($code);
+
+        // Handle based on input length
+        if ($length === 2) {
+            $level1 = $code . '0000';
+            $hierarchy[] = $level1;
+
+        } elseif ($length === 4) {
+            $level2 = $code . '00';
+            $level1 = substr($code, 0, 2) . '0000';
+            $hierarchy[] = $level2;
+            $hierarchy[] = $level1;
+
+        } elseif ($length === 6) {
+            $level3 = $code;
+            $level2 = substr($code, 0, 4) . '00';
+            $level1 = substr($code, 0, 2) . '0000';
+            $hierarchy[] = $level3;
+            $hierarchy[] = $level2;
+            $hierarchy[] = $level1;
+
+        } else {
+            $hierarchy[] = $code;
+        }
+
+        return $hierarchy;
     }
 }
