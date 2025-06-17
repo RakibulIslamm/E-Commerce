@@ -4,7 +4,7 @@
         <img 
             src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}" 
             alt="{{ $product['DESCRIZIONEBREVE'] }}" 
-            class="h-full object-contain relative z-10 drop-shadow-2xl"
+            class="h-[200px] w-full object-cover object-center relative z-10 drop-shadow-2xl"
         />
     </div>
 
