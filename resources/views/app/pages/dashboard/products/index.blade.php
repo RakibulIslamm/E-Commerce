@@ -47,10 +47,9 @@
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                     Giacenza
                                 </th>
-                                {{-- <th
+                                <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                    Action
-                                </th> --}}
+                                </th>
                             </tr>
                         </thead>
 

@@ -23,13 +23,20 @@
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
         {{ $product['GIACENZA'] }}
     </td>
-    {{-- <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 ">
+    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 ">
         <div class="flex items-center gap-2">
-            <a href="{{ route('app.dashboard.product.edit', $product) }}"
+            {{-- <a href="{{ route('app.dashboard.product.edit', $product) }}"
                 class="text-gray-100 hover:text-white bg-indigo-500 hover:bg-indigo-600 p-1 rounded" type="button">
                 <x-lucide-edit class="w-4 h-4" />
-            </a>
-            @include('app.components.dashboard.product.delete-product')
+            </a> --}}
+            <button id="open-modal-btn" x-data=""
+                x-on:click.prevent="$dispatch('open-modal', 'add-product-photo-{{ $product['id'] }}')"
+                class="text-gray-100 hover:text-white bg-indigo-500 hover:bg-indigo-600 p-1 rounded cursor-pointer"
+                type="button">
+                <x-lucide-edit class="w-4 h-4" />
+            </button>
+            @include('app.components.dashboard.product.add-product-image')
+            {{-- @include('app.components.dashboard.product.delete-product') --}}
         </div>
-    </td> --}}
+    </td>
 </tr>
