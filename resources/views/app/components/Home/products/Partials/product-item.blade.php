@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-card rounded-2xl overflow-hidden border transition-all duration-300 transform mx-auto">
+<div class="bg-white dark:bg-card rounded-2xl overflow-hidden border transition-all duration-300 transform mx-auto w-full">
     {{-- Product Image --}}
     <div class="mb-3 relative">
         <img 
@@ -13,7 +13,7 @@
         {{-- Title --}}
         <div>
             <a href="{{ route('app.products.show', $product) }}">
-                <h3 class="font-semibold text-gray-600 text-2xl group-hover/product:text-white line-clamp-1 flex-1">
+                <h3 class="font-semibold text-gray-600 text-xl group-hover/product:text-white line-clamp-2 flex-1">
                     {{ $product['DESCRIZIONEBREVE'] }}
                 </h3>
             </a>
