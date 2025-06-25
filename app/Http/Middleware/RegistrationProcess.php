@@ -22,7 +22,7 @@ class RegistrationProcess
             }
             elseif($tenant->registration_process == 'Mandatory with confirmation'){
                 if(!Auth::user()->email_verified_at){
-                    return redirect('/verify-email');
+                    // return redirect('/verify-email');
                 }
             }
             elseif($tenant->registration_process == 'Mandatory'){

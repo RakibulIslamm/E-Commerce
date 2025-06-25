@@ -62,14 +62,16 @@
                             ? number_format((float)$product['PREPROMOIMP'], 2) 
                             : false;
                         @endphp
-                        <div class="flex items-center gap-2">
-                            @if ($PREPROMOIMP)
-                                <h3 class="text-lg font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
-                                <h3 class="text-lg font-semibold">{{ $PREPROMOIMP }}€</h3>
-                            @else
-                                <h3 class="text-lg font-semibold">{{ $product['PRE1IMP'] }}€</h3>
-                            @endif
-                        </div>
+                        @if (!$hide_catalogo)
+                            <div class="flex items-center gap-2">
+                                @if ($PREPROMOIMP)
+                                    <h3 class="text-lg font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
+                                    <h3 class="text-lg font-semibold">{{ $PREPROMOIMP }}€</h3>
+                                @else
+                                    <h3 class="text-lg font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+                                @endif
+                            </div>
+                        @endif
                     </div>
 
                     <!-- Rating -->
@@ -88,7 +90,7 @@
                 <div class="space-y-1">
                     {{-- <p>Code: <span class="font-semibold">290</span></p> --}}
                     <p>Barcode: <span class="font-semibold">{{$product->BARCODE ?? "N/A"}}</span></p>
-                    @if (tenant()->product_stock_display == 'Text + Quantity')
+                    @if (tenant()->product_stock_display == 'Text + Quantity' && !$hide_catalogo)
                         <div class="mt-1">Disponibilità:
                             @if ($product->GIACENZA > 0)
                                 <span class="font-semibold text-green-500">In magazzino</span>
@@ -102,7 +104,7 @@
                             @endif
 
                         </div>
-                    @elseif (tenant()->product_stock_display == 'Text Only')
+                    @elseif (tenant()->product_stock_display == 'Text Only' && !$hide_catalogo)
                         <p>Disponibilità:
 
                             @if ($product->GIACENZA > 0)
@@ -128,15 +130,17 @@
                 @endif
 
                 <!-- Add to Cart Button -->
-                <div class="flex items-center gap-3">
-                    <button 
-                        onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})" 
-                        class="px-5 py-2 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}" 
-                        @if ($product->GIACENZA <= 0) disabled @endif>
-                        <x-lucide-shopping-cart class="w-5 h-5" />
-                        {{ $product->GIACENZA > 0 ? 'Aggiungi' : 'Esaurito' }}
-                    </button>
-                </div>
+                @if (!$hide_catalogo)
+                    <div class="flex items-center gap-3">
+                        <button 
+                            onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})" 
+                            class="px-5 py-2 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}" 
+                            @if ($product->GIACENZA <= 0) disabled @endif>
+                            <x-lucide-shopping-cart class="w-5 h-5" />
+                            {{ $product->GIACENZA > 0 ? 'Aggiungi' : 'Esaurito' }}
+                        </button>
+                    </div>
+                @endif
 
                 <!-- Description -->
                 <div class="w-full">

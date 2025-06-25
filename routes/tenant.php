@@ -32,7 +32,7 @@ Route::middleware([
 
 
     Route::middleware(['registration_process', 'track_user'])->group(function () {
-        Route::get('/', [IndexController::class, 'index']);
+        Route::get('/', [IndexController::class, 'index'])->name('app.home');
         Route::middleware(['auth'])->group(function () {
             Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile.edit');
             Route::patch('/profile', [ProfileController::class, 'update'])->name('app.profile.update');

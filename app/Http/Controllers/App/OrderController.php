@@ -270,8 +270,12 @@ class OrderController
             'telefono'=> $order->telefono,
             'email'=> $order->email,
         ];
-        
-        if (isset($smtp) && $smtp['mail_host'] && $smtp['mail_port'] && $smtp['mail_username'] && $smtp['mail_password'] && $smtp['mail_from_address']) {
+
+        if (
+            isset($smtp) && $smtp['mail_host'] && $smtp['mail_port'] &&
+            $smtp['mail_username'] && $smtp['mail_password'] && $smtp['mail_from_address']
+        ) {
+            // Configure SMTP
             Config::set('mail.mailers.smtp.host', $smtp['mail_host']);
             Config::set('mail.mailers.smtp.port', $smtp['mail_port']);
             Config::set('mail.mailers.smtp.username', $smtp['mail_username']);
@@ -279,13 +283,23 @@ class OrderController
             Config::set('mail.from.address', $smtp['mail_from_address']);
             Config::set('mail.from.name', tenant()->business_name ?? "Ecommerce");
 
+            // ✅ Send email to customer
             Mail::send('app.emails.order-confirmation', $data, function ($message) use ($smtp, $data) {
                 $message->from($smtp['mail_from_address'], tenant()->business_name);
                 $message->to($data['email']);
-                $message->subject('Order Confirmation');
+                $message->subject('Conferma Ordine');
             });
+
+            // ✅ Send email to admin
+            $adminEmail = tenant()->email;
+            Mail::send('app.emails.order-admin', $data, function ($message) use ($smtp, $adminEmail) {
+                $message->from($smtp['mail_from_address'], tenant()->business_name);
+                $message->to($adminEmail);
+                $message->subject('Nuovo Ordine Ricevuto');
+            });
+
         } else {
-            Log::error("Error: SMTP not set up for order confirmation email", ['order_id' => $order->id]);
+            Log::error("Errore: SMTP non configurato per invio email conferma ordine", ['order_id' => $order->id]);
         }
     }
 }

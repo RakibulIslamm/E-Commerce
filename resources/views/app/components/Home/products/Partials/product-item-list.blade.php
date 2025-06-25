@@ -34,17 +34,19 @@
                 ? number_format((float)$product['PREPROMOIMP'], 2) 
                 : false;
             @endphp
-            @if (tenant()->offer_display === 'View cut price')
-                <div class="flex items-center gap-4 pr-5">
-                    @if ($PREPROMOIMP)
-                        <h3 class="text-lg font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
-                        <h3 class="text-2xl text-gray-600 font-semibold">{{ $PREPROMOIMP }}€</h3>
-                    @else
-                        <h3 class="text-2xl text-gray-600 font-semibold">{{ $product['PRE1IMP'] }}€</h3>
-                    @endif
-                </div>
-            @else
-                <h3 class="text-2xl text-gray-600 font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+            @if (!$hide_catalogo)
+                @if (tenant()->offer_display === 'View cut price')
+                    <div class="flex items-center gap-4 pr-5">
+                        @if ($PREPROMOIMP)
+                            <h3 class="text-lg font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
+                            <h3 class="text-2xl text-gray-600 font-semibold">{{ $PREPROMOIMP }}€</h3>
+                        @else
+                            <h3 class="text-2xl text-gray-600 font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+                        @endif
+                    </div>
+                @else
+                    <h3 class="text-2xl text-gray-600 font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+                @endif
             @endif
         </div>
 
@@ -60,7 +62,7 @@
             <p class="text-sm">See all 512 reviews</p>
         </div> --}}
 
-        @if (tenant()->product_stock_display == 'Text + Quantity')
+        @if (tenant()->product_stock_display == 'Text + Quantity' && !$hide_catalogo)
             <div class="mt-1">Disponibilità:
                 @if ($product->GIACENZA > 0)
                     <span class="font-semibold text-green-500">In magazzino</span>
@@ -74,7 +76,7 @@
                 @endif
 
             </div>
-        @elseif (tenant()->product_stock_display == 'Text Only')
+        @elseif (tenant()->product_stock_display == 'Text Only' && !$hide_catalogo)
             <p>Disponibilità:
 
                 @if ($product->GIACENZA > 0)
@@ -86,21 +88,23 @@
             </p>
         @endif
 
-        <div class="flex items-center gap-3 mt-3">
-            @if ($product->GIACENZA > 0)
-                <button onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})"
-                    class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"><x-lucide-shopping-cart
-                        class="w-5 h-5" /> Aggiungi</button>
-            @else
-                <button
-                    class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"
-                    disabled><x-lucide-shopping-cart class="w-5 h-5" />Esaurito</button>
-            @endif
-            <!-- <button
-                class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-wishlist-{{ $product->id }}">
-                <x-heroicon-o-heart class="w-5 h-5" />
-                Wishlist</button> -->
-        </div>
+        @if (!$hide_catalogo)
+            <div class="flex items-center gap-3 mt-3">
+                @if ($product->GIACENZA > 0)
+                    <button onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})"
+                        class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"><x-lucide-shopping-cart
+                            class="w-5 h-5" /> Aggiungi</button>
+                @else
+                    <button
+                        class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"
+                        disabled><x-lucide-shopping-cart class="w-5 h-5" />Esaurito</button>
+                @endif
+                <!-- <button
+                    class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-wishlist-{{ $product->id }}">
+                    <x-heroicon-o-heart class="w-5 h-5" />
+                    Wishlist</button> -->
+            </div>
+        @endif
 
     </div>
 

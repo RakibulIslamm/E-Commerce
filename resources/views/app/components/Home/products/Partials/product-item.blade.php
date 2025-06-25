@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-card rounded-2xl overflow-hidden border transition-all duration-300 transform mx-auto w-full">
+<div class="bg-white dark:bg-card rounded-2xl overflow-hidden border transition-all duration-300 transform mx-auto w-full flex flex-col justify-between">
     {{-- Product Image --}}
     <div class="mb-3 relative">
         <img 
@@ -9,7 +9,7 @@
     </div>
 
     {{-- Product Info --}}
-    <div class="space-y-3 p-3">
+    <div class="space-y-3 p-3 h-full flex flex-col justify-between">
         {{-- Title --}}
         <div>
             <a href="{{ route('app.products.show', $product) }}">
@@ -17,14 +17,14 @@
                     {{ $product['DESCRIZIONEBREVE'] }}
                 </h3>
             </a>
-            @if (tenant()->product_stock_display == 'Text + Quantity')
+            @if (tenant()->product_stock_display == 'Text + Quantity' && !$hide_catalogo)
                 @if ($product->GIACENZA > 0)
                     <p class=" text-green-500 text-xs">In magazzino</p>
                     <p class=" text-green-500 text-xs m-0 p-0">Quantità: {{$product->GIACENZA}}</p>
                 @else
                     <p class=" text-red-500 text-xs">Esaurito</p>
                 @endif
-            @elseif (tenant()->product_stock_display == 'Text Only')
+            @elseif (tenant()->product_stock_display == 'Text Only' && !$hide_catalogo)
                 <p>Disponibilità:
 
                     @if ($product->GIACENZA > 0)
@@ -53,7 +53,8 @@
                 : false;
         @endphp
 
-        <div class="flex items-center justify-between gap-3">
+        @if (!$hide_catalogo)
+        <div class="flex items-end justify-between gap-3">
             <p class="text-2xl font-bold text-gray-900 dark:text-foreground">
                 @if ($PREPROMOIMP)
                     <span class="text-red-500 line-through text-base mr-2">{{ $product['PRE1IMP'] }}€</span>
@@ -72,6 +73,7 @@
                     disabled><x-lucide-shopping-cart class="w-5 h-5" />Esaurito</button>
             @endif
         </div>
+        @endif
     </div>
 </div>
 

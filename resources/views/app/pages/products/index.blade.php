@@ -19,11 +19,11 @@
                     <div class="flex items-center gap-2">
                         <label for="order_by" class="text-sm">Ordina per</label>
                         <select name="" id="order_by" class="text-sm py-1 rounded-md">
-                            <option value="default">default</option>
+                            <option value="default">predefinito</option>
                             <option value="asc">nome (A-Z)</option>
                             <option value="desc">nome (Z-A)</option>
-                            <option value="price_low">Low to high (price)</option>
-                            <option value="price_high">High to low (price)</option>
+                            <option value="price_low">Dal più basso al più alto (prezzo)</option>
+                            <option value="price_high">Dal più alto al più basso (prezzo)</option>
                         </select>
                     </div>
                     <span class="hidden sm:block">|</span>

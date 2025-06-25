@@ -24,7 +24,9 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    {{-- @include('app.components.shared.top-bar.index') --}}
+    @if ($user && !$email_verified && $hide_catalogo)
+        @include('app.components.shared.verify-email')
+    @endif
     @include('app.components.shared.navbar.index')
     @include('app.components.shared.cart.cart')
     <main class="w-full h-full">
