@@ -16,7 +16,13 @@ class ShowProductController
     {
         $categoryCode = request()->input('category');
         $products_breadcrumbs = Breadcrumbs::generate('products', $categoryCode);
+        $show_out_of_stock = tenant()?->show_out_of_stock;
+
         $query = Product::query();
+
+        if (!$show_out_of_stock) {
+            $query->where('GIACENZA', '>', 0);
+        }
 
         $selectedCategory = null;
         // Filter by category

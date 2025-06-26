@@ -57,21 +57,6 @@
                     <!-- Title and Price -->
                     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                         <h1 class="text-2xl font-semibold">{{ $product['DESCRIZIONEBREVE'] }}</h1>
-                        @php
-                            $PREPROMOIMP = isset($product['PREPROMOIMP']) && (float)$product['PREPROMOIMP'] > 0 
-                            ? number_format((float)$product['PREPROMOIMP'], 2) 
-                            : false;
-                        @endphp
-                        @if (!$hide_catalogo)
-                            <div class="flex items-center gap-2">
-                                @if ($PREPROMOIMP)
-                                    <h3 class="text-lg font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
-                                    <h3 class="text-lg font-semibold">{{ $PREPROMOIMP }}€</h3>
-                                @else
-                                    <h3 class="text-lg font-semibold">{{ $product['PRE1IMP'] }}€</h3>
-                                @endif
-                            </div>
-                        @endif
                     </div>
 
                     <!-- Rating -->
@@ -131,7 +116,7 @@
 
                 <!-- Add to Cart Button -->
                 @if (!$hide_catalogo)
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-10">
                         <button 
                             onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})" 
                             class="px-5 py-2 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}" 
@@ -139,6 +124,21 @@
                             <x-lucide-shopping-cart class="w-5 h-5" />
                             {{ $product->GIACENZA > 0 ? 'Aggiungi' : 'Esaurito' }}
                         </button>
+                        @php
+                            $PREPROMOIMP = isset($product['PREPROMOIMP']) && (float)$product['PREPROMOIMP'] > 0 
+                            ? number_format((float)$product['PREPROMOIMP'], 2) 
+                            : false;
+                        @endphp
+                        @if (!$hide_catalogo)
+                            <div class="flex items-center gap-2">
+                                @if ($PREPROMOIMP)
+                                    <h3 class="text-2xl font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
+                                    <h3 class="text-lg font-semibold">{{ $PREPROMOIMP }}€</h3>
+                                @else
+                                    <h3 class="text-lg font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+                                @endif
+                            </div>
+                        @endif
                     </div>
                 @endif
 
@@ -157,7 +157,7 @@
 
 <script>
     const quill = new Quill('#editor', {
-        placeholder: 'Compose an epic...',
+        placeholder: '',
         theme: 'bubble',
     });
     quill.enable(false);

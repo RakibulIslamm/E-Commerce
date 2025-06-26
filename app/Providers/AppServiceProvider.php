@@ -34,10 +34,11 @@ class AppServiceProvider extends ServiceProvider
                 } else {
                     $tenant = tenant();
                     $user = auth()->user();
-                    $categories = Category::with('children')->whereNull('parent_id')->get();
+                    $categories = Category::with('children')->whereNull('parent_id')->orderBy('nome')->get();
                     if (isset($tenant->data) && $tenant->data != null) {
                         $tenant->data = json_decode($tenant->data);
                     }
+
                     $hide_catalogo = $tenant->registration_process == 'Mandatory with confirmation' && !$user?->email_verified_at;
 
                     $email_verified = $user?->email_verified_at ? true : false;

@@ -27,6 +27,8 @@ Route::prefix('corporate-content')->group(function () {
         Route::get('/update', [EcommerceSettingsController::class, 'edit'])->name('app.corporate-content.ecommerce.edit');
 
         Route::put('/update', [EcommerceSettingsController::class, 'update'])->name('app.corporate-content.ecommerce.update');
+
+        Route::post('/toggle-out-of-stock', [EcommerceSettingsController::class, 'toggleOutOfStock'])->name('app.dashboard.products.toggle-out-of-stock');
     });
 
     Route::prefix('company-profile')->group(function () {

@@ -14,7 +14,7 @@
 <script>
     // Assuming Quill is already initialized as per your previous setup
     const quill = new Quill('#editor', {
-        placeholder: 'Compose an epic...',
+        placeholder: '',
         theme: 'bubble',
     });
     quill.enable(false);

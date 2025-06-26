@@ -13,16 +13,25 @@ class IndexController
 {
     public function index(Request $request)
     {
+        $show_out_of_stock = tenant()?->show_out_of_stock;
+
         $sliders = ContentSlider::orderBy('position')->get();
         $news = News::orderBy('created_at', 'desc')->take(6)->get();
+        
         // Fetch New Arrivals (limit 8)
         $newArrivals = Product::where('NOVITA', true)
+            ->when(!$show_out_of_stock, function ($query) {
+                $query->where('giacenza', '>', 0);
+            })
             ->orderBy('created_at', 'desc')
             ->limit(8)
             ->get();
 
         // Fetch Best Sellers (limit 8)
         $bestSellers = Product::where('PIUVENDUTI', true)
+            ->when(!$show_out_of_stock, function ($query) {
+                $query->where('giacenza', '>', 0);
+            })
             ->orderBy('created_at', 'desc')
             ->limit(8)
             ->get();
@@ -43,7 +52,8 @@ class IndexController
             }
         }
 
-        $categories = Category::all();
+        $categories = Category::orderBy('nome')->get();
+
         $promotion = Promotion::where('active', true)->first();
 
         return view("app.pages.index", [

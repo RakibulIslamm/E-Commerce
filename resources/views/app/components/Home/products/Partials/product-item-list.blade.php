@@ -1,6 +1,6 @@
 <div class="flex items-center gap-5 w-full border rounded overflow-hidden h-[170px]">
 
-    <div class="relative border aspect-square max-w-[170px] min-w-[170px] min-h-[170px]">
+    <a href="{{ route('app.products.show', $product) }}" class="relative border aspect-square max-w-[170px] min-w-[170px] min-h-[170px]">
         <img src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
             alt="" class="h-full w-full object-cover object-center">
 
@@ -20,7 +20,7 @@
             @if (isset($section))
             @endif
         </div>
-    </div>
+    </a>
 
     <div class="py-3 w-[calc(100%_-_170px)]">
         <div class="flex items-center gap-5 justify-between">

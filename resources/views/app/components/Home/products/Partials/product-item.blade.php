@@ -1,12 +1,12 @@
 <div class="bg-white dark:bg-card rounded-2xl overflow-hidden border transition-all duration-300 transform mx-auto w-full flex flex-col justify-between">
     {{-- Product Image --}}
-    <div class="mb-3 relative">
+    <a href="{{ route('app.products.show', $product) }}" class="mb-3 relative">
         <img 
             src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}" 
             alt="{{ $product['DESCRIZIONEBREVE'] }}" 
             class="h-[200px] w-full object-cover object-center relative z-10 drop-shadow-2xl"
         />
-    </div>
+    </a>
 
     {{-- Product Info --}}
     <div class="space-y-3 p-3 h-full flex flex-col justify-between">

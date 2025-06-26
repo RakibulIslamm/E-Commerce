@@ -30,10 +30,9 @@
                     <div class="flex items-center gap-2">
                         <label for="items_per_page" class="text-sm">Per page</label>
                         <select name="" id="items_per_page" class="text-sm py-1 rounded-md">
-                            <option value="12">12</option>
-                            <option value="2">2 (Test)</option>
                             <option value="20">20</option>
-                            <option value="28">28</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
                         </select>
                     </div>
                 </div>

@@ -90,7 +90,7 @@
 
             <!-- Province -->
             <div class="w-full">
-                <x-input-label for="province" :value="__('Province')" />
+                <x-input-label for="province" :value="__('Provincia')" />
                 <x-text-input id="province" class="block w-full mt-1" type="text" name="province" required />
             </div>
         </div>
@@ -109,7 +109,7 @@
 
         <!-- Business Name -->
         <div class="w-full">
-            <x-input-label for="business_name" :value="__('Nome*')" />
+            <x-input-label for="business_name" :value="__('Denominazione*')" />
             <x-text-input id="business_name" class="block w-full" type="text" name="business_name"
                 :value="old('business_name')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('business_name')" class="mt-2" />

@@ -106,7 +106,7 @@
                     //   ['image', 'code-block'],
                 ],
             },
-            placeholder: 'Compose an epic...',
+            placeholder: '',
             theme: 'snow', // or 'bubble'
         });
 

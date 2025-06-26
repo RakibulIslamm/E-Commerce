@@ -145,7 +145,7 @@
 
         }, 0);
 
-        sidebarSubtotal.innerText = subtotal;
+        sidebarSubtotal.innerText = subtotal?.toFixed(2);
     }
 
     function renderCartItems() {

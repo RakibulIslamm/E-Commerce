@@ -97,6 +97,18 @@ class EcommerceSettingsController
         return redirect()->route('app.corporate-content.ecommerce');
     }
 
+    public function toggleOutOfStock(Request $request)
+    {
+        $value = $request->has('show_out_of_stock') ? 1 : 0;
+
+        $tenant = tenant();
+        $tenant->update([
+            "show_out_of_stock" => $value
+        ]);
+
+        return redirect()->back()->with('success', 'Impostazione aggiornata.');
+    }
+
     /**
      * Remove the specified resource from storage.
      */

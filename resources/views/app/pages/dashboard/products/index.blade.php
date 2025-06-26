@@ -1,6 +1,14 @@
 @section('title', 'Prodotti')
 <x-app-layout>
-    <div class="w-full flex items-center justify-end">
+    <div class="w-full flex items-center justify-between">
+        <form method="POST" action="{{ route('app.dashboard.products.toggle-out-of-stock') }}" class="flex items-center space-x-2">
+            @csrf
+            <input type="checkbox" name="show_out_of_stock" id="show_out_of_stock"
+                onchange="this.form.submit()" {{ $site_settings?->show_out_of_stock ? 'checked' : '' }} />
+            <label for="show_out_of_stock" class="text-sm font-medium">Mostra articoli esauriti</label>
+        </form>
+
+        <!-- Add Button -->
         <div class="relative w-full max-w-full flex-grow flex-1 text-right">
             <a href="{{ route('app.dashboard.product.create') }}"
                 class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold  px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">

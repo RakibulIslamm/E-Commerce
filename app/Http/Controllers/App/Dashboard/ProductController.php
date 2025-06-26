@@ -77,7 +77,7 @@ class ProductController
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('nome')->get();
 
         return view("app.pages.dashboard.products.create", ["categories_for_form" => $categories, "mode" => 'create']);
     }
@@ -497,7 +497,7 @@ class ProductController
      */
     public function edit(Product $product)
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('nome')->get();
         $product['FOTO'] = json_decode($product['FOTO']);
         // dd($product);
         return view("app.pages.dashboard.products.edit", ["categories_for_form" => $categories, "mode" => 'edit', "product" => $product]);
