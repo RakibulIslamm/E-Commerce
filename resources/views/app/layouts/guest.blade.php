@@ -92,7 +92,7 @@
             if(cartInViewQuantityInputList) {
                 cartInViewQuantityInputList.value = items[item]?.quantity;
             }
-            
+
             if(nColli){
                 nColli.innerText = `(N. colli: ${items[item]?.quantity / items[item]?.pxc})`
             }
@@ -245,7 +245,7 @@
     }
 
     function renderSubtotal() {
-        if (!subTotalElement || !vatElement || !totalElement) return
+        if (!subTotalElement || !totalElement) return
         const data = Object.values(window.all_cart);
         let vat = 0;
         const subtotal = data.reduce((total, item) => {
@@ -265,7 +265,7 @@
         }, 0);
         const grandTotal = subtotal + vat;
         subTotalElement.innerText = subtotal.toFixed(2);
-        vatElement.innerText = vat.toFixed(2);
+        if(vatElement) vatElement.innerText = vat.toFixed(2);
         totalElement.innerText = grandTotal.toFixed(2);
     }
 
