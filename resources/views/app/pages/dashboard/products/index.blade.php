@@ -1,13 +1,16 @@
 @section('title', 'Prodotti')
 <x-app-layout>
     <div class="w-full flex items-center justify-between">
-        <form method="POST" action="{{ route('app.dashboard.products.toggle-out-of-stock') }}" class="flex items-center space-x-2">
-            @csrf
-            <input type="checkbox" name="show_out_of_stock" id="show_out_of_stock"
-                onchange="this.form.submit()" {{ $site_settings?->show_out_of_stock ? 'checked' : '' }} />
-            <label for="show_out_of_stock" class="text-sm font-medium">Mostra articoli esauriti</label>
-        </form>
-
+        <div class="mb-4">
+            <h3 class="text-base font-semibold mb-1">Opzioni visualizzazione prodotti</h3>
+            <p class="text-xs text-gray-500 mb-2">Configura cosa mostrare nella lista prodotti sul sito</p>
+            <form method="POST" action="{{ route('app.dashboard.products.toggle-out-of-stock') }}" class="flex items-center space-x-2">
+                @csrf
+                <input type="checkbox" name="show_out_of_stock" id="show_out_of_stock"
+                    onchange="this.form.submit()" {{ $site_settings?->show_out_of_stock ? 'checked' : '' }} />
+                <label for="show_out_of_stock" class="text-sm font-medium">Mostra articoli esauriti</label>
+            </form>
+        </div>
         <!-- Add Button -->
         <div class="relative w-full max-w-full flex-grow flex-1 text-right">
             <a href="{{ route('app.dashboard.product.create') }}"

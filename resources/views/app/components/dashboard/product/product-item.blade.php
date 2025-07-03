@@ -16,7 +16,7 @@
         @elseif ($product['category'])
             {{ $product['category']->nome }}
         @else
-            No Category
+            Categoria non trovata.
         @endif
 
     </td>

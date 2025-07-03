@@ -73,7 +73,7 @@
                     <x-lucide-settings class="w-5 h-5" />
                     <p class="text-sm leading-4">Dati Azienda</p>
                 </a>
-                <a href="{{ route('app.corporate-content.ecommerce') }}"
+                <a style="display:none" href="{{ route('app.corporate-content.ecommerce') }}"
                     class="flex justify-start items-center gap-2 hover:text-gray-100 {{ Request::is('dashboard/corporate-content/ecommerce*') ? 'bg-gray-700 text-gray-100' : 'text-gray-700' }} hover:bg-gray-700 rounded px-3 py-2 w-full my-2">
                     <x-lucide-settings-2 class="w-5 h-5" />
                     <p class="text-sm leading-4">Ecommerce</p>

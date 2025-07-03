@@ -55,17 +55,16 @@
                         @elseif ($product['category'])
                             {{ $product['category']->nome }}
                         @else
-                            No Category
+                            Categoria non trovata.
                         @endif
                     </p>
 
                     <!-- Title and Price -->
                     <div class="">
                         <h1 class="text-2xl font-semibold">{{ $product['DESCRIZIONEBREVE'] }}</h1>
-                        @if ($product?->PXC > 1)
-                            <span class="text-xs">PZ {{ $product['PXC']}} per collo</span>
-                        @endif
-                        
+                       @if (!empty($product?->PXC) && $product->PXC >= 1)
+                           <span class="text-xs">PZ {{ $product->PXC }} per collo</span>
+                       @endif
                     </div>
 
                     <!-- Rating -->
@@ -83,7 +82,12 @@
                 <!-- Product Info -->
                 <div class="space-y-1">
                     {{-- <p>Code: <span class="font-semibold">290</span></p> --}}
-                    <p>Barcode: <span class="font-semibold">{{$product->BARCODE ?? "N/A"}}</span></p>
+                    <p>
+                        Barcode: 
+                        <span class="font-semibold">
+                            {{ explode('|', $product->BARCODE ?? 'N/A')[0] }}
+                        </span>
+                    </p>
                     @if (tenant()->product_stock_display == 'Text + Quantity' && !$hide_catalogo)
                         <div class="mt-1">Disponibilità:
                             @if ($product->GIACENZA > 0)
@@ -242,14 +246,12 @@
             .then(data => {
                 console.log(data)
                 if (data.success) {
-                    // alert('Product added to cart');
                     window.all_cart = data.cart_items;
                     renderSidebarCart();
                     renderSidebarSubtotal();
                     setCartItemCount();
-                }
-                else{
-                    alert("Something went wrong, please try later");
+                } else{
+                    alert("Qualcosa è andato storto, riprova più tardi.");
                 }
             });
     }

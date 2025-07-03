@@ -9,7 +9,7 @@
               
               <p class="text-gray-600">Data dell'ordine: 
                   <span class="font-medium text-gray-800">
-                      {{ $order->created_at ? $order->created_at->locale('it')->translatedFormat('j F Y, H:i') : 'N/A' }}
+                      {{ $order->created_at ? \Carbon\Carbon::parse($order->created_at)->setTimezone('Europe/Rome')->locale('it')->translatedFormat('j F Y, H:i') : 'N/A' }}
                   </span>
               </p>
 

@@ -7,7 +7,7 @@
                     @include('app.components.Home.categoris.Partials.category-item', ['category' => $item])
                 @endforeach
             @else
-                <p>No category found</p>
+                <p>Categoria non trovata.</p>
             @endif
         </div>
     </div>

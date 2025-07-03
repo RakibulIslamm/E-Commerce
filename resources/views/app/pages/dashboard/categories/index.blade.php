@@ -58,7 +58,7 @@
                                 @endforeach
                             @else
                                 <tr class="p-3 block">
-                                    <td>No category found</td>
+                                    <td>Categoria non trovata.</td>
                                 </tr>
                             @endif
                         </tbody>
