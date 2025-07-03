@@ -34,7 +34,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'sdi_code',
         'telephone',
         'price_list',
-        'active'
+        'active',
+        'discount',
     ];
 
     /**

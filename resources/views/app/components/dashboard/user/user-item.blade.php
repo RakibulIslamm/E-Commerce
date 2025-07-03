@@ -6,10 +6,10 @@
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap break-all">
         {{ $customer->vat_number }}
     </td>
-    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4  break-all">
+    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4  break-all whitespace-nowrap">
         {{ $customer->tax_id }}
     </td>
-    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-wrap break-all">
+    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap break-all">
         {{ $customer->email }}
     </td>
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
@@ -42,6 +42,9 @@
                 <option value="2" {{ $customer->price_list == 2 ? 'selected' : '' }}>List 2</option>
                 <option value="3" {{ $customer->price_list == 3 ? 'selected' : '' }}>List 3</option>
             </select>
+        </td>
+        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
+            <input class="py-1 rounded w-24" name="discount" value="{{$customer->discount}}"/>
         </td>
         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
             <button

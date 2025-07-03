@@ -5,12 +5,14 @@
 use App\Models\Category;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
+use Illuminate\Support\Arr;
 
 Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
     $trail->push('Dashboard', route('app.dashboard')); // You can keep 'Dashboard' if it's used as-is in the UI
 });
 
 Breadcrumbs::for('products', function (BreadcrumbTrail $trail, $categoryCode = null) {
+    $trail->push('Prodotti', route('app.products'));
     if ($categoryCode) {
         // Ottieni la categoria corrente e costruisci la gerarchia
         $category = Category::where('codice', $categoryCode)->first();
@@ -36,12 +38,44 @@ Breadcrumbs::for('products', function (BreadcrumbTrail $trail, $categoryCode = n
             $trail->push($category->nome, route('app.products', ['category' => $category->codice]));
         }
     }
-
-    $trail->push('Prodotti', route('app.products'));
 });
 
 Breadcrumbs::for('product', function (BreadcrumbTrail $trail, $product) {
-    $trail->parent('products');
+    // Start with "Prodotti" base link
+    $trail->push('Prodotti', route('app.products'));
+    
+    $categoryCodes = $product->CATEGORIEESOTTOCATEGORIE;
+
+    // Get the deepest category (last one)
+    $categoryCode = is_array($categoryCodes) ? Arr::last($categoryCodes) : null;
+
+    if ($categoryCode) {
+        $category = Category::where('codice', $categoryCode)->first();
+
+        if ($category) {
+            $parents = [];
+            $current = $category;
+
+            // Traverse parent hierarchy
+            while ($current?->parent_id) {
+                $parent = Category::find($current->parent_id);
+                if ($parent) {
+                    $parents[] = $parent;
+                }
+                $current = $parent;
+            }
+
+            // Push parent categories (top-down)
+            foreach (array_reverse($parents) as $parentCategory) {
+                $trail->push($parentCategory->nome, route('app.products', ['category' => $parentCategory->codice]));
+            }
+
+            // Push current category
+            $trail->push($category->nome, route('app.products', ['category' => $category->codice]));
+        }
+    }
+
+    // Finally, push the product name
     $trail->push($product->DESCRIZIONEBREVE, route('app.products.show', $product));
 });
 

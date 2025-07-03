@@ -28,7 +28,7 @@
                     </div>
                     <span class="hidden sm:block">|</span>
                     <div class="flex items-center gap-2">
-                        <label for="items_per_page" class="text-sm">Per page</label>
+                        <label for="items_per_page" class="text-sm">Risultati per pagina</label>
                         <select name="" id="items_per_page" class="text-sm py-1 rounded-md">
                             <option value="20">20</option>
                             <option value="50">50</option>

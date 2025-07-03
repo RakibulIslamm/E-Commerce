@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.bubble.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -36,6 +37,13 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+<!-- Fancybox JS -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 <script>
     const cartSidebar = document.getElementById('cart-sidebar');
     const cartSidebarOverlay = document.getElementById('cart-sidebar-overlay');
@@ -46,6 +54,8 @@
     const subTotalElement = document.getElementById('sub-total');
     const vatElement = document.getElementById('vat');
     const totalElement = document.getElementById('total');
+
+    const tenant = @json(tenant());
 
     async function getCart(loadingId = '') {
         window.all_cart = {};
@@ -71,11 +81,36 @@
         cartContainer.innerHTML = '';
         const items = window.all_cart;
         for (const item in items) {
+            const cartInViewQuantityInput = document.getElementById(`cart-in-view-quantity-input-${item}`);
+            const cartInViewQuantityInputList = document.getElementById(`list-cart-in-view-quantity-input-${item}`);
+            const nColli = document.getElementById(`n-colli-${item}`);
+            
+            if(cartInViewQuantityInput) {
+                cartInViewQuantityInput.value = items[item]?.quantity;
+            }
+
+            if(cartInViewQuantityInputList) {
+                cartInViewQuantityInputList.value = items[item]?.quantity;
+            }
+            
+            if(nColli){
+                nColli.innerText = `(N. colli: ${items[item]?.quantity / items[item]?.pxc})`
+            }
+
 
             const cartItem = document.createElement('div');
             const addToCartButtons = document.getElementsByClassName(`add-to-cart-${item}`);
 
+            const plusMinusBtn = document.getElementById(`plus-minus-btn-${item}`);
+            const plusMinusBtnList = document.getElementById(`list-plus-minus-btn-${item}`);
+
             if (addToCartButtons?.length > 0) {
+                if(plusMinusBtn){
+                    plusMinusBtn.classList.remove('hidden');
+                }
+                if(plusMinusBtnList){
+                    plusMinusBtnList.classList.remove('hidden');
+                }
                 for (const button of addToCartButtons) {
                     button.setAttribute('disabled', true);
                     button.innerText = 'Aggiungi'
@@ -96,18 +131,18 @@
                     <div class="w-full">
                         <div>
                             <h3 class="text-sm sm:text-lg line-clamp-1">
-                                <a href="#">${items[item]?.name}</a>
+                                <a href="/products/details/${item}">${items[item]?.name}</a>
                             </h3>
-                            <p class="text-xs sm:text-base">€${items[item]?.price}</p>    
+                            <p class="text-xs sm:text-base">€${ tenant?.price_with_vat ? items[item]?.price_with_vat : items[item]?.price}</p>    
                         </div>
                         <div class="flex sm:items-center sm:flex-row sm:justify-between flex-col items-start mt-3">
                             <div class="flex items-center gap-1 border-gray-100">
-                                <button onclick="cartDecreaseSidebar(${item})"
+                                <button onclick="cartDecreaseSidebar(${item}, ${items[item]?.pxc})"
                                     class="flex items-center justify-center cursor-pointer rounded-l bg-gray-100 h-6 w-8 duration-100 hover:bg-blue-500 hover:text-blue-50">
                                     - </button>
                                 <input class="h-6 w-10 text-center text-xs" id="cart-sidebar-quantity-input-${item}"
                                     type="number" value="${items[item]?.quantity}" min="1" />
-                                <button onclick="cartIncreaseSidebar(${item})"
+                                <button onclick="cartIncreaseSidebar(${item}, ${items[item]?.pxc})"
                                     class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 h-6 w-8 duration-100 hover:bg-blue-500 hover:text-blue-50">
                                     + </button>
 
@@ -135,7 +170,7 @@
     function renderSidebarSubtotal() {
         const data = Object.values(window.all_cart);
         const subtotal = data.reduce((total, item) => {
-            const price = item.price;
+            const price = tenant?.price_with_vat ? item.price_with_vat : item.price;
             const quantity = item.quantity;
             if (price) {
                 return total + (price * quantity);
@@ -175,7 +210,7 @@
                                     <p class="text-xs sm:text-sm ${items[item]?.stock >= 5 ? 'text-green-500' : 'text-red-500'}">Stock disponibile ${items[item]?.stock}</p>
                                     <div class="flex items-center space-x-6">
                                         <p id="itemPrice" class="text-xs sm:text-sm">
-                                            ${items[item]?.price ?? 0}€</p>
+                                            ${tenant?.price_with_vat ? items[item]?.price_with_vat : items[item]?.price}€</p>
                                         <button onclick="handleDeleteCart(${item}, 'cart_page')" class="mb-1">
                                             <x-lucide-trash-2 class="sm:w-5 sm:h-5 w-4 h-4 text-red-500" />
                                         </button>
@@ -184,12 +219,12 @@
                                 </div>
                                 <div class="flex items-center sm:flex-row flex-col gap-1">
                                     <div class="flex items-center gap-1">
-                                        <button onclick="cartDecrease(${item})"
+                                        <button onclick="cartDecrease(${item}, ${items[item]?.pxc})"
                                         class="flex items-center justify-center cursor-pointer rounded-l bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
                                         - </button>
                                         <input class="sm:h-8 sm:w-14 h-5 w-8 text-center sm:text-base text-xs" id="cart-page-quantity-input-${item}"
                                             type="text" value="${items[item]?.quantity}" />
-                                        <button onclick="cartIncrease(${item})"
+                                        <button onclick="cartIncrease(${item}, ${items[item]?.pxc})"
                                             class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
                                             + </button>    
                                     </div>
@@ -214,10 +249,13 @@
         const data = Object.values(window.all_cart);
         let vat = 0;
         const subtotal = data.reduce((total, item) => {
-            const price = item?.price;
+            const price = tenant?.price_with_vat ? item.price_with_vat : item.price;
             const quantity = item?.quantity;
-            // number/total*100 (parcentage formula)
-            vat += (price * quantity) * (parseFloat(item.vat) / 100);
+            
+            if(!tenant?.price_with_vat){
+                vat += (price * quantity) * (parseFloat(item.vat) / 100);
+            }
+
             if (price) {
                 return total + (price * quantity);
             } else {
@@ -312,8 +350,17 @@
                     render()
                     setCartItemCount();
                     const addToCartButtons = document.getElementsByClassName(`add-to-cart-${id}`);
+                    const plusMinusBtn = document.getElementById(`plus-minus-btn-${id}`);
+
+                    const plusMinusBtnList = document.getElementById(`list-plus-minus-btn-${id}`);
 
                     if (addToCartButtons?.length > 0) {
+                        if(plusMinusBtn){
+                            plusMinusBtn.classList.add('hidden');
+                        }
+                        if(plusMinusBtnList){
+                            plusMinusBtnList.classList.add('hidden');
+                        }
                         for (const button of addToCartButtons) {
                             button.removeAttribute('disabled', true);
                             button.innerText = 'Aggiungi'
@@ -353,6 +400,8 @@
     function isUserLoggedIn() {
         return {{ Auth::check() ? 'true' : 'false' }};
     }
+
+    
 </script>
 
 </html>

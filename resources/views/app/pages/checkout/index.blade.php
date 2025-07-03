@@ -178,7 +178,11 @@
                         @foreach (session('cart') as $id => $details)
                             <div class="flex items-center justify-between text-gray-500">
                                 <p>{{ $details['name'] }} x {{ $details['quantity'] }}</p>
-                                <p>{{ $details['price'] * $details['quantity'] }}€</p>
+                                @if (tenant()?->price_with_vat)
+                                    <p>{{ $details['price_with_vat'] * $details['quantity'] }}€</p>
+                                @else
+                                    <p>{{ $details['price'] * $details['quantity'] }}€</p>
+                                @endif
                             </div>
                         @endforeach
                     @else
@@ -192,10 +196,16 @@
                     $vat = 0;
                     // dd($details['price'] * $details['quantity'] * (15 / 100));
                     if (session('cart')) {
-                        foreach (session('cart') as $id => $details) {
-                            $total += $details['price'] * $details['quantity'];
-                            // number/total*100 (parcentage formula)
-                            $vat += ($details['price'] * $details['quantity'] * $details['vat']) / 100;
+                        if (tenant()?->price_with_vat) {
+                            foreach (session('cart') as $id => $details) {
+                                $total += $details['price_with_vat'] * $details['quantity'];
+                            }  
+                        } else {
+                            foreach (session('cart') as $id => $details) {
+                                $total += $details['price'] * $details['quantity'];
+                                
+                                $vat += ($details['price'] * $details['quantity'] * $details['vat']) / 100;
+                            }
                         }
                     }
                     $total = number_format((float) $total, 2, '.', '');

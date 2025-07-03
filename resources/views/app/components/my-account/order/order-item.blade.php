@@ -3,7 +3,7 @@
         <p class="text-gray-600">ID Ordine: <span class="font-medium text-gray-800">#{{$order->id}}</span></p>
         <p class="text-gray-600">Data: 
             <span class="font-medium text-gray-800">
-                {{ \Carbon\Carbon::parse($order->created_at)->locale('it')->translatedFormat('j F Y, H:i') }}
+                {{ \Carbon\Carbon::parse($order->created_at)->setTimezone('Europe/Rome')->locale('it')->translatedFormat('j F Y, H:i') }}
             </span>
         </p>
         

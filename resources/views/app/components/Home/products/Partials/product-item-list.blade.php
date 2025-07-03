@@ -29,38 +29,39 @@
                     {{ $product['DESCRIZIONEBREVE'] }}
                 </h3>
             </a>
+
             @php
-                $PREPROMOIMP = isset($product['PREPROMOIMP']) && (float)$product['PREPROMOIMP'] > 0 
-                ? number_format((float)$product['PREPROMOIMP'], 2) 
-                : false;
+                $price = match (true) {
+                    $user && $user->price_list == 3 => $product['PRE3IMP'],
+                    $user && $user->price_list == 2 => $product['PRE2IMP'],
+                    $user && $user->price_list == 1 => $product['PRE1IMP'],
+                    default => $product['PRE1IMP'],
+                };
+
+                $price_with_vat = match (true) {
+                    $user && $user->price_list == 3 => $product['PRE3IVA'],
+                    $user && $user->price_list == 2 => $product['PRE2IVA'],
+                    $user && $user->price_list == 1 => $product['PRE1IVA'],
+                    default => $product['PRE1IVA'],
+                };
             @endphp
+           
             @if (!$hide_catalogo)
-                @if (tenant()->offer_display === 'View cut price')
-                    <div class="flex items-center gap-4 pr-5">
-                        @if ($PREPROMOIMP)
-                            <h3 class="text-lg font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
-                            <h3 class="text-2xl text-gray-600 font-semibold">{{ $PREPROMOIMP }}€</h3>
-                        @else
-                            <h3 class="text-2xl text-gray-600 font-semibold">{{ $product['PRE1IMP'] }}€</h3>
-                        @endif
-                    </div>
-                @else
-                    <h3 class="text-2xl text-gray-600 font-semibold">{{ $product['PRE1IMP'] }}€</h3>
-                @endif
+                <div class="flex items-center gap-4 pr-5">
+                    @if (tenant()?->price_with_vat)
+                        <div class="flex items-center">
+                            <h3 class="text-xl font-semibold">{{ $price_with_vat }}€</h3>
+                            <sup class="ml-2 text-xs font-bold text-green-900">IVATO</sup>
+                        </div>
+                    @else
+                        <div class="flex items-center">
+                            <h3 class="text-xl font-semibold">{{ $price }}€</h3>
+                            <sup class="ml-1 font-bold text-xs text-red-900">SENZA IVA</sup>
+                        </div>
+                    @endif
+                        </div>
             @endif
         </div>
-
-        {{-- <div class="flex items-center gap-2 mt-1">
-            <p class="text-sm">5.0</p>
-            <div class="flex items-center gap-1 text-yellow-400">
-                <x-heroicon-m-star class="w-4 h-4" />
-                <x-heroicon-m-star class="w-4 h-4" />
-                <x-heroicon-m-star class="w-4 h-4" />
-                <x-heroicon-m-star class="w-4 h-4" />
-                <x-heroicon-m-star class="w-4 h-4" />
-            </div>
-            <p class="text-sm">See all 512 reviews</p>
-        </div> --}}
 
         @if (tenant()->product_stock_display == 'Text + Quantity' && !$hide_catalogo)
             <div class="mt-1">Disponibilità:
@@ -91,9 +92,42 @@
         @if (!$hide_catalogo)
             <div class="flex items-center gap-3 mt-3">
                 @if ($product->GIACENZA > 0)
-                    <button onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})"
-                        class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"><x-lucide-shopping-cart
-                            class="w-5 h-5" /> Aggiungi</button>
+                    <div class="w-full flex items-start gap-2">
+                        <button onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})"
+                            class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"><x-lucide-shopping-cart
+                                class="w-5 h-5" /> Aggiungi</button>
+                            <div id="list-plus-minus-btn-{{ $product->id }}" class="hidden">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                    {{-- Spinner --}}
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                            class="w-5 h-5 animate-spin invisible update-quantity-spin-{{ $product->id }}"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+                                            <path fill-rule="evenodd"
+                                                d="M8 3a5 5 0 0 0-3.857 1.818.5.5 0 1 1-.771-.636A6 6 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3zM3.1 9a5 5 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6 6 0 0 1 2.083 9H3.1z" />
+                                        </svg>
+                                        {{-- Plus/Minus --}}
+                                        <div class="flex items-center border rounded overflow-hidden">
+                                            <button onclick="cartDecreaseInView({{ $product->id }}, {{ $product?->PXC }})"
+                                                class="flex items-center justify-center bg-gray-100 w-7 h-7 text-sm hover:bg-blue-500 hover:text-white transition">
+                                                -
+                                            </button>
+                                            <input class="h-7 max-w-14 text-center text-sm border-l border-r border-gray-300"
+                                                id="list-cart-in-view-quantity-input-{{ $product->id }}" type="text" value="1" />
+                                            <button onclick="cartIncreaseInView({{ $product->id }}, {{ $product?->PXC }})"
+                                                class="flex items-center justify-center bg-gray-100 w-7 h-7 text-sm hover:bg-blue-500 hover:text-white transition">
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                    @if ($product?->PXC > 1)
+                                        <p class="mt-1 text-xs text-right text-gray-500" id="n-colli-{{ $product->id }}">(N. colli: 1)</p>
+                                    @endif
+                                </div>
+                            </div>
+                    </div>
                 @else
                     <button
                         class="px-5 py-1 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}"

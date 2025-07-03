@@ -11,26 +11,31 @@
                     <div class="swiper-wrapper">
                         @if (isset($product->FOTO) && count($product->FOTO))
                             @foreach ($product->FOTO as $img)
-                                <div class="swiper-slide">
-                                    <img class="w-full border rounded-md" src="{{ tenant_asset($img) }}" alt="">
+                                <div class="swiper-slide aspect-square">
+                                    <a data-fancybox="gallery" href="{{ tenant_asset($img) }}">
+                                        <img class="w-full h-full border rounded-md" src="{{ tenant_asset($img) }}" alt="">
+                                    </a>
                                 </div>
                             @endforeach
                         @else
                             <div class="swiper-slide">
-                                <img class="w-full border rounded-md"
-                                     src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
-                                     alt="">
+                                <a data-fancybox="gallery" href="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png" class="aspect-square">
+                                    <img class="w-full h-full border rounded-md"
+                                        src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
+                                        alt="">
+                                </a>
                             </div>
                         @endif
                     </div>
                 </div>
 
+
                 <div class="swiper-container gallery-thumbs mt-3">
                     <div class="swiper-wrapper">
                         @if (isset($product->FOTO) && (count($product->FOTO) > 1))
                             @foreach ($product->FOTO as $img)
-                                <div class="swiper-slide w-16 md:w-20">
-                                    <img class="w-full border rounded-md" src="{{ tenant_asset($img) }}" alt="">
+                                <div class="swiper-slide w-12 md:w-16 aspect-square">
+                                    <img class="w-full h-full border rounded-md object-cover object-center" src="{{ tenant_asset($img) }}" alt="">
                                 </div>
                             @endforeach
                         @endif
@@ -55,8 +60,12 @@
                     </p>
 
                     <!-- Title and Price -->
-                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div class="">
                         <h1 class="text-2xl font-semibold">{{ $product['DESCRIZIONEBREVE'] }}</h1>
+                        @if ($product?->PXC > 1)
+                            <span class="text-xs">PZ {{ $product['PXC']}} per collo</span>
+                        @endif
+                        
                     </div>
 
                     <!-- Rating -->
@@ -116,7 +125,7 @@
 
                 <!-- Add to Cart Button -->
                 @if (!$hide_catalogo)
-                    <div class="flex items-center gap-10">
+                    <div class="flex items-center gap-5">
                         <button 
                             onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})" 
                             class="px-5 py-2 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}" 
@@ -130,14 +139,41 @@
                             : false;
                         @endphp
                         @if (!$hide_catalogo)
-                            <div class="flex items-center gap-2">
-                                @if ($PREPROMOIMP)
-                                    <h3 class="text-2xl font-semibold line-through text-rose-700">{{ $product['PRE1IMP'] }}€</h3>
-                                    <h3 class="text-lg font-semibold">{{ $PREPROMOIMP }}€</h3>
-                                @else
-                                    <h3 class="text-lg font-semibold">{{ $product['PRE1IMP'] }}€</h3>
-                                @endif
-                            </div>
+                            @if (tenant()?->price_with_vat)
+                                <div class="flex items-center">
+                                    <h3 class="text-3xl font-semibold">{{ $product['PRE1IVA'] }}€</h3>
+                                    <sup class="ml-3 font-bold text-green-900">IVATO</sup>
+                                </div>
+                            @else
+                                <div class="flex items-center">
+                                    <h3 class="text-3xl font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+                                    <sup class="ml-3 font-bold text-red-900">SENZA IVA</sup>
+                                </div>
+                            @endif
+                        @endif
+                    </div>
+                    <div class="hidden" id="plus-minus-btn-{{ $product->id }}">
+                        <hr class="pb-3">
+                        <div class="flex items-center gap-1">
+                            <button onclick="cartDecreaseInView({{ $product->id }}, {{$product?->PXC}})"
+                            class="flex items-center justify-center cursor-pointer rounded-l bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                            - </button>
+                            <input class="sm:h-8 sm:w-14 h-5 w-8 text-center sm:text-base text-xs" id="cart-in-view-quantity-input-{{ $product->id }}"
+                                type="text" value="" />
+                            <button onclick="cartIncreaseInView({{ $product->id }}, {{$product?->PXC}})"
+                                class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                                + </button>  
+                                
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6 animate-spin mr-3 invisible update-quantity-spin-{{$product->id}}"
+                            viewBox="0 0 16 16">
+                                <path
+                                    d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+                                <path fill-rule="evenodd"
+                                    d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+                            </svg>
+                        </div>
+                        @if ($product?->PXC > 1)
+                            <p class="p-2 text-sm" id="n-colli-{{$product->id}}">(N. colli: 1)</p>
                         @endif
                     </div>
                 @endif
@@ -156,6 +192,8 @@
 
 
 <script>
+    const product = @json($product);
+
     const quill = new Quill('#editor', {
         placeholder: '',
         theme: 'bubble',
@@ -178,6 +216,17 @@
         },
     });
 
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        Toolbar: {
+        display: [
+            { id: "zoom", position: "center" },
+            "close",
+        ],
+        },
+        Thumbs: false,
+        animated: true,
+    });
+
     function addToCart(productId, product, quantity = 1) {
         fetch('/cart/add', {
                 method: 'POST',
@@ -191,6 +240,7 @@
                 })
             }).then(response => response.json())
             .then(data => {
+                console.log(data)
                 if (data.success) {
                     // alert('Product added to cart');
                     window.all_cart = data.cart_items;
@@ -199,8 +249,9 @@
                     setCartItemCount();
                 }
                 else{
-                    alert(data.message);
+                    alert("Something went wrong, please try later");
                 }
             });
     }
+
 </script>

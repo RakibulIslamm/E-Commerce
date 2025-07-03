@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
                 } else {
                     $tenant = tenant();
                     $user = auth()->user();
-                    $categories = Category::with('children')->whereNull('parent_id')->orderBy('nome')->get();
+                    $categories = Category::with('children')->whereNull('parent_id')->usedInProducts()->orderBy('nome')->get();
                     if (isset($tenant->data) && $tenant->data != null) {
                         $tenant->data = json_decode($tenant->data);
                     }

@@ -162,9 +162,25 @@
     </div>
 </form>
 
+@if ($errors->has('email'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Email già registrata',
+                text: 'L’indirizzo email inserito è già in uso. Per favore, usa un’email diversa.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Ok'
+            });
+        });
+    </script>
+@endif
+
 <script>
     // set location
     // const debouncedHandleLocation = debounce(handleLocation, 1000);
+
+
 
     document.getElementById('postal_code').addEventListener('keypress', (e) => {
         if (e.key == 'Enter') {

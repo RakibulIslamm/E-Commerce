@@ -31,12 +31,15 @@
                         <span id="sub-total">0.00</span>
                     </p>
                 </div>
-                <div class="flex justify-between">
-                    <p class="text-gray-700">Iva</p>
-                    <p class="text-gray-700">€
-                        <span id="vat">0.00</span>
-                    </p>
-                </div>
+                @if (!tenant()?->price_with_vat)
+                    <div class="flex justify-between">
+                        <p class="text-gray-700">Iva</p>
+                        <p class="text-gray-700">€
+                            <span id="vat">0.00</span>
+                        </p>
+                    </div> 
+                @endif
+                
                 <hr class="my-4" />
                 <div class="flex justify-between">
                     <p class="text-lg font-bold">Totale</p>
@@ -147,17 +150,17 @@
         document.getElementById(`cart-page-quantity-input-${id}`).value = quantity;
     }
 
-    function cartIncrease(id) {
+    function cartIncrease(id, pxc=1) {
         let quantity = parseInt(document.getElementById(`cart-page-quantity-input-${id}`).value, 10) || 1;
-        quantity++;
+        quantity += pxc;
         updateQuantityDisplay(quantity, id);
         debouncedUpdateServer(id, quantity);
     }
 
-    function cartDecrease(id) {
+    function cartDecrease(id, pxc=1) {
         let quantity = parseInt(document.getElementById(`cart-page-quantity-input-${id}`).value, 10) || 1;
         if (quantity > 1) {
-            quantity--;
+            quantity -= pxc;
             updateQuantityDisplay(quantity, id);
             debouncedUpdateServer(id, quantity);
         }

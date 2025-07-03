@@ -52,7 +52,7 @@ class IndexController
             }
         }
 
-        $categories = Category::orderBy('nome')->get();
+        $categories = Category::usedInProducts()->orderBy('nome')->get();
 
         $promotion = Promotion::where('active', true)->first();
 

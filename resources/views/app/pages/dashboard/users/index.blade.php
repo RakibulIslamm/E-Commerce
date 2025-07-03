@@ -41,6 +41,10 @@
                                 </th>
                                 <th
                                     class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                    Sconto (%)
+                                </th>
+                                <th
+                                    class="px-6 align-middle border border-solid  py-3 text-[14px] uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
 
                                 </th>
                             </tr>

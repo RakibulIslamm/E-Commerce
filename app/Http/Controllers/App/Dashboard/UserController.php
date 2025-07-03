@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App\Dashboard;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController
 {
@@ -65,10 +66,15 @@ class UserController
      */
     public function update(Request $request, User $user)
     {
-        $validate = $request->validate([
+        
+
+        $validator = Validator::make($request->all(), [
             'active' => 'nullable|boolean',
-            'price_list' => 'nullable|integer',
+            'price_list' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
         ]);
+        
+        $validate = $validator->validated();
         $user->update($validate);
         return redirect()->back()->with('success', "User updated successfully");
     }

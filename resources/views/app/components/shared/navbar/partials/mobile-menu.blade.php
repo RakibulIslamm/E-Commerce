@@ -13,70 +13,108 @@ if (isset($site_settings->brand_info)) {
 
 
 <div
-    class="bg-white h-[60px] w-full flex items-center justify-between px-5 sm:px-10 lg:hidden sticky top-0 right-0 z-40 border-b">
+    class="bg-white h-[60px] w-full flex items-center justify-between px-5 sm:px-10 lg:hidden sticky top-0 right-0 z-40 border-b shadow-sm">
 
-    <button onclick="openMobileMenu()">Menu</button>
+    <button onclick="openMobileMenu()" class="text-gray-700 font-semibold text-sm tracking-wide">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
 
     <a href="/" class="flex items-center gap-2">
-        <img class="h-10 w-auto object-cover" src="{{ $logo ?? '/images/logo.png' }}" alt="">
+        <img class="h-10 w-auto object-contain" src="{{ $logo ?? '/images/logo.png' }}" alt="Logo">
     </a>
 
-    <div class="flex items-center gap-8">
-        <button class="group -m-2 flex items-center p-2 relative text-gray-500" onclick="openCart()">
+    <div class="flex items-center gap-4">
+        <button class="group relative p-2 text-gray-500 hover:text-gray-800 transition-colors" onclick="openCart()">
             <x-lucide-shopping-cart class="w-7 h-7" />
             <span
-                class=" absolute top-0 right-0 text-xs group-hover:text-gray-800 bg-yellow-500 text-white rounded-full w-5 h-5 flex items-center justify-center cart-count">0</span>
+                class="absolute -top-1 -right-1 text-[11px] bg-yellow-500 text-white rounded-full w-5 h-5 flex items-center justify-center font-semibold cart-count">
+                0
+            </span>
             <span class="sr-only">items in cart, view bag</span>
         </button>
     </div>
-
 </div>
 
 <div id="mobile-menu"
-    class="h-screen fixed top-0 left-0 z-50 bg-white w-full sm:px-10 flex justify-start flex-col -translate-x-full transition-all ease-in-out lg:hidden">
-    <div class="z-50 bg-white p-3 ml-auto">
-        <button onclick="closeMobileMenu()" type="button" class="">
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                aria-hidden="true">
+    class="h-screen fixed top-0 left-0 z-50 bg-white w-full sm:px-10 flex flex-col -translate-x-full transition-all duration-300 ease-in-out lg:hidden shadow-lg">
+
+    <div class="w-full flex justify-end p-4 border-b">
+        <button onclick="closeMobileMenu()" type="button" class="text-gray-600 hover:text-gray-900 transition">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
     </div>
 
-    <div class="w-full h-full space-y-8 overflow-y-auto py-6 px-5">
-        <div class="relative w-full space-y-1">
-            <label for="search-categories-mobile" class="sr-only">Categories</label>
+    <div class="w-full h-full overflow-y-auto py-6 px-5 space-y-10">
+        <!-- Search Section -->
+        <div class="space-y-4">
             <select id="search-categories-mobile" name="search-categories"
-                class="w-full rounded-md py-2 pl-2 pr-7 text-gray-900 border border-gray-200 outline-none
-            focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10 appearance-none">
-                <option value="" class="px-2 py-1">Tutti</option>
+                class="w-full rounded-md border border-gray-300 py-2 px-3 text-gray-800 shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none">
+                <option value="">Tutti</option>
                 @foreach ($categories as $item)
-                    <option value="{{ $item->codice }}" class="px-2 py-1">{{ $item->nome }}
-                    </option>
+                    <option value="{{ $item->codice }}">{{ $item->nome }}</option>
                 @endforeach
             </select>
+
             <div class="relative">
                 <input type="text" name="search" id="search-text-mobile"
-                    class="w-full relative rounded py-2 pl-3 pr-8 text-gray-900 border border-gray-200 outline-none
-                  focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10"
+                    class="w-full rounded-md border border-gray-300 py-2 px-3 pr-10 text-gray-800 shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none"
                     placeholder="Ricerca prodotto...">
-
-                <button
-                    class="w-7 h-7 absolute right-2 top-1/2 -translate-y-1/2 z-50 text-gray-500 cursor-pointer transition-all ease-in-out duration-100"
-                    onclick="handleSearchMobile()">
-                    <x-lucide-search id="search-icon-show" />
+                <button type="button" onclick="handleSearchMobile()"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600 transition">
+                    <x-lucide-search />
                 </button>
             </div>
         </div>
-        <div class="flex items-center justify-center flex-col gap-6">
-            <a href="/" class="flex items-center text-xl uppercase font-medium">Home</a>
-            <a href="{{ route('app.products') }}" class="flex items-center text-xl uppercase font-medium">Prodotti</a>
-            <a href="/agency" class="flex items-center text-xl uppercase font-medium">Chi siamo</a>
-            <a href="/news" class="flex items-center text-xl uppercase font-medium">Notizie</a>
-            <a href="{{ route('app.contact') }}" class="flex items-center text-xl uppercase font-medium">Contatti</a>
-        </div>
+
+        <nav class="flex flex-col items-start gap-4">
+            <a href="/" class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Home</a>
+            <a href="{{ route('app.products') }}"
+                class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Prodotti</a>
+            <a href="/agency"
+                class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Chi siamo</a>
+            <a href="/news"
+                class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Notizie</a>
+            <a href="{{ route('app.contact') }}"
+                class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Contatti</a>
+
+            <!-- Auth Buttons -->
+            <div class="pt-4 border-t border-gray-200 w-full">
+                @if (!$user)
+                    <a href="{{ route('app.login') }}"
+                        class="text-base font-semibold text-gray-600 hover:text-blue-600 transition block w-full">
+                        🔑 Accedi
+                    </a>
+                    <a href="{{ route('app.register') }}"
+                        class="mt-2 w-full inline-block text-center text-white bg-blue-600 hover:bg-blue-700 transition rounded-md px-4 py-2 text-base font-semibold shadow-sm uppercase">
+                        ✨ Registrati
+                    </a>
+                @elseif ($user->role != 1)
+                    <a href="/account/summary"
+                        class="text-base font-semibold text-gray-600 hover:text-blue-600 transition block w-full">
+                        👤 Account
+                    </a>
+                    <form action="{{ route('app.logout') }}" method="POST" class="mt-2">
+                        @csrf
+                        <button type="submit"
+                            class="w-full text-left text-base font-semibold text-gray-600 hover:text-red-600 transition">
+                            🚪 Esci
+                        </button>
+                    </form>
+                @else
+                    <a href="/dashboard"
+                        class="text-base font-semibold text-gray-600 hover:text-blue-600 transition block w-full">
+                        🛠️ Dashboard
+                    </a>
+                @endif
+            </div>
+        </nav>
     </div>
 </div>
+
 
 <script>
     const mobileMenu = document.getElementById('mobile-menu');

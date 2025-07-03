@@ -81,21 +81,49 @@
 
     function updateQuantityDisplaySidebar(quantity, id) {
         document.getElementById(`cart-sidebar-quantity-input-${id}`).value = quantity;
+        
+        if(document.getElementById(`cart-in-view-quantity-input-${id}`)){
+            document.getElementById(`cart-in-view-quantity-input-${id}`).value = quantity;
+        }
+        if(document.getElementById(`list-cart-in-view-quantity-input-${id}`)){
+            document.getElementById(`list-cart-in-view-quantity-input-${id}`).value = quantity;
+        }
     }
 
-    function cartIncreaseSidebar(id) {
+    function cartIncreaseSidebar(id, pxc=1) {
         let quantity = parseInt(document.getElementById(`cart-sidebar-quantity-input-${id}`).value, 10) ||
             1;
-        quantity++;
+        quantity+=pxc;
+
         updateQuantityDisplaySidebar(quantity, id);
         debouncedUpdateServerSidebarCart(id, quantity);
     }
 
-    function cartDecreaseSidebar(id) {
+    function cartDecreaseSidebar(id, pxc=1) {
         let quantity = parseInt(document.getElementById(`cart-sidebar-quantity-input-${id}`).value, 10) ||
             1;
         if (quantity > 1) {
-            quantity--;
+            quantity -= pxc;
+            updateQuantityDisplaySidebar(quantity, id);
+            debouncedUpdateServerSidebarCart(id, quantity);
+        }
+    }
+
+
+
+    function cartIncreaseInView(id, pxc=1) {
+        let quantity = parseInt(document.getElementById(`cart-in-view-quantity-input-${id}`).value, 10) ||
+            1;
+        quantity+=pxc;
+        updateQuantityDisplaySidebar(quantity, id);
+        debouncedUpdateServerSidebarCart(id, quantity);
+    }
+
+    function cartDecreaseInView(id, pxc=1) {
+        let quantity = parseInt(document.getElementById(`cart-in-view-quantity-input-${id}`).value, 10) ||
+            1;
+        if (quantity > 1) {
+            quantity -= pxc;
             updateQuantityDisplaySidebar(quantity, id);
             debouncedUpdateServerSidebarCart(id, quantity);
         }

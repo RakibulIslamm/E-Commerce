@@ -103,6 +103,8 @@ class CartController
     {
         $isB2B = tenant()?->business_type === 'B2B' || tenant()?->business_type === 'B2B Plus';
 
+        $user = auth()->user();
+
         try {
             $product = Product::findOrFail($request->product_id);
             $pxc = $product->PXC;
@@ -114,7 +116,13 @@ class CartController
             if ($isB2B && $requestedQuantity < $pxc) {
                 return response()->json([
                     'success' => false,
-                    'message' => "You must order at least {$pxc} {$unitamisura} of this product"
+                    'message' => "La quantità minima ordinabile per questo prodotto è {$pxc} {$unitamisura}."
+                ]);
+            }
+            else if ($isB2B && ($requestedQuantity % $pxc) != 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Quantità non valida."
                 ]);
             }
 
@@ -122,7 +130,7 @@ class CartController
             if ($product->GIACENZA < $requestedQuantity) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Items currently not available in the requested quantity'
+                    'message' => 'Articoli attualmente non disponibili nella quantità richiesta'
                 ]);
             }
 
@@ -158,15 +166,33 @@ class CartController
                 : false;
 
             // Add new product to cart
+
+            $price = match (true) {
+                $user && $user->price_list == 3 => $product->PRE3IMP,
+                $user && $user->price_list == 2 => $product->PRE2IMP,
+                $user && $user->price_list == 1 => $product->PRE1IMP,
+                default => $product->PRE1IMP,
+            };
+
+            $price_with_vat = match (true) {
+                $user && $user->price_list == 3 => $product->PRE3IVA,
+                $user && $user->price_list == 2 => $product->PRE2IVA,
+                $user && $user->price_list == 1 => $product->PRE1IVA,
+                default => $product->PRE1IVA,
+            };
+
+
             $cart[$product->id] = [
                 "product_id" => $product->id,
                 "name" => $product->DESCRIZIONEBREVE,
                 "quantity" => $requestedQuantity,
-                "price" => $PREPROMOIMP ? $PREPROMOIMP : $product->PRE1IMP,
+                "price" => $price,
+                "price_with_vat" => $price_with_vat,
                 "photo" => $product->FOTO,
                 'stock' => $product->GIACENZA,
                 'vat' => $product->ALIQUOTAIVA,
-                'selected' => true
+                'selected' => true,
+                'pxc' => $product->PXC
             ];
 
             session()->put('cart', $cart);
