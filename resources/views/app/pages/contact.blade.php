@@ -56,7 +56,7 @@ if (isset($site_settings->corporate_data)) {
             <!-- Left Section -->
             <div class="w-full md:w-5/12 text-center md:text-right flex flex-col gap-4 items-center md:items-end text-gray-800">
                 <h2 class="text-3xl md:text-3xl font-bold leading-snug text-center md:text-right lg:w-10/12">
-                    Parliamo insieme di qualcosa di grandioso
+                    Contattaci!
                 </h2>
                 <div class="flex flex-col items-center md:items-end gap-2">
                     <p class="flex items-center gap-2 text-sm md:text-base">
