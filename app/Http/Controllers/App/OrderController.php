@@ -191,7 +191,6 @@ class OrderController
             session()->forget('cart');
             return redirect()->route('app.confirm-order')->with(['order' => $order, 'success' => true]);
         } catch (\Exception $e) {
-            dd($e);
             return redirect()->route('app.confirm-order')->with('message', "Internal Server Error")->with('success', false)->with('error', true);
         }
     }
@@ -254,52 +253,60 @@ class OrderController
         $smtp = tenant()->smtp;
 
         $data = [
-            'id'=> $order->id,
-            'created_at'=> $order->created_at,
-            'totale_netto'=> $order->totale_netto,
-            'spese_spedizione'=> $order->spese_spedizione,
-            'totale_iva'=> $order->totale_iva,
-            'cod_fee'=> $order->cod_fee,
-            'articoli'=> $order->articoli,
-            'nominativo_spedizione'=> $order->nominativo_spedizione,
-            'indirizzo_spedizione'=> $order->indirizzo_spedizione,
-            'citta_spedizione'=> $order->citta_spedizione,
-            'shipping_state'=> $order->shipping_state,
-            'cap_spedizione'=> $order->cap_spedizione,
-            'provincia_spedizione'=> $order->provincia_spedizione,
-            'telefono'=> $order->telefono,
-            'email'=> $order->email,
+            'id' => $order->id,
+            'created_at' => $order->created_at,
+            'totale_netto' => $order->totale_netto,
+            'spese_spedizione' => $order->spese_spedizione,
+            'totale_iva' => $order->totale_iva,
+            'cod_fee' => $order->cod_fee,
+            'articoli' => $order->articoli,
+            'nominativo_spedizione' => $order->nominativo_spedizione,
+            'indirizzo_spedizione' => $order->indirizzo_spedizione,
+            'citta_spedizione' => $order->citta_spedizione,
+            'shipping_state' => $order->shipping_state,
+            'cap_spedizione' => $order->cap_spedizione,
+            'provincia_spedizione' => $order->provincia_spedizione,
+            'telefono' => $order->telefono,
+            'email' => $order->email,
         ];
 
         if (
             isset($smtp) && $smtp['mail_host'] && $smtp['mail_port'] &&
             $smtp['mail_username'] && $smtp['mail_password'] && $smtp['mail_from_address']
         ) {
-            // Configure SMTP
-            Config::set('mail.mailers.smtp.host', $smtp['mail_host']);
-            Config::set('mail.mailers.smtp.port', $smtp['mail_port']);
-            Config::set('mail.mailers.smtp.username', $smtp['mail_username']);
-            Config::set('mail.mailers.smtp.password', $smtp['mail_password']);
-            Config::set('mail.from.address', $smtp['mail_from_address']);
-            Config::set('mail.from.name', tenant()->business_name ?? "Ecommerce");
+            try {
+                // Configure SMTP
+                Config::set('mail.mailers.smtp.host', $smtp['mail_host']);
+                Config::set('mail.mailers.smtp.port', $smtp['mail_port']);
+                Config::set('mail.mailers.smtp.username', $smtp['mail_username']);
+                Config::set('mail.mailers.smtp.password', $smtp['mail_password']);
+                Config::set('mail.from.address', $smtp['mail_from_address']);
+                Config::set('mail.from.name', tenant()->business_name ?? "Ecommerce");
 
-            // ✅ Send email to customer
-            Mail::send('app.emails.order-confirmation', $data, function ($message) use ($smtp, $data) {
-                $message->from($smtp['mail_from_address'], tenant()->business_name);
-                $message->to($data['email']);
-                $message->subject('Conferma Ordine');
-            });
+                // ✅ Send email to customer
+                Mail::send('app.emails.order-confirmation', $data, function ($message) use ($smtp, $data) {
+                    $message->from($smtp['mail_from_address'], tenant()->business_name);
+                    $message->to($data['email']);
+                    $message->subject('Conferma Ordine');
+                });
 
-            // ✅ Send email to admin
-            $adminEmail = tenant()->email;
-            Mail::send('app.emails.order-admin', $data, function ($message) use ($smtp, $adminEmail) {
-                $message->from($smtp['mail_from_address'], tenant()->business_name);
-                $message->to($adminEmail);
-                $message->subject('Nuovo Ordine Ricevuto');
-            });
-
+                // ✅ Send email to admin
+                $adminEmail = tenant()->email;
+                Mail::send('app.emails.order-admin', $data, function ($message) use ($smtp, $adminEmail) {
+                    $message->from($smtp['mail_from_address'], tenant()->business_name);
+                    $message->to($adminEmail);
+                    $message->subject('Nuovo Ordine Ricevuto');
+                });
+            } catch (\Exception $e) {
+                Log::error("Errore durante l'invio delle email per la conferma ordine", [
+                    'order_id' => $order->id,
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString()
+                ]);
+            }
         } else {
             Log::error("Errore: SMTP non configurato per invio email conferma ordine", ['order_id' => $order->id]);
         }
     }
+
 }
