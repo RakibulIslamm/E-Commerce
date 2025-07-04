@@ -14,7 +14,7 @@
                 <label for="category-image-input-{{ $category->id }}"
                     class="px-5 py-2 border rounded-md flex items-center justify-start gap-2 w-max hover:bg-slate-100 cursor-pointer">
                     <x-lucide-image-up class="w-5 h-5" />
-                    {{ __('Upload Image') }}
+                    {{ __('Carica immagine') }}
                     <input onchange="categoryImgPreview('{{ $category->id }}')" accept="image/*" class="sr-only"
                         type="file" name="img" id="category-image-input-{{ $category->id }}">
                 </label>
@@ -27,7 +27,7 @@
 
         <div class="mt-6 flex justify-end">
             <x-secondary-button x-on:click="$dispatch('close')">
-                {{ __('Cancellare') }}
+                {{ __('Annulla') }}
             </x-secondary-button>
 
             <x-primary-button class="ms-3">

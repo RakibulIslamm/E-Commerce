@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -27,29 +28,32 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $user = User::where('email', $request->input('email'))->first();
-        
-        // dd($user);
+
         if (isset($user) && !$user->active) {
             return view('app.pages.lock.index');
         }
 
-        $request->authenticate();
+        try {
+            $request->authenticate();
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors([
+                    'email' => 'Email o password non validi.',
+                ]);
+        }
 
         $request->session()->regenerate();
 
         $from = $request->input('from') ?? null;
 
-
-        if (isset($from)) {
-            if ($from == 'checkout') {
-                return redirect()->route('app.checkout');
-            }
+        if ($from === 'checkout') {
+            return redirect()->route('app.checkout');
         }
 
-        if (Auth::user()->id == 1) {
-            return redirect()->intended(route('app.dashboard', absolute: false));
-        }
-        return redirect()->intended(route('app.summary', absolute: false));
+        return redirect()->intended(
+            Auth::user()->id == 1 ? route('app.dashboard', absolute: false) : route('app.summary', absolute: false)
+        );
     }
 
     /**

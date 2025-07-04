@@ -88,7 +88,7 @@
                             {{ explode('|', $product->BARCODE ?? 'N/A')[0] }}
                         </span>
                     </p>
-                    @if (tenant()->product_stock_display == 'Text + Quantity' && !$hide_catalogo)
+                    @if (tenant()->product_stock_display == 'Text + Quantity' && !$hide_catalogo_mandatory_con_conferma)
                         <div class="mt-1">Disponibilità:
                             @if ($product->GIACENZA > 0)
                                 <span class="font-semibold text-green-500">In magazzino</span>
@@ -102,7 +102,7 @@
                             @endif
 
                         </div>
-                    @elseif (tenant()->product_stock_display == 'Text Only' && !$hide_catalogo)
+                    @elseif (tenant()->product_stock_display == 'Text Only' && !$hide_catalogo_mandatory_con_conferma)
                         <p>Disponibilità:
 
                             @if ($product->GIACENZA > 0)
@@ -128,8 +128,8 @@
                 @endif
 
                 <!-- Add to Cart Button -->
-                @if (!$hide_catalogo)
-                    <div class="flex items-center gap-5">
+                <div class="flex items-center gap-5">
+                    @if (!$hide_catalogo_mandatory_con_conferma && !$hide_catalogo_mandatory)
                         <button 
                             onclick="addToCart({{ $product->id }}, {{ $product }}, {{$product?->PXC}})" 
                             class="px-5 py-2 text-sm bg-yellow-300 active:bg-yellow-100 text-gray-900 rounded flex items-center gap-2 disabled:bg-gray-300 add-to-cart-{{ $product->id }}" 
@@ -142,43 +142,52 @@
                             ? number_format((float)$product['PREPROMOIMP'], 2) 
                             : false;
                         @endphp
-                        @if (!$hide_catalogo)
-                            @if (tenant()?->price_with_vat)
-                                <div class="flex items-center">
-                                    <h3 class="text-3xl font-semibold">{{ $product['PRE1IVA'] }}€</h3>
-                                    <sup class="ml-3 font-bold text-green-900">IVATO</sup>
-                                </div>
-                            @else
-                                <div class="flex items-center">
-                                    <h3 class="text-3xl font-semibold">{{ $product['PRE1IMP'] }}€</h3>
-                                    <sup class="ml-3 font-bold text-red-900">SENZA IVA</sup>
-                                </div>
-                            @endif
+                    @endif
+                    @if (!$hide_catalogo_mandatory_con_conferma)
+                        @if (tenant()?->price_with_vat)
+                            <div class="flex items-center">
+                                <h3 class="text-3xl font-semibold">{{ $product['PRE1IVA'] }}€</h3>
+                                <sup class="ml-3 font-bold text-green-900">IVATO</sup>
+                            </div>
+                        @else
+                            <div class="flex items-center">
+                                <h3 class="text-3xl font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+                                <sup class="ml-3 font-bold text-red-900">SENZA IVA</sup>
+                            </div>
                         @endif
+                    @endif
+                </div>
+                <div class="hidden" id="plus-minus-btn-{{ $product->id }}">
+                    <hr class="pb-3">
+                    <div class="flex items-center gap-1">
+                        <button onclick="cartDecreaseInView({{ $product->id }}, {{$product?->PXC}})"
+                        class="flex items-center justify-center cursor-pointer rounded-l bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                        - </button>
+                        <input class="sm:h-8 sm:w-14 h-5 w-8 text-center sm:text-base text-xs" id="cart-in-view-quantity-input-{{ $product->id }}"
+                            type="text" value="" />
+                        <button onclick="cartIncreaseInView({{ $product->id }}, {{$product?->PXC}})"
+                            class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                            + </button>  
+                            
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6 animate-spin mr-3 invisible update-quantity-spin-{{$product->id}}"
+                        viewBox="0 0 16 16">
+                            <path
+                                d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+                            <path fill-rule="evenodd"
+                                d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+                        </svg>
                     </div>
-                    <div class="hidden" id="plus-minus-btn-{{ $product->id }}">
-                        <hr class="pb-3">
-                        <div class="flex items-center gap-1">
-                            <button onclick="cartDecreaseInView({{ $product->id }}, {{$product?->PXC}})"
-                            class="flex items-center justify-center cursor-pointer rounded-l bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
-                            - </button>
-                            <input class="sm:h-8 sm:w-14 h-5 w-8 text-center sm:text-base text-xs" id="cart-in-view-quantity-input-{{ $product->id }}"
-                                type="text" value="" />
-                            <button onclick="cartIncreaseInView({{ $product->id }}, {{$product?->PXC}})"
-                                class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
-                                + </button>  
-                                
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6 animate-spin mr-3 invisible update-quantity-spin-{{$product->id}}"
-                            viewBox="0 0 16 16">
-                                <path
-                                    d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
-                                <path fill-rule="evenodd"
-                                    d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                            </svg>
-                        </div>
-                        @if ($product?->PXC > 1)
-                            <p class="p-2 text-sm" id="n-colli-{{$product->id}}">(N. colli: 1)</p>
-                        @endif
+                    @if ($product?->PXC > 1)
+                        <p class="p-2 text-sm" id="n-colli-{{$product->id}}">(N. colli: 1)</p>
+                    @endif
+                </div>
+                
+                @if (!$user && $site_settings?->registration_process != 'Optional')
+                    <div>
+                        <h3 class="text-xl font-bold">Attenzione, per effettuare l'acquisto devi essere un utente registrato</h3>
+                        <span class="">
+                            Entra con le tue credenziali oppure registrati cliccando <a class="font-bold underline" href="/register">qui</a>
+                        </span>
                     </div>
                 @endif
 

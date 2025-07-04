@@ -129,8 +129,14 @@
                         window.all_cart = data.cart_items;
                     }
                     else{
-                        alert(data.message);
-                        console.log();
+                        // alert(data.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: data.message,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Ok'
+                        });
                     }
                     updateShippingLimit(window.all_cart);
                     render()

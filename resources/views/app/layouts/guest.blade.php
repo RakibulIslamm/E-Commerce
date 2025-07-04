@@ -25,7 +25,7 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    @if ($user && !$email_verified && $hide_catalogo)
+    @if ($user && !$email_verified && $hide_catalogo_mandatory_con_conferma)
         @include('app.components.shared.verify-email')
     @endif
     @include('app.components.shared.navbar.index')
@@ -114,6 +114,7 @@
                 for (const button of addToCartButtons) {
                     button.setAttribute('disabled', true);
                     button.innerText = 'Aggiungi'
+                    button.classList.add('hidden');
                 }
             }
             const url = @json(tenant_asset(''))+'/'+items[item]?.photo;
@@ -140,8 +141,13 @@
                                 <button onclick="cartDecreaseSidebar(${item}, ${items[item]?.pxc})"
                                     class="flex items-center justify-center cursor-pointer rounded-l bg-gray-100 h-6 w-8 duration-100 hover:bg-blue-500 hover:text-blue-50">
                                     - </button>
-                                <input class="h-6 w-10 text-center text-xs" id="cart-sidebar-quantity-input-${item}"
-                                    type="number" value="${items[item]?.quantity}" min="1" />
+                                <input 
+                                class="h-6 w-10 text-center text-xs" id="cart-sidebar-quantity-input-${item}"
+                                type="number" 
+                                value="${items[item]?.quantity}" 
+                                min="1" 
+                                onkeydown="if(event.key === 'Enter'){ onBlurCartIncreaseDecreaseInView(${item}, this.value); this.blur(); }"
+                                />
                                 <button onclick="cartIncreaseSidebar(${item}, ${items[item]?.pxc})"
                                     class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 h-6 w-8 duration-100 hover:bg-blue-500 hover:text-blue-50">
                                     + </button>
@@ -222,8 +228,12 @@
                                         <button onclick="cartDecrease(${item}, ${items[item]?.pxc})"
                                         class="flex items-center justify-center cursor-pointer rounded-l bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
                                         - </button>
-                                        <input class="sm:h-8 sm:w-14 h-5 w-8 text-center sm:text-base text-xs" id="cart-page-quantity-input-${item}"
-                                            type="text" value="${items[item]?.quantity}" />
+                                        <input 
+                                            class="sm:h-8 sm:w-14 h-5 w-8 text-center sm:text-base text-xs" id="cart-page-quantity-input-${item}"
+                                            type="text" 
+                                            value="${items[item]?.quantity}"
+                                            onkeydown="if(event.key === 'Enter'){ onBlurCartIncreaseDecreaseInView(${item}, this.value); this.blur(); }"
+                                        />
                                         <button onclick="cartIncrease(${item}, ${items[item]?.pxc})"
                                             class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
                                             + </button>    
@@ -364,6 +374,7 @@
                         for (const button of addToCartButtons) {
                             button.removeAttribute('disabled', true);
                             button.innerText = 'Aggiungi'
+                            button.classList.remove('hidden');
                         }
                     }
                 } else {

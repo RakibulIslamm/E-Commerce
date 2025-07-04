@@ -39,7 +39,9 @@ class AppServiceProvider extends ServiceProvider
                         $tenant->data = json_decode($tenant->data);
                     }
 
-                    $hide_catalogo = $tenant->registration_process == 'Mandatory with confirmation' && !$user?->email_verified_at;
+                    $hide_catalogo_mandatory = $tenant->registration_process == 'Mandatory' && !$user;
+
+                    $hide_catalogo_mandatory_con_conferma = $tenant->registration_process == 'Mandatory with confirmation' && !$user?->email_verified_at;
 
                     $email_verified = $user?->email_verified_at ? true : false;
 
@@ -48,7 +50,8 @@ class AppServiceProvider extends ServiceProvider
                         'site_settings' =>
                             $tenant,
                         'categories' => $categories,
-                        'hide_catalogo' => $hide_catalogo,
+                        'hide_catalogo_mandatory_con_conferma' => $hide_catalogo_mandatory_con_conferma,
+                        'hide_catalogo_mandatory'=> $hide_catalogo_mandatory,
                         'email_verified' => $email_verified
                     ]);
                 }

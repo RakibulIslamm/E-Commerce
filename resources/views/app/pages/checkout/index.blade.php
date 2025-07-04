@@ -58,7 +58,7 @@
                                 <label for="citta" class="block font-medium text-sm text-gray-700">Citta</label>
                                 <select name="citta" id="citta"
                                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1">
-                                    <option value="{{ $user->city ?? '' }}">{{ $user->city ?? 'Enter post code' }}
+                                    <option value="{{ $user->city ?? '' }}">{{ $user->city ?? 'Inserisci il codice postale' }}
                                     </option>
                                 </select>
                             </div>
@@ -142,7 +142,7 @@
 
         <div class="flex-1 w-full">
             <div>
-                <label for="spedizione" class="block text-lg font-medium text-gray-900 mb-2">Courier</label>
+                <label for="spedizione" class="block text-lg font-medium text-gray-900 mb-2">Corriere</label>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     @if (isset($shipping_settings))
                         @foreach ($shipping_settings as $index => $item)
@@ -154,17 +154,17 @@
                                     <label for="shipping_{{$item->courier}}" class="block w-full cursor-pointer">
                                         <span class="block text-lg font-semibold">{{$item->courier}}</span>
                                         {{-- <span class="block text-sm text-gray-500"><b>Cash on delivery fee:</b> {{$item->cod_fee}}€</span> --}}
-                                        <span class="block text-sm text-gray-500"><b>Vat:</b> {{$item->vat_rate}}%</span>
+                                        <span class="block text-sm text-gray-500"><b>Iva:</b> {{$item->vat_rate}}%</span>
                                     </label>
                                 </div>
                             </div>
                         @endforeach
                     @else
-                        <p>Not found</p>
+                        <p>Non trovato</p>
                     @endif
                 </div>
             </div>
-            <h2 class="text-xl mt-5">Order summary</h2>
+            <h2 class="text-xl mt-5">Riepilogo dell'ordine</h2>
             <div class="mt-4 bg-white p-10 rounded-lg shadow-md space-y-10">
                 <div id="items-container">
                     <div class="flex justify-between items-center">
@@ -294,7 +294,7 @@
                     }
                 }
 
-                document.getElementById('shipping_cost').innerText = `${shippingCost.toFixed(2) > 0 ? `${shippingCost.toFixed(2)}€` : "Free shipping"}`;
+                document.getElementById('shipping_cost').innerText = `${shippingCost.toFixed(2) > 0 ? `${shippingCost.toFixed(2)}€` : "Gratuita"}`;
 
                 document.getElementById('shipping_cost_input').value = parseFloat(
                     `${shippingCost.toFixed(2)}`);
@@ -366,7 +366,7 @@
                             city.appendChild(option);
                         })
                     } else {
-                        capError.innerText = 'Location not found';
+                        capError.innerText = 'Posizione non trovata';
                         city.innerHTML = '';
                         province.value = '';
                     }

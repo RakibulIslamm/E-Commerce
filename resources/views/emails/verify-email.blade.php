@@ -1,5 +1,5 @@
 @component('mail::message')
-# Ciao {{ $user->name }}!
+# Ciao {{ $registered_user->name }}!
 
 Per favore conferma il tuo indirizzo email cliccando sul pulsante qui sotto.
 

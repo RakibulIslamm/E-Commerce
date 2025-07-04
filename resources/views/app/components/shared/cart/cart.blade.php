@@ -62,7 +62,13 @@
                         render()
                     }
                     else{
-                        alert(data.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: data.message,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Ok'
+                        });
                     }
                     render()
                     quantitySpinUpdate(id, 'invisible');
@@ -115,6 +121,11 @@
         let quantity = parseInt(document.getElementById(`cart-in-view-quantity-input-${id}`).value, 10) ||
             1;
         quantity+=pxc;
+        updateQuantityDisplaySidebar(quantity, id);
+        debouncedUpdateServerSidebarCart(id, quantity);
+    }
+    
+    function onBlurCartIncreaseDecreaseInView(id, quantity) {
         updateQuantityDisplaySidebar(quantity, id);
         debouncedUpdateServerSidebarCart(id, quantity);
     }

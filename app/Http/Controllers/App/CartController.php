@@ -17,6 +17,7 @@ class CartController
     public function index()
     {
         $tenant = tenant();
+
         $registration_process = $tenant->registration_process;
         $cart_breadcrumbs = Breadcrumbs::generate('cart');
         $shippingSetting = ShippingSetting::with('rules')

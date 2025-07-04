@@ -42,7 +42,7 @@
                 <label for="category-image-input-{{ $product['id'] }}"
                        class="px-5 py-2 border rounded-md flex items-center justify-start gap-2 w-max hover:bg-slate-100 cursor-pointer">
                     <x-lucide-image-up class="w-5 h-5" />
-                    {{ __('Upload Images') }}
+                    {{ __('Carica immagine') }}
                     <input multiple accept="image/*" class="sr-only"
                            type="file" name="FOTO[]" id="category-image-input-{{ $product['id'] }}"
                            @change="handleNewImages($event.target.files)">
@@ -86,7 +86,7 @@
 
         {{-- Submit Buttons --}}
         <div class="mt-6 flex justify-end">
-            <x-secondary-button x-on:click="$dispatch('close')">{{ __('Cancellare') }}</x-secondary-button>
+            <x-secondary-button x-on:click="$dispatch('close')">{{ __('Annulla') }}</x-secondary-button>
             <x-primary-button class="ms-3">{{ __('Aggiornamento') }}</x-primary-button>
         </div>
     </form>

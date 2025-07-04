@@ -27,7 +27,7 @@
                 <label for="create-category-image-input"
                     class="px-5 py-2 border rounded-md flex items-center justify-start gap-2 w-max hover:bg-slate-100 cursor-pointer">
                     <x-lucide-image-up class="w-5 h-5" />
-                    {{ __('Upload Image') }}
+                    {{ __('Carica immagine') }}
                     <input accept="image/*" class="sr-only" type="file" name="img"
                         id="create-category-image-input">
                 </label>
@@ -40,7 +40,7 @@
 
         <div class="mt-6 flex items-center gap-3">
             <a href="{{ route('app.dashboard.categories') }}">
-                Cancellare
+                Annulla
             </a>
 
             <x-primary-button class="ms-3" type="submit">

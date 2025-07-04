@@ -14,6 +14,7 @@ class CustomVerifyEmail extends VerifyEmail
     public function toMail($notifiable)
     {
         $tenant = tenant();
+        
         if ($tenant && $tenant->business_name) {
             config()->set('app.name', $tenant->business_name);
         }
@@ -23,7 +24,7 @@ class CustomVerifyEmail extends VerifyEmail
             ->markdown('emails.verify-email', [
                 'url' => $this->verificationUrl($notifiable),
                 'tenant' => $tenant,
-                'user' => $notifiable,
+                'registered_user' => $notifiable,
             ])
             ->from(
                 $tenant->email ?? config('mail.from.address'),

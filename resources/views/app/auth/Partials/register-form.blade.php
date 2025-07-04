@@ -222,8 +222,8 @@
                         city.appendChild(option);
                     })
                 } else {
-                    console.log("Location not found");
-                    postCodeError.innerText = 'Location not found';
+                    console.log("Posizione non trovata");
+                    postCodeError.innerText = 'Posizione non trovata';
                     city.innerHTML = ''
                     province.value = ''
                 }
