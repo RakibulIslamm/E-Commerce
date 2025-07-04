@@ -283,6 +283,7 @@ class OrderController
                 Config::set('mail.from.address', $smtp['mail_from_address']);
                 Config::set('mail.from.name', tenant()->business_name ?? "Ecommerce");
 
+                Log::info("Start sending order confirmation email");
                 // ✅ Send email to customer
                 Mail::send('app.emails.order-confirmation', $data, function ($message) use ($smtp, $data) {
                     $message->from($smtp['mail_from_address'], tenant()->business_name);
@@ -297,6 +298,7 @@ class OrderController
                     $message->to($adminEmail);
                     $message->subject('Nuovo Ordine Ricevuto');
                 });
+                Log::info("End sending order confirmation email");
             } catch (\Exception $e) {
                 Log::error("Errore durante l'invio delle email per la conferma ordine", [
                     'order_id' => $order->id,
