@@ -47,17 +47,19 @@
             <div class="w-full lg:w-8/12 text-gray-800 space-y-5">
                 <div>
                     <!-- Category -->
-                    <p class="px-3 py-1 rounded bg-yellow-100 border border-gray-200 inline-block text-xs mb-2">
-                        @if ($product['category'] instanceof \Illuminate\Support\Collection)
-                            @foreach ($product['category'] as $child)
+                    @if ($product['category'] instanceof \Illuminate\Support\Collection)
+                        @foreach ($product['category'] as $child)
+                            <p class="px-3 py-1 rounded bg-yellow-100 border border-gray-200 inline-block text-xs mb-2">
                                 {{ $child->nome }}
-                            @endforeach
-                        @elseif ($product['category'])
+                            </p>
+                        @endforeach
+                    @elseif ($product['category'])
+                        <p class="px-3 py-1 rounded bg-yellow-100 border border-gray-200 inline-block text-xs mb-2">
                             {{ $product['category']->nome }}
-                        @else
-                            Categoria non trovata.
-                        @endif
-                    </p>
+                        </p>
+                    @endif
+
+                    
 
                     <!-- Title and Price -->
                     <div class="">
@@ -163,8 +165,13 @@
                         <button onclick="cartDecreaseInView({{ $product->id }}, {{$product?->PXC}})"
                         class="flex items-center justify-center cursor-pointer rounded-l bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
                         - </button>
-                        <input class="sm:h-8 sm:w-14 h-5 w-8 text-center sm:text-base text-xs" id="cart-in-view-quantity-input-{{ $product->id }}"
-                            type="text" value="" />
+                        <input
+                        class="sm:h-8 sm:w-14 h-5 w-8 text-center sm:text-base text-xs" id="cart-in-view-quantity-input-{{ $product->id }}"
+                        type="text" 
+                        value=""
+                        onkeydown="if(event.key === 'Enter'){ onBlurCartIncreaseDecreaseInView({{ $product->id }}, this.value); this.blur(); }"
+                        onblur="onBlurCartIncreaseDecreaseInView({{ $product->id }}, this.value); this.blur()"
+                        />
                         <button onclick="cartIncreaseInView({{ $product->id }}, {{$product?->PXC}})"
                             class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">
                             + </button>  

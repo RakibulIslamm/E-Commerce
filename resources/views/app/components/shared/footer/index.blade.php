@@ -77,6 +77,7 @@ if (isset($site_settings->corporate_data)) {
 
             <!-- Social Links -->
             @if (!empty($socialLinks))
+                <hr class="mt-5">
                 <div class="flex justify-center md:justify-start gap-3 mt-5">
                     @foreach ($socialLinks as $name => $url)
                         <a href="{{ $url }}" target="_blank" class="text-gray-500 hover:text-gray-900 transition transform hover:scale-110">
@@ -89,6 +90,9 @@ if (isset($site_settings->corporate_data)) {
                                     @break
                                 @case('linkedin')
                                     <x-bxl-linkedin-square class="w-6 h-6" />
+                                    @break
+                                @case('twitter')
+                                    <x-fab-x-twitter class="w-6 h-6" />
                                     @break
                                 @default
                             @endswitch

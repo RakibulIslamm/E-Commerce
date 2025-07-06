@@ -99,7 +99,8 @@
                                     <input 
                                     class="h-7 max-w-14 text-center text-sm border-l border-r border-gray-300"
                                     id="cart-in-view-quantity-input-{{ $product->id }}" type="text" 
-                                    value="1" 
+                                    value="1"
+                                    onblur="onBlurCartIncreaseDecreaseInView({{ $product->id }}, this.value)"
                                     onkeydown="if(event.key === 'Enter'){ onBlurCartIncreaseDecreaseInView({{ $product->id }}, this.value); this.blur(); }"
                                     />
                                     <button onclick="cartIncreaseInView({{ $product->id }}, {{ $product?->PXC }})"

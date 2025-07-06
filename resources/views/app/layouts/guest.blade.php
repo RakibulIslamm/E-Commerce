@@ -147,6 +147,7 @@
                                 value="${items[item]?.quantity}" 
                                 min="1" 
                                 onkeydown="if(event.key === 'Enter'){ onBlurCartIncreaseDecreaseInView(${item}, this.value); this.blur(); }"
+                                onblur="onBlurCartIncreaseDecreaseInView(${item}, this.value); this.blur()"
                                 />
                                 <button onclick="cartIncreaseSidebar(${item}, ${items[item]?.pxc})"
                                     class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 h-6 w-8 duration-100 hover:bg-blue-500 hover:text-blue-50">
@@ -233,6 +234,7 @@
                                             type="text" 
                                             value="${items[item]?.quantity}"
                                             onkeydown="if(event.key === 'Enter'){ onBlurCartIncreaseDecreaseInView(${item}, this.value); this.blur(); }"
+                                            onblur="onBlurCartIncreaseDecreaseInView(${item}, this.value)"
                                         />
                                         <button onclick="cartIncrease(${item}, ${items[item]?.pxc})"
                                             class="flex items-center justify-center cursor-pointer rounded-r bg-gray-100 sm:h-8 sm:w-10 w-5 h-5 duration-100 hover:bg-blue-500 hover:text-blue-50">

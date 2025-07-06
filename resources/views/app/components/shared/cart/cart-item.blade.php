@@ -21,6 +21,7 @@
                         value="1"
                         min="1"
                         onkeydown="if(event.key === 'Enter'){ onBlurCartIncreaseDecreaseInView({{ $product->id }}, this.value); this.blur(); }"
+                        onblur="onBlurCartIncreaseDecreaseInView({{ $product->id }}, this.value); this.blur()"
                     />
                     <button onclick="cartIncrease({{ $cart_item->product_id ?? '' }})"
                         class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50">
