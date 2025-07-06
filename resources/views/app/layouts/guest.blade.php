@@ -25,6 +25,7 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
+    <div id="loading-bar" class="absolute top-0 left-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out" style="width: 0;"></div>
     @if ($user && !$email_verified && $hide_catalogo_mandatory_con_conferma)
         @include('app.components.shared.verify-email')
     @endif
@@ -42,6 +43,63 @@
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  (function() {
+    const loadingBar = document.getElementById('loading-bar');
+
+    let timer; // per animazione progressiva
+
+    // Funzione per mostrare la barra e farla crescere fino a ~90%
+    function startLoading() {
+      clearInterval(timer);
+      loadingBar.style.width = '0%';
+      loadingBar.style.opacity = '1';
+
+      let width = 0;
+      timer = setInterval(() => {
+        if (width < 90) {
+          width += 1; // aumenta progressivamente
+          loadingBar.style.width = width + '%';
+        } else {
+          clearInterval(timer);
+        }
+      }, 100); // ogni 100ms aumenta 1%
+    }
+
+    // Funzione per completare e nascondere la barra
+    function finishLoading() {
+      clearInterval(timer);
+      loadingBar.style.width = '100%';
+      setTimeout(() => {
+        loadingBar.style.opacity = '0';
+        loadingBar.style.width = '0%';
+      }, 300); // lascia il tempo dell'animazione
+    }
+
+    // Intercetta i click su link interni (href relativo o stesso dominio)
+    document.addEventListener('click', e => {
+      const link = e.target.closest('a[href]');
+      if (!link) return;
+
+      // Ignora se ha target _blank o link esterno
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('http') && !href.startsWith(window.location.origin)) return;
+      if (link.target === '_blank') return;
+
+      // Evita link con ancore (#) o mailto
+      if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('javascript:')) return;
+
+      // Avvia caricamento se link interno
+      startLoading();
+    });
+
+    // Al caricamento della pagina completa finisce il loading
+    window.addEventListener('load', () => {
+      finishLoading();
+    });
+  })();
+</script>
 
 
 <script>
