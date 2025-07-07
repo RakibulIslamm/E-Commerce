@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Cache;
 class Category extends Model
 {
     use HasFactory;
@@ -38,18 +38,16 @@ class Category extends Model
 
     public function scopeUsedInProducts($query)
     {
-        // Get all products with non-null categories
-        $products = DB::table('products')
-            ->whereNotNull('CATEGORIEESOTTOCATEGORIE')
-            ->pluck('CATEGORIEESOTTOCATEGORIE');
+        $allCodes = Cache::remember('products_category_codes', 3600, function () {
+            $products = \DB::table('products')
+                ->whereNotNull('CATEGORIEESOTTOCATEGORIE')
+                ->pluck('CATEGORIEESOTTOCATEGORIE');
 
-        // Decode all JSON category arrays and flatten them
-        $allCodes = $products
-            ->flatMap(function ($json) {
-                return json_decode($json, true) ?? [];
-            })
-            ->unique()
-            ->values();
+            return $products
+                ->flatMap(fn($json) => json_decode($json, true) ?? [])
+                ->unique()
+                ->values();
+        });
 
         return $query->whereIn('codice', $allCodes);
     }
