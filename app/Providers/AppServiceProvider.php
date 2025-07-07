@@ -6,7 +6,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,18 +43,22 @@ class AppServiceProvider extends ServiceProvider
                     $tenant = tenant();
                     $user = auth()->user();
 
-                    // Recupera da cache o esegue query, cache per 60 minuti
-                    $categoriesCache = Cache::remember('categories', 60 * 60, function () {
+                    // Usa sessione per salvare/riprendere categories
+                    if (!Session::has('categories')) {
                         $start = microtime(true);
-                        $cats = Category::with('children')
+                        $categories = Category::with('children')
                             ->whereNull('parent_id')
                             ->usedInProducts()
                             ->orderBy('nome')
                             ->get();
                         $duration = microtime(true) - $start;
-                        Log::info("Categories fetched from DB", ['count' => $cats->count(), 'duration_seconds' => $duration]);
-                        return $cats;
-                    });
+                        Log::info("Categories fetched from DB", ['count' => $categories->count(), 'duration_seconds' => $duration]);
+
+                        Session::put('categories', $categories);
+                    } else {
+                        Log::info("Categories loaded from session");
+                        $categories = Session::get('categories');
+                    }
 
                     if (isset($tenant->data) && $tenant->data != null) {
                         $tenant->data = json_decode($tenant->data);
@@ -75,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
                     $view->with([
                         'user' => $user,
                         'site_settings' => $tenant,
-                        'categories' => $categoriesCache,
+                        'categories' => $categories,
                         'hide_catalogo_mandatory_con_conferma' => $hide_catalogo_mandatory_con_conferma,
                         'hide_catalogo_mandatory'=> $hide_catalogo_mandatory,
                         'email_verified' => $email_verified
