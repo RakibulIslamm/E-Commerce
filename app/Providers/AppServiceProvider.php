@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            static $categoriesCache = null;
 
             Log::info('View rendered:', ['view_name' => $view->getName()]);
             $startTime = microtime(true);
@@ -43,18 +43,18 @@ class AppServiceProvider extends ServiceProvider
                     $tenant = tenant();
                     $user = auth()->user();
 
-                    if ($categoriesCache === null) {
-                        $categoriesStart = microtime(true);
-                        $categoriesCache = Category::with('children')
+                    // Recupera da cache o esegue query, cache per 60 minuti
+                    $categoriesCache = Cache::remember('categories', 60 * 60, function () {
+                        $start = microtime(true);
+                        $cats = Category::with('children')
                             ->whereNull('parent_id')
                             ->usedInProducts()
                             ->orderBy('nome')
                             ->get();
-                        $categoriesDuration = microtime(true) - $categoriesStart;
-                        Log::info("Categories fetched", ['count' => $categoriesCache->count(), 'duration_seconds' => $categoriesDuration]);
-                    } else {
-                        Log::info("Categories loaded from static cache");
-                    }
+                        $duration = microtime(true) - $start;
+                        Log::info("Categories fetched from DB", ['count' => $cats->count(), 'duration_seconds' => $duration]);
+                        return $cats;
+                    });
 
                     if (isset($tenant->data) && $tenant->data != null) {
                         $tenant->data = json_decode($tenant->data);
