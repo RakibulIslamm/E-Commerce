@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
+            Log::info('View rendered:', ['view_name' => $view->getName()]);
             $startTime = microtime(true);
 
             $requestDomain = request()->getHost();
