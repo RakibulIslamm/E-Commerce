@@ -23,73 +23,97 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-       /* View::composer('*', function ($view) {
-            Log::info('View rendered:', ['view_name' => $view->getName()]);
-            $startTime = microtime(true);
+        View::composer('*', function ($view) {
+            // Log solo in locale
+            if (app()->environment('local')) {
+                Log::info('View rendered:', ['view_name' => $view->getName()]);
+                Log::info('View composer started', ['domain' => request()->getHost()]);
+            }
+
+            static $categories = null;
+            static $tenant = null;
+            static $user = null;
 
             $requestDomain = request()->getHost();
             $centralDomains = config('tenancy.central_domains', []);
-            Log::info("View composer started", ['domain' => $requestDomain]);
 
-            if (!$view->exception) {
-                if (in_array($requestDomain, $centralDomains)) {
-                    Log::info("Domain is central domain", ['domain' => $requestDomain]);
-                    $view->with([
-                        'user' => auth()->user()
-                    ]);
-                } else {
-                    Log::info("Domain is tenant domain, fetching tenant data", ['domain' => $requestDomain]);
-                    $tenant = tenant();
+            if (in_array($requestDomain, $centralDomains)) {
+                if (!$user) {
                     $user = auth()->user();
-
-                    // Usa sessione per salvare/riprendere categories
-                    if (!Session::has('categories')) {
-                        $start = microtime(true);
-                        $categories = Category::with('children')
-                            ->whereNull('parent_id')
-                            ->usedInProducts()
-                            ->orderBy('nome')
-                            ->get();
-                        $duration = microtime(true) - $start;
-                        Log::info("Categories fetched from DB", ['count' => $categories->count(), 'duration_seconds' => $duration]);
-
-                        Session::put('categories', $categories);
-                    } else {
-                        Log::info("Categories loaded from session");
-                        $categories = Session::get('categories');
-                    }
-
-                    if (isset($tenant->data) && $tenant->data != null) {
-                        $tenant->data = json_decode($tenant->data);
-                        Log::info("Tenant data decoded");
-                    }
-
-                    $hide_catalogo_mandatory = $tenant->registration_process == 'Mandatory' && !$user;
-                    $hide_catalogo_mandatory_con_conferma = $tenant->registration_process == 'Mandatory with confirmation' && !$user?->email_verified_at;
-                    $email_verified = $user?->email_verified_at ? true : false;
-
-                    Log::info("User and tenant flags", [
-                        'user_id' => $user?->id,
-                        'hide_catalogo_mandatory' => $hide_catalogo_mandatory,
-                        'hide_catalogo_mandatory_con_conferma' => $hide_catalogo_mandatory_con_conferma,
-                        'email_verified' => $email_verified,
-                    ]);
-
-                    $view->with([
-                        'user' => $user,
-                        'site_settings' => $tenant,
-                        'categories' => $categories,
-                        'hide_catalogo_mandatory_con_conferma' => $hide_catalogo_mandatory_con_conferma,
-                        'hide_catalogo_mandatory'=> $hide_catalogo_mandatory,
-                        'email_verified' => $email_verified
-                    ]);
                 }
-            } else {
-                Log::warning("View exception detected", ['exception' => $view->exception]);
+
+                $view->with([
+                    'user' => $user
+                ]);
+
+                if (app()->environment('local')) {
+                    Log::info('Domain is central domain');
+                    Log::info('View composer finished');
+                }
+
+                return;
             }
 
-            $totalDuration = microtime(true) - $startTime;
-            Log::info("View composer finished", ['duration_seconds' => $totalDuration]);
-        });*/
+            // Caricamento tenant e user una sola volta
+            if (!$tenant) {
+                $tenant = tenant();
+                if (isset($tenant->data) && $tenant->data !== null) {
+                    $tenant->data = json_decode($tenant->data);
+                    if (app()->environment('local')) {
+                        Log::info('Tenant data decoded');
+                    }
+                }
+            }
+
+            if (!$user) {
+                $user = auth()->user();
+            }
+
+            // Categories da sessione, se non presente caricala da DB e salva in sessione
+            if (!$categories) {
+                if (!Session::has('categories')) {
+                    $categories = Category::with('children')
+                        ->whereNull('parent_id')
+                        ->usedInProducts()
+                        ->orderBy('nome')
+                        ->get();
+
+                    Session::put('categories', $categories);
+
+                    if (app()->environment('local')) {
+                        Log::info('Categories fetched from DB and saved in session', ['count' => $categories->count()]);
+                    }
+                } else {
+                    $categories = Session::get('categories');
+
+                    if (app()->environment('local')) {
+                        Log::info('Categories loaded from session', ['count' => $categories->count()]);
+                    }
+                }
+            }
+
+            $hide_catalogo_mandatory = $tenant->registration_process == 'Mandatory' && !$user;
+            $hide_catalogo_mandatory_con_conferma = $tenant->registration_process == 'Mandatory with confirmation' && !$user?->email_verified_at;
+            $email_verified = $user?->email_verified_at ? true : false;
+
+            if (app()->environment('local')) {
+                Log::info('User and tenant flags', [
+                    'user_id' => $user?->id,
+                    'hide_catalogo_mandatory' => $hide_catalogo_mandatory,
+                    'hide_catalogo_mandatory_con_conferma' => $hide_catalogo_mandatory_con_conferma,
+                    'email_verified' => $email_verified,
+                ]);
+                Log::info('View composer finished');
+            }
+
+            $view->with([
+                'user' => $user,
+                'site_settings' => $tenant,
+                'categories' => $categories,
+                'hide_catalogo_mandatory_con_conferma' => $hide_catalogo_mandatory_con_conferma,
+                'hide_catalogo_mandatory' => $hide_catalogo_mandatory,
+                'email_verified' => $email_verified
+            ]);
+        });
     }
 }
