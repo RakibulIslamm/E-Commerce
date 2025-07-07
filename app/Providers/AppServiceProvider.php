@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
+            static $categoriesCache = null;
+
             Log::info('View rendered:', ['view_name' => $view->getName()]);
             $startTime = microtime(true);
 
@@ -41,14 +43,18 @@ class AppServiceProvider extends ServiceProvider
                     $tenant = tenant();
                     $user = auth()->user();
 
-                    $categoriesStart = microtime(true);
-                    $categories = Category::with('children')
-                        ->whereNull('parent_id')
-                        ->usedInProducts()
-                        ->orderBy('nome')
-                        ->get();
-                    $categoriesDuration = microtime(true) - $categoriesStart;
-                    Log::info("Categories fetched", ['count' => $categories->count(), 'duration_seconds' => $categoriesDuration]);
+                    if ($categoriesCache === null) {
+                        $categoriesStart = microtime(true);
+                        $categoriesCache = Category::with('children')
+                            ->whereNull('parent_id')
+                            ->usedInProducts()
+                            ->orderBy('nome')
+                            ->get();
+                        $categoriesDuration = microtime(true) - $categoriesStart;
+                        Log::info("Categories fetched", ['count' => $categoriesCache->count(), 'duration_seconds' => $categoriesDuration]);
+                    } else {
+                        Log::info("Categories loaded from static cache");
+                    }
 
                     if (isset($tenant->data) && $tenant->data != null) {
                         $tenant->data = json_decode($tenant->data);
@@ -69,7 +75,7 @@ class AppServiceProvider extends ServiceProvider
                     $view->with([
                         'user' => $user,
                         'site_settings' => $tenant,
-                        'categories' => $categories,
+                        'categories' => $categoriesCache,
                         'hide_catalogo_mandatory_con_conferma' => $hide_catalogo_mandatory_con_conferma,
                         'hide_catalogo_mandatory'=> $hide_catalogo_mandatory,
                         'email_verified' => $email_verified
