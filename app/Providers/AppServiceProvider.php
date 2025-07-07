@@ -23,8 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('*', function ($view) {
-
+       /* View::composer('*', function ($view) {
             Log::info('View rendered:', ['view_name' => $view->getName()]);
             $startTime = microtime(true);
 
@@ -91,6 +90,6 @@ class AppServiceProvider extends ServiceProvider
 
             $totalDuration = microtime(true) - $startTime;
             Log::info("View composer finished", ['duration_seconds' => $totalDuration]);
-        });
+        });*/
     }
 }
