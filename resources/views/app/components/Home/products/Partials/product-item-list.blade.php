@@ -110,7 +110,7 @@
                                                 id="list-cart-in-view-quantity-input-{{ $product->id }}" 
                                                 type="text" 
                                                 value="1"
-                                                onblur="onBlurCartIncreaseDecreaseInView({{ $product->id }}, this.value)}"
+                                                onblur="onBlurCartIncreaseDecreaseInView({{ $product->id }}, this.value)"
                                                 onkeydown="if(event.key === 'Enter'){ onBlurCartIncreaseDecreaseInView({{ $product->id }}, this.value); this.blur(); }"
                                             />
 
