@@ -22,6 +22,7 @@
         "mallardduck/blade-lucide-icons": "^1.21",
         "mansoor/blade-lets-icons": "^1.0",
         "owenvoke/blade-fontawesome": "^2.9",
+        "postare/blade-mdi": "^1.1",
         "stancl/tenancy": "^3.8",
         "sweetalert2/laravel": "^0.1.0"
     },
