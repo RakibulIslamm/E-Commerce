@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         // 'central_app.layouts.app', 'central_app.layouts.guest', 'central_app.layouts.navigation'
         // Only bind view composer to specific layouts (not all views)
         View::composer(['app.layouts.guest', 'app.layouts.app', 'app.components.Home.products.Partials.product-item', 'app.components.Home.products.Partials.product-item-list', 'app.pages.products.show'], function ($view) {
+            $startTime = microtime(true); // START TIMER
             static $cache = [];
 
             $requestDomain = request()->getHost();
@@ -109,6 +110,11 @@ class AppServiceProvider extends ServiceProvider
                     'email_verified' => $emailVerified,
                 ]);
             }
+
+            $endTime = microtime(true); // END TIMER
+            $duration = round(($endTime - $startTime) * 1000, 2); // milliseconds
+
+            Log::info('View composer load time (tenant): ' . $duration . ' ms');
 
             $view->with([
                 'user' => $user,
