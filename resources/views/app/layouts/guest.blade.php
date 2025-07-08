@@ -10,7 +10,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- @dd($tenant->brand_info['name']) --}}
     
@@ -25,7 +25,7 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    <div id="loading-bar" class="absolute top-0 left-0 h-0.5 bg-blue-600 transition-all duration-300 ease-out" style="width: 0;"></div>
+    <div id="loading-bar" class="absolute top-0 left-0 h-5 bg-blue-600 transition-all duration-300 ease-out" style="width: 0;"></div>
     @if ($user && !$email_verified && $hide_catalogo_mandatory_con_conferma)
         @include('app.components.shared.verify-email')
     @endif

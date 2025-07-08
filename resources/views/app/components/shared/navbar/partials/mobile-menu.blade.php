@@ -39,10 +39,7 @@ if (isset(tenant()?->brand_info)) {
 <div id="mobile-menu"
     class="h-screen fixed top-0 left-0 z-50 bg-white w-full sm:px-10 flex flex-col -translate-x-full transition-all duration-300 ease-in-out lg:hidden shadow-lg">
 
-    <div class="w-full flex justify-between p-4 border-b">
-        <a href="/" class="flex items-center gap-2">
-            <img class="h-10 w-auto object-contain" src="{{ $logo ?? '/images/logo.png' }}" alt="Logo">
-        </a>
+    <div class="w-full flex justify-end p-4 border-b">
         <button onclick="closeMobileMenu()" type="button" class="text-gray-600 hover:text-gray-900 transition">
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -52,7 +49,7 @@ if (isset(tenant()?->brand_info)) {
 
     <div class="w-full h-full overflow-y-auto py-6 px-5 space-y-10">
         <!-- Search Section -->
-        {{-- <div class="space-y-4">
+        <div class="space-y-4">
             <select id="search-categories-mobile" name="search-categories"
                 class="w-full rounded-md border border-gray-300 py-2 px-3 text-gray-800 shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none">
                 <option value="">Tutti</option>
@@ -70,7 +67,7 @@ if (isset(tenant()?->brand_info)) {
                     <x-lucide-search />
                 </button>
             </div>
-        </div> --}}
+        </div>
 
         <nav class="flex flex-col items-start gap-4">
             <a href="/" class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Home</a>
@@ -84,46 +81,33 @@ if (isset(tenant()?->brand_info)) {
                 class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Contatti</a>
 
             <!-- Auth Buttons -->
-            <div class="pt-4 border-t border-gray-200 w-full space-y-2">
+            <div class="pt-4 border-t border-gray-200 w-full">
                 @if (!$user)
-                    <div class="w-full">
-                        <a href="{{ route('app.login') }}" class="block w-full">
-                            <x-secondary-button class="w-full justify-center items-center gap-3">
-                                Accedi <x-mdi-login-variant class="w-4 h-4" />
-                            </x-secondary-button>
-                        </a>
-                    </div>
-
-                    <div class="w-full">
-                        <a href="{{ route('app.register') }}" class="block w-full">
-                            <x-primary-button class="w-full justify-center gap-3 items-center">
-                                Registrati <x-heroicon-s-user-plus class="w-4 h-4" />
-                            </x-primary-button>
-                        </a>
-                    </div>
+                    <a href="{{ route('app.login') }}"
+                        class="text-base font-semibold text-gray-600 hover:text-blue-600 transition block w-full">
+                        🔑 Accedi
+                    </a>
+                    <a href="{{ route('app.register') }}"
+                        class="mt-2 w-full inline-block text-center text-white bg-blue-600 hover:bg-blue-700 transition rounded-md px-4 py-2 text-base font-semibold shadow-sm uppercase">
+                        ✨ Registrati
+                    </a>
                 @elseif ($user->role != 1)
-                    <div class="w-full">
-                        <a href="/account/summary" class="block w-full">
-                            <x-secondary-button class="w-full justify-center gap-3 items-center">
-                                Account <x-heroicon-s-user-circle class="w-4 h-4" />
-                            </x-secondary-button>
-                        </a>
-                    </div>
-
-                    <form action="{{ route('app.logout') }}" method="POST" class="w-full">
+                    <a href="/account/summary"
+                        class="text-base font-semibold text-gray-600 hover:text-blue-600 transition block w-full">
+                        👤 Account
+                    </a>
+                    <form action="{{ route('app.logout') }}" method="POST" class="mt-2">
                         @csrf
-                        <x-danger-button type="submit" class="w-full justify-center gap-3 items-center">
-                            Esci <x-mdi-logout class="w-4 h-4" />
-                        </x-danger-button>
+                        <button type="submit"
+                            class="w-full text-left text-base font-semibold text-gray-600 hover:text-red-600 transition">
+                            🚪 Esci
+                        </button>
                     </form>
                 @else
-                    <div class="w-full">
-                        <a href="/dashboard" class="w-full justify-center gap-3 items-center">
-                            <x-secondary-button class="w-full justify-center">
-                                Dashboard <x-mdi-view-dashboard-outline class="w-4 h-4" />
-                            </x-secondary-button>
-                        </a>
-                    </div>
+                    <a href="/dashboard"
+                        class="text-base font-semibold text-gray-600 hover:text-blue-600 transition block w-full">
+                        🛠️ Dashboard
+                    </a>
                 @endif
             </div>
         </nav>
