@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Jobs\SeedTenantJob;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Stancl\JobPipeline\JobPipeline;
@@ -22,7 +23,7 @@ class TenancyServiceProvider extends ServiceProvider
     public function events()
     {
         return [
-                // Tenant events
+            // Tenant events
             Events\CreatingTenant::class => [],
             Events\TenantCreated::class => [
                 JobPipeline::make([
@@ -30,13 +31,11 @@ class TenancyServiceProvider extends ServiceProvider
                     Jobs\MigrateDatabase::class,
                     // Jobs\SeedDatabase::class,
                     SeedTenantJob::class,
-
                     // Your own jobs to prepare the tenant.
-                    // Provision API keys, create S3 buckets, anything you want!
-
                 ])->send(function (Events\TenantCreated $event) {
+                    Log::info('TenantCreated event for tenant id: ' . $event->tenant->id . ' at ' . now());
                     return $event->tenant;
-                })->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
+                })->shouldBeQueued(false), // Cambia in true per produzione, ma in debug tienilo false
             ],
             Events\SavingTenant::class => [],
             Events\TenantSaved::class => [],
@@ -47,11 +46,12 @@ class TenancyServiceProvider extends ServiceProvider
                 JobPipeline::make([
                     Jobs\DeleteDatabase::class,
                 ])->send(function (Events\TenantDeleted $event) {
+                    Log::info('TenantDeleted event for tenant id: ' . $event->tenant->id . ' at ' . now());
                     return $event->tenant;
-                })->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
+                })->shouldBeQueued(false),
             ],
 
-                // Domain events
+            // Domain events
             Events\CreatingDomain::class => [],
             Events\DomainCreated::class => [],
             Events\SavingDomain::class => [],
@@ -61,14 +61,14 @@ class TenancyServiceProvider extends ServiceProvider
             Events\DeletingDomain::class => [],
             Events\DomainDeleted::class => [],
 
-                // Database events
+            // Database events
             Events\DatabaseCreated::class => [],
             Events\DatabaseMigrated::class => [],
             Events\DatabaseSeeded::class => [],
             Events\DatabaseRolledBack::class => [],
             Events\DatabaseDeleted::class => [],
 
-                // Tenancy events
+            // Tenancy events
             Events\InitializingTenancy::class => [],
             Events\TenancyInitialized::class => [
                 Listeners\BootstrapTenancy::class,
@@ -84,12 +84,11 @@ class TenancyServiceProvider extends ServiceProvider
             Events\RevertingToCentralContext::class => [],
             Events\RevertedToCentralContext::class => [],
 
-                // Resource syncing
+            // Resource syncing
             Events\SyncedResourceSaved::class => [
                 Listeners\UpdateSyncedResource::class,
             ],
 
-                // Fired only when a synced resource is changed in a different DB than the origin DB (to avoid infinite loops)
             Events\SyncedResourceChangedInForeignDatabase::class => [],
         ];
     }
@@ -101,39 +100,67 @@ class TenancyServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        Log::info('TenancyServiceProvider boot started at ' . now());
+        $start = microtime(true);
+
         $this->bootEvents();
+        Log::info('After bootEvents at ' . now());
+
         $this->mapRoutes();
+        Log::info('After mapRoutes at ' . now());
 
         $this->makeTenancyMiddlewareHighestPriority();
+        Log::info('After makeTenancyMiddlewareHighestPriority at ' . now());
+
+        $end = microtime(true);
+        Log::info('TenancyServiceProvider boot finished in ' . round($end - $start, 4) . ' seconds');
     }
 
     protected function bootEvents()
     {
+        $start = microtime(true);
+        Log::info('bootEvents started at ' . now());
+
         foreach ($this->events() as $event => $listeners) {
             foreach ($listeners as $listener) {
                 if ($listener instanceof JobPipeline) {
                     $listener = $listener->toListener();
                 }
 
+                Log::info("Registering listener for event: $event at " . now());
                 Event::listen($event, $listener);
+                Log::info("Listener registered for event: $event at " . now());
             }
         }
+
+        $end = microtime(true);
+        Log::info('bootEvents finished in ' . round($end - $start, 4) . ' seconds');
     }
 
     protected function mapRoutes()
     {
+        $start = microtime(true);
+        Log::info('mapRoutes started at ' . now());
+
         $this->app->booted(function () {
             if (file_exists(base_path('routes/tenant.php'))) {
                 Route::namespace(static::$controllerNamespace)
                     ->group(base_path('routes/tenant.php'));
+                Log::info('Tenant routes loaded at ' . now());
+            } else {
+                Log::warning('routes/tenant.php not found at ' . now());
             }
         });
+
+        $end = microtime(true);
+        Log::info('mapRoutes finished in ' . round($end - $start, 4) . ' seconds');
     }
 
     protected function makeTenancyMiddlewareHighestPriority()
     {
+        Log::info('makeTenancyMiddlewareHighestPriority started at ' . now());
+
         $tenancyMiddleware = [
-                // Even higher priority than the initialization middleware
             Middleware\PreventAccessFromCentralDomains::class,
 
             Middleware\InitializeTenancyByDomain::class,
@@ -146,5 +173,7 @@ class TenancyServiceProvider extends ServiceProvider
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
             $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
         }
+
+        Log::info('makeTenancyMiddlewareHighestPriority finished at ' . now());
     }
 }
