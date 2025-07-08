@@ -6,14 +6,15 @@
 
         <div class="flex flex-col lg:flex-row items-start justify-between gap-5 overflow-hidden">
             <!-- Product Images -->
+            {{-- tenancy/assets/tenant2c1ec478-e1b2-440f-b522-aa3c022e6da4/app/public/ --}}
             <div class="w-full lg:w-4/12 overflow-hidden">
                 <div class="swiper-container gallery-slider relative">
                     <div class="swiper-wrapper">
                         @if (isset($product->FOTO) && count($product->FOTO))
                             @foreach ($product->FOTO as $img)
                                 <div class="swiper-slide aspect-square">
-                                    <a data-fancybox="gallery" href="{{ tenant_asset($img) }}">
-                                        <img class="w-full h-full border rounded-md" src="{{ tenant_asset($img) }}" alt="">
+                                    <a data-fancybox="gallery" href="/tenancy/assets/tenant{{tenant()?->id}}/app/public/{{$img}}">
+                                        <img class="w-full h-full border rounded-md" src="/tenancy/assets/tenant{{tenant()?->id}}/app/public/{{$img}}" alt="">
                                     </a>
                                 </div>
                             @endforeach
