@@ -30,13 +30,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
     
-        $middleware->use([
-            \Illuminate\Http\Middleware\HandleCors::class,
-
-        ]);
-        $middleware->web([
-            // 
-        ]);
         $middleware->validateCsrfTokens(except: [
             'api/*',
         ]);
@@ -51,20 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'registration_process' => RegistrationProcess::class,
             'auth.basic' => BasicAuthenticate::class,
         ]);
-
-        $middleware->redirectUsersTo(function () {
-            if (Auth::check() && tenant()) {
-                return route('app.dashboard');
-            }
-            return route('dashboard');
-        });
-
-        $middleware->redirectGuestsTo(function () {
-            if (!Auth::check() && tenant()) {
-                return route('app.login');
-            }
-            return route('central.login');
-        });
+       
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // dd($exceptions);
