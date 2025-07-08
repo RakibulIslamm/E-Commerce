@@ -189,7 +189,7 @@
                     @endif
                 </div>
                 
-                @if (!$user && $site_settings?->registration_process != 'Optional')
+                @if (!$user && tenant()?->registration_process != 'Optional')
                     <div>
                         <h3 class="text-xl font-bold">Attenzione, per effettuare l'acquisto devi essere un utente registrato</h3>
                         <span class="">

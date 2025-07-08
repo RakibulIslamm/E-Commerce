@@ -10,10 +10,9 @@ $fax = null;
 $iban = null;
 $map_iframe = null;
 
-// dd($site_settings);
 
-if (isset($site_settings->corporate_data)) {
-    $corporate_data = $site_settings->corporate_data;
+if (isset(tenant()?->corporate_data)) {
+    $corporate_data = tenant()?->corporate_data;
 
     $city = isset($corporate_data['city']) ? $corporate_data['city'] : null;
     $state = isset($corporate_data['state']) ? $corporate_data['state'] : null;

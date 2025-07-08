@@ -6,10 +6,8 @@ $mail_username = null;
 $mail_password = null;
 $mail_from_address = null;
 
-// dd($site_settings);
-
-if (isset($site_settings->smtp)) {
-    $smtp = $site_settings->smtp;
+if (isset(tenant()?->smtp)) {
+    $smtp = tenant()?->smtp;
     $mail_host = isset($smtp['mail_host']) ? $smtp['mail_host'] : null;
     $mail_port = isset($smtp['mail_port']) ? $smtp['mail_port'] : null;
     $mail_username = isset($smtp['mail_username']) ? $smtp['mail_username'] : null;

@@ -7,10 +7,9 @@ $description = null;
 $tagline = null;
 $favicon = null;
 
-// dd($site_settings);
 
-if (isset($site_settings->brand_info)) {
-    $brand_info = $site_settings->brand_info;
+if (isset(tenant()?->brand_info)) {
+    $brand_info = tenant()?->brand_info;
 
     // Check if the keys exist before accessing them
     $logo_height = isset($brand_info['logo_height']) ? $brand_info['logo_height'] : '56';
@@ -19,7 +18,7 @@ if (isset($site_settings->brand_info)) {
     $description = isset($brand_info['description']) ? $brand_info['description'] : null;
     $tagline = isset($brand_info['tagline']) ? $brand_info['tagline'] : null;
 
-    $favicon = isset($site_settings->brand_info['favicon']) ? asset($site_settings->brand_info['favicon']) : url('/images/favicon.png');
+    $favicon = isset(tenant()?->brand_info['favicon']) ? asset(tenant()?->brand_info['favicon']) : url('/images/favicon.png');
 }
 
 ?>

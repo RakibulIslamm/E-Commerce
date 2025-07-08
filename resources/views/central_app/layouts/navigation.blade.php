@@ -17,21 +17,21 @@
                     </x-nav-link>
                 </div>
 
-                @if (in_array($user->role, [1, 2, 3]))
+                @if (in_array(auth()?->user()?->role, [1, 2, 3]))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('ecommerce.index')" :active="request()->is('ecommerces*')">
                             {{ __('Ecommerce') }}
                         </x-nav-link>
                     </div>
                 @endif
-                @if (in_array($user->role, [1, 3, 5]))
+                @if (in_array(auth()?->user()?->role, [1, 3, 5]))
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('request.index')" :active="request()->is('ecommerce/requests*')">
-                            <span>{{ $user->role == 1 || $user->role == 3 ? 'Ecommerces Requests' : 'My Request' }}</span>
+                            <span>{{ auth()?->user()?->role == 1 || auth()?->user()?->role == 3 ? 'Ecommerces Requests' : 'My Request' }}</span>
                         </x-nav-link>
                     </div>
                 @endif
-                @if (in_array($user->role, [1, 2, 3]))
+                @if (in_array(auth()?->user()?->role, [1, 2, 3]))
                 @endif
 
 

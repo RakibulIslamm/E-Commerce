@@ -12,12 +12,12 @@ $map_iframe = null;
 
 $socialLinks = null;
 
-if (isset($site_settings->social_links)) {
-    $socialLinks = $site_settings->social_links;
+if (isset(tenant()?->social_links)) {
+    $socialLinks = tenant()?->social_links;
 }
 
-if (isset($site_settings->corporate_data)) {
-    $corporate_data = $site_settings->corporate_data;
+if (isset(tenant()?->corporate_data)) {
+    $corporate_data = tenant()?->corporate_data;
 
     $city = isset($corporate_data['city']) ? $corporate_data['city'] : null;
     $state = isset($corporate_data['state']) ? $corporate_data['state'] : null;

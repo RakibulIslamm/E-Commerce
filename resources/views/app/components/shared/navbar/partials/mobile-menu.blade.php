@@ -2,10 +2,9 @@
 
 $logo = null;
 
-// dd($site_settings);
 
-if (isset($site_settings->brand_info)) {
-    $brand_info = $site_settings->brand_info;
+if (isset(tenant()?->brand_info)) {
+    $brand_info = tenant()?->brand_info;
     $logo = isset($brand_info['logo']) ? $brand_info['logo'] : null;
 }
 

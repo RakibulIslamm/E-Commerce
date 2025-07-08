@@ -2,10 +2,9 @@
 
 $socialLinks = [];
 
-// dd($site_settings);
 
-if (isset($site_settings->social_links)) {
-    $socialLinks = $site_settings->social_links;
+if (isset(tenant()?->social_links)) {
+    $socialLinks = tenant()?->social_links;
 }
 
 ?>

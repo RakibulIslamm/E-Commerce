@@ -7,7 +7,7 @@
             <form method="POST" action="{{ route('app.dashboard.products.toggle-out-of-stock') }}" class="flex items-center space-x-2">
                 @csrf
                 <input type="checkbox" name="show_out_of_stock" id="show_out_of_stock"
-                    onchange="this.form.submit()" {{ $site_settings?->show_out_of_stock ? 'checked' : '' }} />
+                    onchange="this.form.submit()" {{ tenant()?->show_out_of_stock ? 'checked' : '' }} />
                 <label for="show_out_of_stock" class="text-sm font-medium">Mostra articoli esauriti</label>
             </form>
         </div>

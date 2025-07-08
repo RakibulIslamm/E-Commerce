@@ -8,7 +8,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Ecommerces') }}
             </h2>
-            @if ($user->role == 1 || $user->role == 3)
+            @if (auth()?->user()?->role == 1 || auth()?->user()?->role == 3)
                 <div class="relative w-full max-w-full flex-grow flex-1 text-right">
                     <a href="/ecommerces/create"
                         class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold  px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
