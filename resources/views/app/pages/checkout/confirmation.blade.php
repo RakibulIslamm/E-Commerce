@@ -53,7 +53,7 @@
                             if(isset($item->product->FOTO)){
                                 $FOTO = json_decode($item->product->FOTO);
                             }
-                            $FOTO = isset($FOTO[0]) ? tenant_asset($FOTO[0]) : "https://via.placeholder.com/80";
+                            $FOTO = isset($FOTO[0]) ? "/tenancy/assets/tenant{{tenant()?->id}}/app/public/{{$FOTO[0]}}" : "https://via.placeholder.com/80";
                         @endphp
                         <img src="{{$FOTO}}" alt="Immagine del Prodotto" class="w-20 h-20 object-cover rounded-md shadow">
                         

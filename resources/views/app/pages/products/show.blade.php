@@ -36,7 +36,7 @@
                         @if (isset($product->FOTO) && (count($product->FOTO) > 1))
                             @foreach ($product->FOTO as $img)
                                 <div class="swiper-slide w-12 md:w-16 aspect-square">
-                                    <img class="w-full h-full border rounded-md object-cover object-center" src="{{ tenant_asset($img) }}" alt="">
+                                    <img class="w-full h-full border rounded-md object-cover object-center" src="{{ /tenancy/assets/tenant{{tenant()?->id}}/app/public/{{$img}} }}" alt="">
                                 </div>
                             @endforeach
                         @endif

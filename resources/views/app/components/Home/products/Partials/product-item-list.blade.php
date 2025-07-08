@@ -1,7 +1,7 @@
 <div class="flex items-center gap-5 w-full border rounded overflow-hidden h-[170px]">
 
     <a href="{{ route('app.products.show', $product) }}" class="relative border aspect-square max-w-[170px] min-w-[170px] min-h-[170px]">
-        <img src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
+        <img src="{{ $product->FOTO ? "/tenancy/assets/tenant{{tenant()?->id}}/app/public/{{$product->FOTO}}" : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
             alt="" class="h-full w-full object-cover object-center">
 
         <div class="absolute top-3 left-0">
