@@ -2,7 +2,7 @@
     {{-- Product Image --}}
     <a href="{{ route('app.products.show', $product) }}" class="mb-3 relative aspect-square">
         <img 
-            src="{{ $product->FOTO ? "/tenancy/assets/tenant{{tenant()?->id}}/app/public/{{$product->FOTO}}" : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}" 
+            src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
             alt="{{ $product['DESCRIZIONEBREVE'] }}" 
             class="h-full w-full object-cover object-center relative z-10 drop-shadow-2xl"
         />
