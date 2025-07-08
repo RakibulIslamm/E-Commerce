@@ -32,11 +32,8 @@ return Application::configure(basePath: dirname(__DIR__))
     
         $middleware->use([
             \Illuminate\Http\Middleware\HandleCors::class,
-
         ]);
-        $middleware->web([
-            // 
-        ]);
+        
         $middleware->validateCsrfTokens(except: [
             'api/*',
         ]);
@@ -67,5 +64,5 @@ return Application::configure(basePath: dirname(__DIR__))
         });
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // dd($exceptions);
+        
     })->create();
