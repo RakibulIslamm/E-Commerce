@@ -260,7 +260,7 @@
             @endif
 
 
-            @if ($mode == 'view' && ($user->role == 1 || $user->role == 2))
+            @if ($mode == 'view' && (auth()?->user()?->role == 1 || auth()?->user()?->role == 2))
                 <a href="{{ route('ecommerce.edit', $settings) }}"
                     class="text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline underline">Edit
                     Data</a>
@@ -271,7 +271,7 @@
                     class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Cancel</a>
             @endif
 
-            @if ($mode == 'edit' && $user->role == 1)
+            @if ($mode == 'edit' && auth()?->user()?->role == 1)
                 <button
                     class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     onclick="handleDelete({{ $settings }})">

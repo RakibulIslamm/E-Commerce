@@ -32,16 +32,16 @@
 
             @php
                 $price = match (true) {
-                    $user && $user->price_list == 3 => $product['PRE3IMP'],
-                    $user && $user->price_list == 2 => $product['PRE2IMP'],
-                    $user && $user->price_list == 1 => $product['PRE1IMP'],
+                    auth()?->user() && auth()?->user()?->price_list == 3 => $product['PRE3IMP'],
+                    auth()?->user() && auth()?->user()?->price_list == 2 => $product['PRE2IMP'],
+                    auth()?->user() && auth()?->user()?->price_list == 1 => $product['PRE1IMP'],
                     default => $product['PRE1IMP'],
                 };
 
                 $price_with_vat = match (true) {
-                    $user && $user->price_list == 3 => $product['PRE3IVA'],
-                    $user && $user->price_list == 2 => $product['PRE2IVA'],
-                    $user && $user->price_list == 1 => $product['PRE1IVA'],
+                    auth()?->user() && auth()?->user()?->price_list == 3 => $product['PRE3IVA'],
+                    auth()?->user() && auth()?->user()?->price_list == 2 => $product['PRE2IVA'],
+                    auth()?->user() && auth()?->user()?->price_list == 1 => $product['PRE1IVA'],
                     default => $product['PRE1IVA'],
                 };
             @endphp

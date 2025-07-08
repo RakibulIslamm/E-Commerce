@@ -11,14 +11,20 @@ use App\Http\Controllers\CentralApp\Auth\RegisteredUserController;
 use App\Http\Controllers\CentralApp\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+use function Termwind\render;
+
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('central.register');
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-                ->name('central.login');
+     Route::get('login', [AuthenticatedSessionController::class, 'create'])
+                 ->name('central.login');
+
+    Route::get('hello', function () {
+        return "Hello....";
+    });
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
