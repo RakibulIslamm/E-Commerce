@@ -13,15 +13,15 @@
                         @if (isset($product->FOTO) && count($product->FOTO))
                             @foreach ($product->FOTO as $img)
                                 <div class="swiper-slide aspect-square">
-                                    <a data-fancybox="gallery" href="{{ tenant_asset($img) }}">
-                                        <img class="w-full h-full border rounded-md object-cover object-center" src="{{ tenant_asset($img) }}" alt="">
+                                    <a data-fancybox="gallery" href="/tenancy/assets/tenant{{tenant()?->id}}/app/public/{{$img}}">
+                                        <img class="w-full h-full aspect-square border rounded-md" src="/tenancy/assets/tenant{{tenant()?->id}}/app/public/{{$img}}" alt="">
                                     </a>
                                 </div>
                             @endforeach
                         @else
                             <div class="swiper-slide">
                                 <a data-fancybox="gallery" href="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png" class="aspect-square">
-                                    <img class="w-full h-full border rounded-md"
+                                    <img class="w-full h-full aspect-square border rounded-md"
                                         src="https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
                                         alt="">
                                 </a>
@@ -36,7 +36,7 @@
                         @if (isset($product->FOTO) && (count($product->FOTO) > 1))
                             @foreach ($product->FOTO as $img)
                                 <div class="swiper-slide w-12 md:w-16 aspect-square">
-                                    <img class="w-full h-full border rounded-md object-cover object-center" src="{{ tenant_asset($img) }}" alt="">
+                                    <img class="w-full h-full aspect-square border rounded-md object-cover object-center" src="/tenancy/assets/tenant{{tenant()?->id}}/app/public/{{$img}}" alt="">
                                 </div>
                             @endforeach
                         @endif

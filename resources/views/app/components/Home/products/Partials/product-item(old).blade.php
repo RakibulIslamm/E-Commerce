@@ -6,7 +6,7 @@
         </div>
         <img 
             src="{{ $product->FOTO ? tenant_asset($product->FOTO) : 'https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png' }}"
-            alt="" class="h-full w-full object-cover object-center">
+            alt="" class="h-full w-full aspect-square object-cover object-center">
         <div class=" absolute top-0 left-0 w-full h-full flex flex-col justify-between items-center">
             <div class="w-full flex items-center justify-between mt-3">
                 @if ($product->PIUVENDUTI and $product->NOVITA)
