@@ -54,55 +54,71 @@ if (isset(tenant()?->corporate_data)) {
     <div class="p-6 md:p-10 bg-slate-100">
         <div class="flex flex-col md:flex-row items-start justify-between gap-6 md:gap-10">
             <!-- Left Section -->
-            <div class="w-full md:w-5/12 text-center md:text-right flex flex-col gap-4 items-center md:items-end text-gray-800">
+            <div class="w-full md:w-5/12 md:text-right flex flex-col gap-4 items-center md:items-end text-gray-800">
                 <h2 class="text-3xl md:text-3xl font-bold leading-snug text-center md:text-right lg:w-10/12">
                     Contattaci!
                 </h2>
-                <div class="flex flex-col items-center md:items-end gap-2">
-                    <p class="flex items-center gap-2 text-sm md:text-base">
-                        <x-heroicon-s-envelope class="w-5 h-5" />
-                        {{ $email ?? 'example@gmail.com' }}
-                    </p>
-                    <p class="flex items-center gap-2 text-sm md:text-base">
-                        <x-heroicon-c-phone class="w-5 h-5" />
-                        {{ $telephone ?? '+134757585' }}
-                    </p>
-                    <p class="flex items-center gap-2 text-sm md:text-base">
-                        <x-heroicon-s-map-pin class="w-5 h-5" />
-                        {{ $street ?? '123 Street 487 House' }}
-                    </p>
-                </div>
+                <ul class="space-y-3">
+                    @if ($street || $city || $country)
+                        <li class="flex items-start gap-3">
+                            <div class="p-1 bg-blue-100 rounded-full">
+                                <x-heroicon-s-map-pin class="w-5 h-5 text-blue-600" />
+                            </div>
+                            <div class="text-gray-500 hover:text-gray-900 leading-snug">
+                                @if ($street)
+                                    {{ $street }}<br>
+                                @endif
+                                @if ($city || $country)
+                                    {{ $city }} {{ $country }}
+                                @endif
+                            </div>
+                        </li>
+                    @endif
 
-                <div class="flex items-center gap-4 mt-3">
-                    @if (!empty($socialLinks))
+                    @if ($email)
+                        <li class="flex items-start gap-3">
+                            <div class="p-1 bg-blue-100 rounded-full">
+                                <x-heroicon-s-envelope class="w-5 h-5 text-blue-600" />
+                            </div>
+                            <div class="text-gray-500 hover:text-gray-900 break-words">{{ $email }}</div>
+                        </li>
+                    @endif
+
+                    @if ($telephone)
+                        <li class="flex items-start gap-3">
+                            <div class="p-1 bg-blue-100 rounded-full">
+                                <x-heroicon-s-phone class="w-5 h-5 text-blue-600" />
+                            </div>
+                            <div class="text-gray-500 hover:text-gray-900">{{ $telephone }}</div>
+                        </li>
+                    @endif
+                </ul>
+
+                <!-- Social Links -->
+                @if (!empty($socialLinks))
+                    <hr class="">
+                    <div class="flex justify-center md:justify-start gap-3 mt-5">
                         @foreach ($socialLinks as $name => $url)
-                            <a href="{{ $url }}" target="_blank" class="flex items-center gap-2">
+                            <a href="{{ $url }}" target="_blank" class="text-gray-500 hover:text-gray-900 transition transform hover:scale-110">
                                 @switch($name)
                                     @case('facebook')
-                                        <x-bxl-facebook-square class="w-7 h-7" />
-                                    @break
-
-                                    @case('twitter')
-                                        <x-bxl-twitter class="w-7 h-7" />
-                                    @break
-
+                                        <x-bxl-facebook-square class="w-6 h-6" />
+                                        @break
                                     @case('instagram')
-                                        <x-bxl-instagram-alt class="w-7 h-7" />
-                                    @break
-
+                                        <x-bxl-instagram-alt class="w-6 h-6" />
+                                        @break
                                     @case('linkedin')
-                                        <x-bxl-linkedin-square class="w-7 h-7" />
-                                    @break
-
+                                        <x-bxl-linkedin-square class="w-6 h-6" />
+                                        @break
+                                    @case('twitter')
+                                        <x-fab-x-twitter class="w-6 h-6" />
+                                        @break
                                     @default
-                                        {{ null }}
-                                    @break
                                 @endswitch
-                                {{-- {{ ucfirst($name) }} --}}
                             </a>
                         @endforeach
-                    @endif
-                </div>
+                    </div>
+                @endif
             </div>
 
             <!-- Contact Form -->

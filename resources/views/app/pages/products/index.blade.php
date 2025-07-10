@@ -27,16 +27,48 @@
                         </select>
                     </div>
                     <span class="hidden sm:block">|</span>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2">
                         <label for="items_per_page" class="text-sm">Risultati per pagina</label>
-                        <select name="" id="items_per_page" class="text-sm py-1 rounded-md">
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
+                            <select name="" id="items_per_page" class="text-sm py-1 rounded-md">
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button id="open-modal-btn" x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'search-product')"
+                                class="text-gray-100 hover:text-white bg-indigo-500 hover:bg-indigo-600 p-1 rounded cursor-pointer"
+                                type="button">
+                                <x-lucide-search class="w-5 h-5" />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <x-modal name="search-product">
+                <div class="space-y-2 p-4">
+                    <select id="search-categories-mobile" name="search-categories"
+                        class="w-full rounded-md border border-gray-300 py-2 px-3 text-gray-800 shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none">
+                        <option value="">Tutti</option>
+                        @foreach ($categories as $item)
+                            <option value="{{ $item->codice }}">{{ $item->nome }}</option>
+                        @endforeach
+                    </select>
+
+                    <div class="relative">
+                        <input type="text" name="search" id="search-text-mobile"
+                            class="w-full rounded-md border border-gray-300 py-2 px-3 pr-10 text-gray-800 shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none"
+                            placeholder="Ricerca prodotto...">
+                        <button type="button" onclick="handleSearchMobile()"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-blue-600 transition">
+                            <x-lucide-search class="w-5 h-5" />
+                        </button>
+                    </div>
+                </div>
+            </x-modal>
             
             <div class="w-full block" id="grid">
                 <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
@@ -133,6 +165,9 @@
     const gridItem = document.getElementById('grid');
     const listItem = document.getElementById('list');
 
+    const categoryElementMobie = document.getElementById('search-categories-mobile');
+    const searchTextElementMobie = document.getElementById('search-text-mobile');
+
     function renderProductView() {
         const productView = localStorage.getItem('product_view');
         // console.log(productView);
@@ -189,6 +224,33 @@
 
     })
 
+    // Mobile search
+    const urlMobie = new URL(window.location.href);
+    const paramsMobie = new URLSearchParams(urlMobie.search);
+    const categoryMobie = params.get('category');
+    const searchMobie = params.get('search');
+    const order_byMobie = params.get('order_by');
+    const limitMobie = params.get('limit');
+    let urlHrefMobie = '/products?';
+
+    function handleSearchMobile() {
+        const category = categoryElementMobie?.value;
+        const searchText = searchTextElementMobie?.value;
+
+        console.log(category);
+        console.log(searchText);
+
+
+        urlHrefMobie += category ? "category=" + category + '&' : "";
+        urlHrefMobie += searchText ? "search=" + searchText + '&' : "";
+        urlHrefMobie += order_byMobie ? "order_by=" + order_byMobie + '&' : "";
+        urlHrefMobie += limitMobie ? "limit=" + limitMobie + '&' : "";
+
+        window.location.href = urlHrefMobie.slice(0, -1);
+    }
+
     if (order_by) orderByElement.value = order_by;
     if (limit) itemPerPageElement.value = limit;
+    if (categoryMobie) categoryElementMobie.value = categoryMobie;
+    if (searchMobie) searchTextElementMobie.value = searchMobie;
 </script>

@@ -134,8 +134,6 @@ if (isset($site_settings->brand_info)) {
 
 <script>
     const mobileMenu = document.getElementById('mobile-menu');
-    const categoryElementMobie = document.getElementById('search-categories-mobile');
-    const searchTextElementMobie = document.getElementById('search-text-mobile');
 
     function openMobileMenu() {
         mobileMenu.classList.remove('-translate-x-full')
@@ -147,29 +145,7 @@ if (isset($site_settings->brand_info)) {
         document.body.classList.remove('overflow-hidden');
     }
 
-    // Mobile search
-    const urlMobie = new URL(window.location.href);
-    const paramsMobie = new URLSearchParams(urlMobie.search);
-    const categoryMobie = params.get('category');
-    const searchMobie = params.get('search');
-    const order_byMobie = params.get('order_by');
-    const limitMobie = params.get('limit');
-    let urlHrefMobie = '/products?';
+    
 
-    function handleSearchMobile() {
-        const category = categoryElementMobie?.value;
-        const searchText = searchTextElementMobie?.value;
-
-
-        urlHrefMobie += category ? "category=" + category + '&' : "";
-        urlHrefMobie += searchText ? "search=" + searchText + '&' : "";
-        urlHrefMobie += order_byMobie ? "order_by=" + order_byMobie + '&' : "";
-        urlHrefMobie += limitMobie ? "limit=" + limitMobie + '&' : "";
-
-        window.location.href = urlHrefMobie.slice(0, -1);
-        console.log(urlHrefMobie.slice(0, -1));
-    }
-
-    if (categoryMobie) categoryElementMobie.value = categoryMobie;
-    if (searchMobie) searchTextElementMobie.value = searchMobie;
+    
 </script>

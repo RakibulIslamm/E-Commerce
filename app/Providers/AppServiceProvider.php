@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // 'central_app.layouts.app', 'central_app.layouts.guest', 'central_app.layouts.navigation'
         // Only bind view composer to specific layouts (not all views)
-        View::composer(['app.layouts.guest', 'app.layouts.app', 'app.components.Home.products.Partials.product-item', 'app.components.Home.products.Partials.product-item-list', 'app.pages.products.show'], function ($view) {
+        View::composer(['app.layouts.guest', 'app.layouts.app', 'app.components.Home.products.Partials.product-item', 'app.components.Home.products.Partials.product-item-list', 'app.pages.products.show', 'app.pages.products.index'], function ($view) {
             $startTime = microtime(true); // START TIMER
             static $cache = [];
 
