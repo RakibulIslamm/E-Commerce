@@ -4,7 +4,7 @@
 
     <x-page-layout :props="['title' => 'Shopping Cart', 'breadcrumbs' => $breadcrumbs]">
         
-        @if ($shipping_setting)
+        @if ($shipping_setting && $shipping_setting->minimumOrder != 0)
             <p id="shipping-limit-p" class="font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 lg:-mt-10">
                 {{-- Limite minimo di ordine: {{$shipping_setting->minimum_order}}€ --}}
             </p>
@@ -85,22 +85,20 @@
         }, 0);
         
         // Update the shipping limit message based on the cart total
-        if (shippingSetting.minimumOrder != 0) {
-            if (cartTotal >= shippingSetting.minimumOrder) {
-                shippingLimitP.className = "font-semibold bg-green-500 py-1 px-3 rounded-md mb-5 lg:-mt-10 flex items-center text-green-700 bg-opacity-50";
-                shippingLimitP.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5 mr-2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Limite minimo di ordine raggiunto: ${shippingSetting.minimumOrder}€
-                `;
-            } else if (shippingSetting.minimumOrder > 0) {
-                shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 lg:-mt-10";
-                shippingLimitP.innerHTML = `Limite minimo di ordine: ${shippingSetting.minimumOrder}€`;
-            } else {
-                shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 lg:-mt-10";
-                shippingLimitP.innerHTML = "Non ci sono metodi di spedizione disponibili su questa piattaforma.";
-            }
+        if (cartTotal >= shippingSetting.minimumOrder) {
+            shippingLimitP.className = "font-semibold bg-green-500 py-1 px-3 rounded-md mb-5 lg:-mt-10 flex items-center text-green-700 bg-opacity-50";
+            shippingLimitP.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Limite minimo di ordine raggiunto: ${shippingSetting.minimumOrder}€
+            `;
+        } else if (shippingSetting.minimumOrder > 0) {
+            shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 lg:-mt-10";
+            shippingLimitP.innerHTML = `Limite minimo di ordine: ${shippingSetting.minimumOrder}€`;
+        } else {
+            shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 lg:-mt-10";
+            shippingLimitP.innerHTML = "Non ci sono metodi di spedizione disponibili su questa piattaforma.";
         }
        
     }
