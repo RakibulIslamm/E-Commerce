@@ -5,25 +5,25 @@
   <!-- Corriere -->
   <div class="mb-4">
       <label for="courier" class="block text-sm font-medium text-gray-700">Corriere</label>
-      <input type="text" id="courier" name="courier" value="{{ old('courier', $shipping_settings->courier ?? '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200">
+      <input type="text" required id="courier" name="courier" value="{{ old('courier', $shipping_settings->courier ?? '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200">
   </div>
 
   <!-- Ordine Minimo -->
   <div class="mb-4">
       <label for="minimum_order" class="block text-sm font-medium text-gray-700">Ordine Minimo</label>
-      <input type="number" step="0.01" id="minimum_order" name="minimum_order" value="{{ old('minimum_order', $shipping_settings->minimum_order ?? '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200">
+      <input type="number" required step="0.01" id="minimum_order" name="minimum_order" value="{{ old('minimum_order', $shipping_settings->minimum_order ?? '0') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200">
   </div>
 
   <!-- Costo Contrassegno -->
   <div class="mb-4">
       <label for="cod_fee" class="block text-sm font-medium text-gray-700">Costo Contrassegno</label>
-      <input type="number" step="0.01" id="cod_fee" name="cod_fee" value="{{ old('cod_fee', $shipping_settings->cod_fee ?? '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200">
+      <input type="number" required step="0.01" id="cod_fee" name="cod_fee" value="{{ old('cod_fee', $shipping_settings->cod_fee ?? '0') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200">
   </div>
 
   <!-- Aliquota IVA -->
   <div class="mb-4">
       <label for="vat_rate" class="block text-sm font-medium text-gray-700">Aliquota IVA (%)</label>
-      <input type="number" step="0.01" id="vat_rate" name="vat_rate" value="{{ old('vat_rate', $shipping_settings->vat_rate ?? '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200">
+      <input type="number" required step="0.01" id="vat_rate" name="vat_rate" value="{{ old('vat_rate', $shipping_settings->vat_rate ?? '0') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-indigo-200">
   </div>
 
   <!-- Regole di Spedizione -->
