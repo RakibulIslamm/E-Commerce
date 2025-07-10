@@ -86,11 +86,12 @@
         
         // Update the shipping limit message based on the cart total
         console.log("shippingSetting:::", shippingSetting);
-        if (shippingSetting.minimumOrder === 0) {
-            shippingLimitP.className = "hidden"
-        }
+       
         if (cartTotal >= shippingSetting.minimumOrder) {
             shippingLimitP.className = "font-semibold bg-green-500 py-1 px-3 rounded-md mb-5 lg:-mt-10 flex items-center text-green-700 bg-opacity-50";
+            if (shippingSetting.minimumOrder === 0) {
+                shippingLimitP.className = "hidden"
+            }
             shippingLimitP.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
