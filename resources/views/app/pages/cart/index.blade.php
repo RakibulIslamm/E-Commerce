@@ -85,7 +85,7 @@
         }, 0);
         
         // Update the shipping limit message based on the cart total
-        if (cartTotal >= shippingSetting.minimumOrder) {
+        if (shippingSetting.minimumOrder != 0 && cartTotal >= shippingSetting.minimumOrder) {
             shippingLimitP.className = "font-semibold bg-green-500 py-1 px-3 rounded-md mb-5 lg:-mt-10 flex items-center text-green-700 bg-opacity-50";
             shippingLimitP.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5 mr-2">
