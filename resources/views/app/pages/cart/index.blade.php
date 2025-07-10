@@ -85,6 +85,7 @@
         }, 0);
         
         // Update the shipping limit message based on the cart total
+        console.log("shippingSetting:::", shippingSetting);
         if (shippingSetting.minimumOrder === 0) {
             shippingLimitP.className = "hidden"
         }
