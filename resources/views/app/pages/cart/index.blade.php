@@ -4,7 +4,7 @@
 
     <x-page-layout :props="['title' => 'Shopping Cart', 'breadcrumbs' => $breadcrumbs]">
         
-        @if ($shipping_setting && $shipping_setting->minimumOrder != 0)
+        @if ($shipping_setting)
             <p id="shipping-limit-p" class="font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 lg:-mt-10">
                 {{-- Limite minimo di ordine: {{$shipping_setting->minimum_order}}€ --}}
             </p>
@@ -100,7 +100,6 @@
             shippingLimitP.className = "font-semibold text-red-800 bg-red-200 py-1 px-3 rounded-md mb-5 lg:-mt-10";
             shippingLimitP.innerHTML = "Non ci sono metodi di spedizione disponibili su questa piattaforma.";
         }
-       
     }
 
     // function getCartTotal() {
