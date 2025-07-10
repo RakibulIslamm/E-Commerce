@@ -51,7 +51,7 @@ class ContactController
                 'msg' => "SMTP not setup yet",
                 'extra_msg' => ""
             ]]);
-            return redirect()->back()->with('error', 'Something went wrong, Please try again later.');
+            return redirect()->back()->with('error', 'Qualcosa è andato storto. Riprova più tardi.');
         }
 
 
@@ -63,9 +63,9 @@ class ContactController
                 $message->subject('Contact Form Message');
             });
 
-            return redirect()->back()->with('success', 'Your message has been sent successfully!');
+            return redirect()->back()->with('success', 'Il tuo messaggio è stato inviato con successo!');
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Something went wrong, Please try again later.');
+            return redirect()->back()->with('error', 'Qualcosa è andato storto. Riprova più tardi.');
         }
     }
 
