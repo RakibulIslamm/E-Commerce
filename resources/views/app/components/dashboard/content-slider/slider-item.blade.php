@@ -27,7 +27,7 @@
                 class="text-gray-100 hover:text-white bg-indigo-500 hover:bg-indigo-600 p-1 rounded" type="button">
                 <x-lucide-edit class="w-4 h-4" />
             </a>
-            <a href="#" class="text-gray-100 hover:text-white bg-yellow-500 hover:bg-yellow-600 p-1 rounded"
+            <a href="#" class="text-gray-100 hover:text-white bg-yellow-500 hover:bg-yellow-600 p-1 rounded hidden"
                 type="button">
                 <x-lucide-arrow-up-from-line class="w-4 h-4" />
             </a>
