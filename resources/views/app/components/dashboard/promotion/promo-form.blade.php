@@ -78,7 +78,7 @@
     <div>
         <input type="checkbox" class="mr-2 leading-tight"
         @checked(isset($promotion['active']) && $promotion['active']) name="active" id="active" />
-        <label class="text-sm" for="active">Activate The Promo</label>
+        <label class="text-sm" for="active">Attiva la promozione</label>
     </div>
 
     <div class="w-full mt-3">
