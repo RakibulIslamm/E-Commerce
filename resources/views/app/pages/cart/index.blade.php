@@ -85,6 +85,9 @@
         }, 0);
         
         // Update the shipping limit message based on the cart total
+        if (shippingSetting.minimumOrder === 0) {
+            shippingLimitP.className = "hidden"
+        }
         if (cartTotal >= shippingSetting.minimumOrder) {
             shippingLimitP.className = "font-semibold bg-green-500 py-1 px-3 rounded-md mb-5 lg:-mt-10 flex items-center text-green-700 bg-opacity-50";
             shippingLimitP.innerHTML = `
