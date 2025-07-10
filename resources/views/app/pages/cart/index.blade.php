@@ -1,4 +1,4 @@
-@section('title', 'Shopping Cart')
+@section('title', 'Carrello')
 {{-- @dd($shipping_setting) --}}
 <x-app-guest-layout>
 

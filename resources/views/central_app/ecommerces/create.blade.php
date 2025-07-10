@@ -1,4 +1,4 @@
-@section('title', 'Create ecommerce')
+@section('title', 'Crea ecommerce')
 
 <x-central-app-layout>
 

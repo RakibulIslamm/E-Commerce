@@ -1,4 +1,4 @@
-@section('title', 'Request For Ecommerce')
+@section('title', 'Richiesta ecommerce')
 <x-central-app-layout>
     <div class="w-6/12 mx-auto mt-3">
         <h2 class="text-xl font-bold pb-3 text-center">Request an E-commerce</h2>

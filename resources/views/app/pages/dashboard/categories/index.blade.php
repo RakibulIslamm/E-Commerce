@@ -3,7 +3,7 @@
 // dd($categories);
 ?>
 
-@section('title', 'Categories')
+@section('title', 'Categorie')
 <x-app-layout>
     @if ($errors->has('error'))
     <div class="bg-red-100 text-red-700 border-l-4 border-red-500 p-4 mb-4">

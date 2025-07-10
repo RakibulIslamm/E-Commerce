@@ -1,4 +1,4 @@
-@section('title', 'Edit Slider')
+@section('title', 'Modifica Slider')
 <x-app-layout>
 
     <div>

@@ -1,4 +1,4 @@
-@section('title', 'Edit ecommerce')
+@section('title', 'Modifica ecommerce')
 
 <x-central-app-layout>
     <div class="w-full p-6">

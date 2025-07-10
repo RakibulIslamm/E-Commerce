@@ -1,4 +1,4 @@
-@section('title', 'Edit Category')
+@section('title', 'Modifica categoria')
 <x-app-layout>
     <x-danger-button x-data="" x-on:click.prevent="">
         <x-lucide-edit class="w-4 h-4" />

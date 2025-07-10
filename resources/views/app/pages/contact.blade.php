@@ -32,7 +32,7 @@ if (isset(tenant()?->corporate_data)) {
 
 ?>
 
-@section('title', 'Contact')
+@section('title', 'Contatti')
 <x-app-guest-layout>
     <style>
         .iframe-container {

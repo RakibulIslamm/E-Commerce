@@ -1,4 +1,4 @@
-@section('title', 'About us')
+@section('title', 'Chi siamo')
 <x-app-guest-layout>
     <x-page-layout :props="['title' => 'Profile']">
         <div id="editor">

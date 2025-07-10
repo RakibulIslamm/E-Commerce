@@ -1,4 +1,4 @@
-@section('title', 'Condition For Sale')
+@section('title', 'Condizioni di vendita')
 <x-app-guest-layout>
     <x-page-layout :props="['title' => 'Condition For Sale']">
         <div id="editor">

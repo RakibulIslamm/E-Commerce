@@ -1,4 +1,4 @@
-@section('title', 'Discounts')
+@section('title', 'Sconti')
 <x-app-layout>
     <div class="w-full flex items-center justify-end">
         <div class="relative w-full max-w-full flex-grow flex-1 text-right">
