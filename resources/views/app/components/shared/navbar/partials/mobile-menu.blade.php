@@ -58,7 +58,7 @@ if (isset($site_settings->brand_info)) {
                 class="w-full rounded-md border border-gray-300 py-2 px-3 text-gray-800 shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none">
                 <option value="">Tutti</option>
                 @foreach ($categories as $item)
-                    <option value="{{ $item->codice }}">{{ $item->nome }}</option>
+                <option value="{{ $item->codice }}">{{ $item->nome }}</option>
                 @endforeach
             </select>
 
@@ -77,13 +77,64 @@ if (isset($site_settings->brand_info)) {
             <a href="/" class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Home</a>
             <a href="{{ route('app.products') }}"
                 class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Prodotti</a>
-            <a href="/agency"
-                class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Chi siamo</a>
+            <a href="/agency" class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Chi
+                siamo</a>
             <a href="/news"
                 class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Notizie</a>
             <a href="{{ route('app.contact') }}"
                 class="text-lg font-medium uppercase text-gray-700 hover:text-blue-600 transition">Contatti</a>
+            <!-- Flags translate -->
+            <div>
+                <div id="google_translate_element" style="display:none;"></div>
+                <select id="language-select" onchange="translatePage(this.value)" style="
+                    padding: 6px 30px 6px 45px; 
+                    background-repeat: no-repeat; 
+                    background-position: 10px center; 
+                    background-size: 30px 20px;
+                    font-size: 16px;
+                ">
+                    <option value="it" data-flag="https://flagcdn.com/w40/it.png">Italiano</option>
+                    <option value="en" data-flag="https://flagcdn.com/w40/gb.png">Inglese</option>
+                    <option value="zh-CN" data-flag="https://flagcdn.com/w40/cn.png">Cinese</option>
+                </select>
+                <script type="text/javascript">
+                    function googleTranslateElementInit() {
+                        new google.translate.TranslateElement({
+                            pageLanguage: 'it',
+                            includedLanguages: 'it,en,zh-CN',
+                            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                        }, 'google_translate_element');
+                    }
 
+                    function translatePage(lang) {
+                        if (lang === 'it') {
+                            // Se selezioni italiano, ricarica la pagina senza traduzione
+                            location.href = location.pathname;
+                            return;
+                        }
+
+                        const select = document.querySelector("#google_translate_element select");
+                        if (!select) return;
+                        select.value = lang;
+                        select.dispatchEvent(new Event('change'));
+                    }
+
+                    // Aggiorna la bandiera di sfondo in base all'opzione selezionata
+                    function updateFlag() {
+                        const select = document.getElementById('language-select');
+                        const selectedOption = select.options[select.selectedIndex];
+                        const flagUrl = selectedOption.getAttribute('data-flag');
+                        select.style.backgroundImage = `url(${flagUrl})`;
+                    }
+
+                    document.addEventListener('DOMContentLoaded', () => {
+                        updateFlag();
+                        document.getElementById('language-select').addEventListener('change', updateFlag);
+                    });
+                </script>
+                <script type="text/javascript"
+                    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+            </div>
             <!-- Auth Buttons -->
             <div class="pt-4 border-t border-gray-200 w-full space-y-2">
                 @if (!$user)
@@ -145,7 +196,7 @@ if (isset($site_settings->brand_info)) {
         document.body.classList.remove('overflow-hidden');
     }
 
-    
 
-    
+
+
 </script>

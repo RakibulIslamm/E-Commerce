@@ -16,7 +16,8 @@ if (isset(tenant()?->brand_info)) {
     <div class="flex items-center justify-center gap-10 w-full border-b py-3">
         <div>
             <a href="/" class="flex items-center gap-2">
-                <img class="h-12 w-auto object-cover" style="height: {{ $logo_height }}px" src="{{ $logo ?? '/images/logo.png' }}" alt="">
+                <img class="h-12 w-auto object-cover" style="height: {{ $logo_height }}px"
+                    src="{{ $logo ?? '/images/logo.png' }}" alt="">
                 {{-- <h2 class="text-lg font-bold">Company Name</h2> --}}
             </a>
         </div>
@@ -35,8 +36,7 @@ if (isset(tenant()?->brand_info)) {
                     @endforeach
                 </select>
             </div>
-            <input type="text" name="search" id="search-text"
-                class="relative grow rounded-r-md py-2 pl-3 pr-8 text-gray-900 border border-gray-200 outline-none
+            <input type="text" name="search" id="search-text" class="relative grow rounded-r-md py-2 pl-3 pr-8 text-gray-900 border border-gray-200 outline-none
                       focus:outline-blue-300 focus:outline-2 focus:-outline-offset-2 focus:z-10"
                 onkeydown="if (event.key === 'Enter') { handleSearch(); event.preventDefault(); }"
                 placeholder="Ricerca prodotto...">
@@ -79,6 +79,66 @@ if (isset(tenant()?->brand_info)) {
                         <a href="/dashboard" class="text-sm font-medium text-gray-700 hover:text-gray-800">Dashboard</a>
                     </div>
                 @endif
+                <div>
+                    <div id="google_translate_element" style="display:none;"></div>
+
+                    <select id="language-select" onchange="translatePage(this.value)" style="
+    padding: 6px 30px 6px 45px; 
+    background-repeat: no-repeat; 
+    background-position: 10px center; 
+    background-size: 30px 20px;
+    font-size: 16px;
+  ">
+                        <option value="it" data-flag="https://flagcdn.com/w40/it.png">Italiano</option>
+                        <option value="en" data-flag="https://flagcdn.com/w40/gb.png">English</option>
+                        <option value="zh-CN" data-flag="https://flagcdn.com/w40/cn.png">中文</option>
+                    </select>
+
+                    <script>
+                        function googleTranslateElementInit() {
+                            new google.translate.TranslateElement({
+                                pageLanguage: 'it',
+                                includedLanguages: 'it,en,zh-CN',
+                                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                            }, 'google_translate_element');
+                        }
+
+                        function setCookie(name, value, days) {
+                            let expires = "";
+                            if (days) {
+                                const date = new Date();
+                                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                                expires = "; expires=" + date.toUTCString();
+                            }
+                            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+                        }
+
+                        function translatePage(lang) {
+                            if (lang === 'it') {
+                                setCookie('googtrans', '/', -1);
+                                location.reload();
+                            } else {
+                                setCookie('googtrans', `/it/${lang}`, 1);
+                                location.reload();
+                            }
+                        }
+
+                        function updateFlag() {
+                            const select = document.getElementById('language-select');
+                            const selectedOption = select.options[select.selectedIndex];
+                            const flagUrl = selectedOption.getAttribute('data-flag');
+                            select.style.backgroundImage = `url(${flagUrl})`;
+                        }
+
+                        document.addEventListener('DOMContentLoaded', () => {
+                            updateFlag();
+                            document.getElementById('language-select').addEventListener('change', updateFlag);
+                        });
+                    </script>
+
+                    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+                </div>
             </div>
         </div>
     </div>
@@ -119,7 +179,7 @@ if (isset(tenant()?->brand_info)) {
 
     if (category) {
         categoryElement.value = category;
-        if(!categoryElement.value) categoryElement.value = ""
+        if (!categoryElement.value) categoryElement.value = ""
     }
 
     if (search) searchTextElement.value = search;

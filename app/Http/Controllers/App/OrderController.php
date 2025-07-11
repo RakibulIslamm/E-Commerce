@@ -295,14 +295,12 @@ class OrderController
                 Config::set('mail.from.name', tenant()->business_name ?? "Ecommerce");
 
                 Log::info("Start sending order confirmation email");
-                // ✅ Send email to customer
                 Mail::send('app.emails.order-confirmation', $data, function ($message) use ($smtp, $data) {
                     $message->from($smtp['mail_from_address'], tenant()->business_name);
                     $message->to($data['email']);
                     $message->subject('Conferma Ordine');
                 });
 
-                // ✅ Send email to admin
                 $adminEmail = tenant()->email;
                 Mail::send('app.emails.order-admin', $data, function ($message) use ($smtp, $adminEmail) {
                     $message->from($smtp['mail_from_address'], tenant()->business_name);
