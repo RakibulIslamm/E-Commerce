@@ -52,12 +52,12 @@
                     @if (tenant()?->price_with_vat)
                         <div class="flex items-center">
                             <h3 class="text-xl font-semibold">{{ $price_with_vat }}€</h3>
-                            <sup class="ml-2 text-xs font-bold text-green-900">IVATO</sup>
+                            <sup class="ml-2 text-xs font-bold text-green-900">COMPRESO IVA</sup>
                         </div>
                     @else
                         <div class="flex items-center">
                             <h3 class="text-xl font-semibold">{{ $price }}€</h3>
-                            <sup class="ml-1 font-bold text-xs text-red-900">SENZA IVA</sup>
+                            <sup class="ml-1 font-bold text-xs text-red-900">ESCUSO IVA</sup>
                         </div>
                     @endif
                         </div>
