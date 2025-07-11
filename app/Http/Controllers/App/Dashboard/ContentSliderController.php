@@ -54,7 +54,7 @@ class ContentSliderController
             'position' => 1,
         ]);
 
-        return redirect()->route('app.dashboard.slider')->with('success', 'Slider created successfully.');
+        return redirect()->route('app.dashboard.slider')->with('success', 'Slider creato con successo.');
     }
 
     public function edit(ContentSlider $slider)
@@ -97,6 +97,20 @@ class ContentSliderController
         $slider->position = $validated['position'];
         $slider->save();
 
-        return redirect('/dashboard/slider')->with('success', 'Slider updated successfully.');
+        return redirect('/dashboard/slider')->with('success', 'Slider aggiornato con successo.');
     }
+    
+    public function destroy($id)
+    {
+
+        try {
+            ContentSlider::where('id', $id)->delete();
+            return redirect('/dashboard/slider')->with('success', 'Slider eliminato correttamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        
+    }
+
+
 }

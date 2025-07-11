@@ -11,4 +11,5 @@ Route::prefix('slider')->group(function () {
     Route::post('/create', [ContentSliderController::class, 'store'])->name('app.dashboard.slider.store');
     Route::get('/update/{slider}', [ContentSliderController::class, 'edit'])->name('app.dashboard.slider.edit');
     Route::put('/update/{slider}', [ContentSliderController::class, 'update'])->name('app.dashboard.slider.update');
+    Route::delete('/delete/{id}', [ContentSliderController::class, 'destroy'])->name('app.dashboard.slider.delete');
 });

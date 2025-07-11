@@ -5,7 +5,7 @@
 
             <div class="p-3">
                 <h1 class="text-xl text-gray-400">Benvenuto <span
-                        class="text-2xl text-gray-600 font-semibold">{{ $user->name ?? 'Utente sconosciuto' }}</span>
+                        class="text-2xl text-gray-600 font-semibold">{{ auth()?->user()?->name ?? '' }}</span>
                 </h1>
                 <form action="{{ route('app.logout') }}" method="post">
                     @csrf

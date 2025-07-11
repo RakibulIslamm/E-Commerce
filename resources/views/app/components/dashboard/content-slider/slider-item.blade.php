@@ -1,4 +1,5 @@
 @php
+    $id = $slider['id'];
     $name = $slider['name'];
     $title = $slider['title'];
     $img = $slider['img'];
@@ -31,9 +32,9 @@
                 type="button">
                 <x-lucide-arrow-up-from-line class="w-4 h-4" />
             </a>
-            <button class="text-gray-100 hover:text-white bg-red-500 hover:bg-red-600 p-1 rounded" type="button">
-                <x-lucide-trash class="w-4 h-4" />
-            </button>
+
+            
+            @include('app.components.dashboard.content-slider.delete-content-slider')
         </div>
     </td>
 </tr>

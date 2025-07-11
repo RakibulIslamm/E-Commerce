@@ -64,7 +64,7 @@
                                 @endforeach
                             @else
                                 <tr class="p-3 block">
-                                    <td>No slider found</td>
+                                    <td>Nessun dispositivo di scorrimento trovato</td>
                                 </tr>
                             @endif
                         </tbody>
