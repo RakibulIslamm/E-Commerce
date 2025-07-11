@@ -64,36 +64,3 @@
             class="block w-full rounded-md bg-[#744aaf] px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm">Vai!</button>
     </div>
 </form>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleButton = document.querySelector('button[role="switch"]');
-    const toggleSpan = toggleButton.querySelector('span[aria-hidden="true"]');
-    
-    const hiddenInput = document.createElement('input');
-    hiddenInput.type = 'hidden';
-    hiddenInput.name = 'accept_privacy';
-    hiddenInput.value = 'false';
-    toggleButton.parentNode.appendChild(hiddenInput);
-    
-    toggleButton.addEventListener('click', function() {
-        const isChecked = this.getAttribute('aria-checked') === 'true';
-        const newState = !isChecked;
-        
-        this.setAttribute('aria-checked', newState);
-        hiddenInput.value = newState ? 'true' : 'false';
-        
-        if (newState) {
-            this.classList.remove('bg-gray-200');
-            this.classList.add('bg-indigo-600');
-            toggleSpan.classList.remove('translate-x-0');
-            toggleSpan.classList.add('translate-x-4');
-        } else {
-            this.classList.remove('bg-indigo-600');
-            this.classList.add('bg-gray-200');
-            toggleSpan.classList.remove('translate-x-4');
-            toggleSpan.classList.add('translate-x-0');
-        }
-    });
-});
-</script>
