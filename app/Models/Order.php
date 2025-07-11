@@ -41,7 +41,7 @@ class Order extends Model
         'piva',
         'cf',
         'pec',
-        'sdi'
+        'sdi',
     ];
 
     public function articoli()
@@ -53,7 +53,7 @@ class Order extends Model
     {
         return Attribute::get(function () {
             return $this->articoli->map(function ($item) {
-                return "{$item->id}|{$item->qta}|{$item->imponibile}|{$item->ivato}";
+                return "{$item->IDARTICOLO}|{$item->qta}|{$item->imponibile}|{$item->ivato}";
             })->toArray();
         });
     }

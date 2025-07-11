@@ -9,7 +9,9 @@
 <a href="{{ $link ?? '#' }}" class="swiper-slide block relative w-full overflow-hidden">
     <div class="relative w-full" style="aspect-ratio: 1920 / 530;">
         <img src="{{ $img }}" alt="" class="absolute inset-0 w-full h-full object-contain" />
-        <div class="absolute inset-0 bg-gradient-to-r from-[#25365E] to-transparent z-10"></div>
+        @if ($title)
+            <div class="absolute inset-0 bg-gradient-to-r from-[#25365E] to-transparent z-10"></div>
+        @endif
 
         <div class="absolute inset-0 z-20 flex items-center justify-center sm:justify-start px-6 lg:px-20 text-gray-300">
             <div class="max-w-3xl space-y-3 text-center sm:text-left">

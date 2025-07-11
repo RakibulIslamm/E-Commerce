@@ -33,10 +33,10 @@
         @endif
     </div>
     <div class="swiper-pagination relative z-20"></div>
-    <div class="next absolute right-5 top-1/2 transform -translate-y-1/2 text-white w-5 h-5 z-20">
+    <div class="next absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 z-20">
         <x-heroicon-o-arrow-small-right />
     </div>
-    <div class="prev absolute left-5 top-1/2 transform -translate-y-1/2 text-white w-5 h-5 z-20">
+    <div class="prev absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 z-20">
         <x-heroicon-o-arrow-small-left />
     </div>
 </div>

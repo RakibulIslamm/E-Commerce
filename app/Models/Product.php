@@ -38,6 +38,7 @@ class Product extends Model
         'PREPROMOIVA',
         'DATAINIZIOPROMO',
         'DATAFINEPROMO',
+        'IDARTICOLO',
     ];
 
     protected $casts = [

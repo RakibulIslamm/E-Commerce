@@ -68,12 +68,11 @@ class ContentSliderController
             'name' => 'required|string|max:255',
             'link' => 'nullable|string|max:255',
             'link_text' => 'nullable|string|max:255',
-            'title' => 'required|string|max:255',
+            'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'img' => 'nullable|image|max:2048',
             'position' => 'nullable|integer',
         ]);
-        // dd($validated);
 
         // Check if the new position value is already taken by another slider
         if ($slider->position !== $validated['position'] && ContentSlider::where('position', $validated['position'])->exists()) {

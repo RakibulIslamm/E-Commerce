@@ -33,6 +33,34 @@
             </form>
         @endif
     </td>
+
+
+    <td class="text-center">
+        @if ($customer->email_verified_at)
+            <button
+                class="px-4 py-1 rounded-full bg-green-100 text-green-700 text-sm font-semibold shadow-sm cursor-not-allowed"
+                disabled
+            >
+                {{ __('Verificato') }}
+            </button>
+        @else
+            <form method="POST" action="{{ route('app.dashboard.customers.update', $customer) }}">
+                @csrf
+                @method('PUT')
+                <button
+                    id="resend-button"
+                    class="px-4 py-1 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold shadow-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                    <input type="hidden" name="verify_email" value="1">
+                    {{ __('Verificare') }} <span id="countdown"></span>
+                </button>
+            </form>
+        @endif
+    </td>
+
+
+    
+
     <form action="{{ route('app.dashboard.customers.update', $customer) }}" method="POST">
         @csrf
         @method('PUT')

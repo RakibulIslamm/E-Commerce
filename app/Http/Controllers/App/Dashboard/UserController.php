@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App\Dashboard;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class UserController
@@ -66,16 +67,26 @@ class UserController
      */
     public function update(Request $request, User $user)
     {
-        
+        // If the request is to verify the email, manually set email_verified_at
+        if ($request->has('verify_email')) {
+            $user->email_verified_at = Carbon::now();
+        }
 
+        // Validate other fields
         $validator = Validator::make($request->all(), [
             'active' => 'nullable|boolean',
             'price_list' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
         ]);
-        
+
         $validate = $validator->validated();
-        $user->update($validate);
+
+        // Update validated fields
+        $user->fill($validate);
+
+        // Save all changes
+        $user->save();
+
         return redirect()->back()->with('success', "User updated successfully");
     }
 

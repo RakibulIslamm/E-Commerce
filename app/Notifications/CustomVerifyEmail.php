@@ -20,9 +20,8 @@ class CustomVerifyEmail extends VerifyEmail
         }
 
         return (new MailMessage)
-            ->subject('Conferma la tua email - ' . ($tenant->business_name ?? config('app.name')))
+            ->subject('Conferma di registrazione - ' . ($tenant->business_name ?? config('app.name')))
             ->markdown('emails.verify-email', [
-                'url' => $this->verificationUrl($notifiable),
                 'tenant' => $tenant,
                 'registered_user' => $notifiable,
             ])

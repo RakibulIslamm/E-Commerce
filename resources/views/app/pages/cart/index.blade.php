@@ -65,7 +65,6 @@
     </x-page-layout>
 </x-app-guest-layout>
 <script>
-    
     async function cart (){
         await getCart('cart-page-loading');
         updateShippingLimit(window.all_cart);
@@ -78,14 +77,16 @@
 
     function updateShippingLimit(cartItems) {
         const shippingLimitP = document.getElementById('shipping-limit-p');
-        
-        // Calculate the total cart value
+        const discountedPercent = user?.discount ?? 0;
+
         const cartTotal = Object.values(cartItems).reduce((total, item) => {
             return total + (item.quantity * item.price);
         }, 0);
+
+        const discountedTotal = cartTotal - (cartTotal * discountedPercent / 100);
         
         // Update the shipping limit message based on the cart total
-        if (cartTotal >= shippingSetting.minimumOrder) {
+        if (discountedTotal >= shippingSetting.minimumOrder) {
             shippingLimitP.className = "font-semibold bg-green-500 py-1 px-3 rounded-md mb-5 lg:-mt-10 flex items-center text-green-700 bg-opacity-50";
             if (shippingSetting.minimumOrder === 0) {
                 shippingLimitP.className = "hidden"

@@ -115,6 +115,7 @@
     const totalElement = document.getElementById('total');
 
     const tenant = @json(tenant());
+    const user = @json(auth()->user());
 
     async function getCart(loadingId = '') {
         window.all_cart = {};
@@ -236,10 +237,14 @@
     function renderSidebarSubtotal() {
         const data = Object.values(window.all_cart);
         const subtotal = data.reduce((total, item) => {
+            
+            const discountedPercent = user?.discount ?? 0;
             const price = tenant?.price_with_vat ? item.price_with_vat : item.price;
+            const discountedPrice = price - (price * discountedPercent / 100);
             const quantity = item.quantity;
-            if (price) {
-                return total + (price * quantity);
+
+            if (discountedPrice) {
+                return total + (discountedPrice * quantity);
             } else {
                 return 0;
             }
@@ -321,14 +326,18 @@
         let vat = 0;
         const subtotal = data.reduce((total, item) => {
             const price = tenant?.price_with_vat ? item.price_with_vat : item.price;
+            const discountedPercent = user?.discount ?? 0;
+
+            const discountedPrice = Math.round((price - (price * discountedPercent / 100)) * 100) / 100;
+
             const quantity = item?.quantity;
             
             if(!tenant?.price_with_vat){
-                vat += (price * quantity) * (parseFloat(item.vat) / 100);
+                vat += (discountedPrice * quantity) * (parseFloat(item.vat) / 100);
             }
 
             if (price) {
-                return total + (price * quantity);
+                return total + (discountedPrice * quantity);
             } else {
                 return 0;
             }

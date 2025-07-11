@@ -281,6 +281,7 @@ class ProductController
 
         $rules = [
             'BARCODE' => 'required|string',
+            'IDARTICOLO' => 'required|string',
             'DESCRIZIONEBREVE' => 'required|string',
             'DESCRIZIONEESTESA' => 'nullable|string',
             'ALIQUOTAIVA' => 'required|numeric|min:0|max:100',
@@ -461,7 +462,7 @@ class ProductController
         $id_articolo = $validated['id_articolo'];
 
         try {
-            $product = Product::where('id', $id_articolo)->exists();
+            $product = Product::where('IDARTICOLO', $id_articolo)->exists();
             Log::info("Success articolo_esistente() query");
             return response()->json([
                 'codice' => 'OK',

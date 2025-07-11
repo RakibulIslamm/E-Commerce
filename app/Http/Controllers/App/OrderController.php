@@ -109,15 +109,26 @@ class OrderController
         ]);
 
 
+        $user = auth()?->user();
+        $discount = $user?->discount ?? 0;
+
         $total = 0;
-        $vat = 0 ;
+        $vat = 0;
+
         foreach ($cart as $item) {
-            $item_total = $item['price'] * $item['quantity'];
-            $item_vat = ($item['price'] * $item['vat'] / 100) * $item['quantity'];
-            
-            $total += $item_total;
-            $vat += $item_vat;
+            $price = $item['price']; // Assuming this is always net price
+            $quantity = $item['quantity'];
+            $vatPercent = $item['vat'];
+
+            $itemTotal = $price * $quantity;
+            $itemTotalAfterDiscount = $itemTotal - ($itemTotal * $discount / 100);
+            $itemVat = ($itemTotalAfterDiscount * $vatPercent) / 100;
+
+            $total += $itemTotalAfterDiscount;
+            $vat += $itemVat;
         }
+
+
         $validate['totale_netto'] = $total;
         $validate['totale_iva'] = $vat;
 
@@ -188,7 +199,6 @@ class OrderController
             $order->load('articoli.product');
             
             $this->sendOrderConfirmationEmail($order);
-            session()->forget('cart');
             return redirect()->route('app.confirm-order')->with(['order' => $order, 'success' => true]);
         } catch (\Exception $e) {
             return redirect()->route('app.confirm-order')->with('message', "Internal Server Error")->with('success', false)->with('error', true);
@@ -197,6 +207,7 @@ class OrderController
 
     public function confirm_order()
     {
+        session()->forget('cart');
         $order = session('order');
         $success = session('success');
         $error = session('error');

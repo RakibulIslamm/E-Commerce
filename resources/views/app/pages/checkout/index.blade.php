@@ -172,17 +172,23 @@
                         <p>SubTotale</p>
                     </div>
 
-
+                    @php
+                        $user = auth()?->user();
+                        $discount = $user?->discount ?? 0;
+                    @endphp
+                    
                     <hr class="my-3">
                     @if (session('cart'))
                         @foreach (session('cart') as $id => $details)
+                            @php
+                                $unitPrice = tenant()?->price_with_vat ? $details['price_with_vat'] : $details['price'];
+                                $subtotal = $unitPrice * $details['quantity'];
+                                $discountedSubtotal = $subtotal - ($subtotal * $discount / 100);
+                            @endphp
+
                             <div class="flex items-center justify-between text-gray-500">
                                 <p>{{ $details['name'] }} x {{ $details['quantity'] }}</p>
-                                @if (tenant()?->price_with_vat)
-                                    <p>{{ $details['price_with_vat'] * $details['quantity'] }}€</p>
-                                @else
-                                    <p>{{ $details['price'] * $details['quantity'] }}€</p>
-                                @endif
+                                <p>{{ number_format($discountedSubtotal, 2, '.', '') }}€</p>
                             </div>
                         @endforeach
                     @else
@@ -208,9 +214,24 @@
                             }
                         }
                     }
-                    $total = number_format((float) $total, 2, '.', '');
-                    $vat = number_format((float) $vat, 2, '.', '');
-                    $grand_total = number_format((float) $vat + $total, 2, '.', '');
+                    $user = auth()?->user();
+                    $discount = $user?->discount ?? 0;
+
+                    $total = (float) $total;
+                    $vat = (float) $vat;
+
+                    // Apply discount to total (before formatting)
+                    $discountedTotal = $total - ($total * $discount / 100);
+
+                    // Optional: if discount should apply to VAT as well
+                    $discountedVat = $vat - ($vat * $discount / 100);
+
+                    // Format to 2 decimal places
+                    $discountedTotal = number_format($discountedTotal, 2, '.', '');
+                    $discountedVat = number_format($discountedVat, 2, '.', '');
+
+
+                    $grand_total = number_format((float) $discountedTotal + $discountedVat, 2, '.', '');
                 @endphp
 
 
@@ -219,7 +240,7 @@
                     <div>
                         <div class="flex justify-between items-center text-gray-600">
                             <p>SubTotale</p>
-                            <p>{{ $total }}€</p>
+                            <p>{{ $discountedTotal }}€</p>
                         </div>
                         <hr class="my-3">
                     </div>
@@ -247,7 +268,7 @@
                     <div>
                         <div class="flex justify-between items-center text-gray-600">
                             <p>Iva</p>
-                            <p>{{ $vat }}€</p>
+                            <p>{{ $discountedVat }}€</p>
                         </div>
                         <hr class="my-3">
                     </div>

@@ -185,15 +185,16 @@ class CartController
 
             $cart[$product->id] = [
                 "product_id" => $product->id,
-                "name" => $product->DESCRIZIONEBREVE,
+                "id_articolo" => $product?->IDARTICOLO,
+                "name" => $product?->DESCRIZIONEBREVE,
                 "quantity" => $requestedQuantity,
                 "price" => $price,
                 "price_with_vat" => $price_with_vat,
-                "photo" => $product->FOTO,
-                'stock' => $product->GIACENZA,
-                'vat' => $product->ALIQUOTAIVA,
+                "photo" => $product?->FOTO,
+                'stock' => $product?->GIACENZA,
+                'vat' => $product?->ALIQUOTAIVA,
                 'selected' => true,
-                'pxc' => $product->PXC
+                'pxc' => $product?->PXC
             ];
 
             session()->put('cart', $cart);

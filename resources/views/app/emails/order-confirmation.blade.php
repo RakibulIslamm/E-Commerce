@@ -95,16 +95,35 @@
             <div class="details"><strong>Spese contrassegno:</strong><span> €{{ number_format($cod_fee, 2) }}</span></div>
         </div>
 
+        @php
+            $user = auth()?->user();
+            $discount = $user?->discount ?? 0;
+        @endphp
+
         <div class="product-summary">
             <h2>Articoli nel tuo Ordine</h2>
             @foreach ($articoli as $item)
+                @php
+                    $unitPrice = $item['imponibile'];
+                    $discountedUnitPrice = $unitPrice - ($unitPrice * $discount / 100);
+                    $quantity = $item['qta'];
+                    $subtotal = $unitPrice * $quantity;
+                    $discountedTotal = $subtotal - ($subtotal * $discount / 100);
+                @endphp
+
                 <div class="product-item">
                     <div>
-                        <strong style="margin-left: 10px;">{{$item->product->DESCRIZIONEBREVE}}</strong>
+                        <strong style="margin-left: 10px;">{{ $item->product->DESCRIZIONEBREVE }}</strong>
                     </div>
                     <div style="text-align: right;">
-                        <div> €{{ number_format($item['imponibile'], 2) }} x{{ $item['qta'] }}</div>
-                        <div style="font-weight: strong;"> €{{ number_format($item['imponibile'] * $item['qta'], 2) }}</div>
+                        <div>€{{ number_format($discountedUnitPrice, 2) }} x{{ $quantity }}</div>
+                        @if($discount > 0)
+                            <div>
+                                <strong>€{{ number_format($discountedTotal, 2) }}</strong>
+                            </div>
+                        @else
+                            <div><strong>€{{ number_format($subtotal, 2) }}</strong></div>
+                        @endif
                     </div>
                 </div>
             @endforeach

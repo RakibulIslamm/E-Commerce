@@ -130,6 +130,22 @@
                     </div>
                 @endif
 
+                @php
+                    $price = match (true) {
+                        $user && $user->price_list == 3 => $product['PRE3IMP'],
+                        $user && $user->price_list == 2 => $product['PRE2IMP'],
+                        $user && $user->price_list == 1 => $product['PRE1IMP'],
+                        default => $product['PRE1IMP'],
+                    };
+
+                    $price_with_vat = match (true) {
+                        $user && $user->price_list == 3 => $product['PRE3IVA'],
+                        $user && $user->price_list == 2 => $product['PRE2IVA'],
+                        $user && $user->price_list == 1 => $product['PRE1IVA'],
+                        default => $product['PRE1IVA'],
+                    };
+                @endphp
+
                 <!-- Add to Cart Button -->
                 <div class="flex items-center gap-5">
                     @if (!$hide_catalogo_mandatory_con_conferma && !$hide_catalogo_mandatory)
@@ -149,12 +165,12 @@
                     @if (!$hide_catalogo_mandatory_con_conferma)
                         @if (tenant()?->price_with_vat)
                             <div class="flex items-center">
-                                <h3 class="text-3xl font-semibold">{{ $product['PRE1IVA'] }}€</h3>
+                                <h3 class="text-3xl font-semibold">{{ $price_with_vat }}€</h3>
                                 <sup class="ml-3 font-bold text-green-900">IVATO</sup>
                             </div>
                         @else
                             <div class="flex items-center">
-                                <h3 class="text-3xl font-semibold">{{ $product['PRE1IMP'] }}€</h3>
+                                <h3 class="text-3xl font-semibold">{{ $price }}€</h3>
                                 <sup class="ml-3 font-bold text-red-900">SENZA IVA</sup>
                             </div>
                         @endif
