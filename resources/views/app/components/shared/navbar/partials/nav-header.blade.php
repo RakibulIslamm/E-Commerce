@@ -84,7 +84,7 @@ if (isset(tenant()?->brand_info)) {
                     $isMobile = $userAgent && preg_match('/Mobile|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini/', $userAgent);
                 @endphp
 
-                @if($isMobile)
+                @if(!$isMobile)
                     @include('app.components.lang.selects')
                 @endif
             </div>
