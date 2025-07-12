@@ -126,6 +126,14 @@ if (isset($site_settings->brand_info)) {
                     </div>
                 @endif
             </div>
+            @php
+                $userAgent = request()->header('User-Agent');
+                $isMobile = $userAgent && preg_match('/Mobile|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini/', $userAgent);
+            @endphp
+
+            @if($isMobile)
+                @include('app.components.lang.selects')
+            @endif
         </nav>
     </div>
 </div>

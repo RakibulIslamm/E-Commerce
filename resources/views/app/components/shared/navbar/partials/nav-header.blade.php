@@ -79,6 +79,14 @@ if (isset(tenant()?->brand_info)) {
                         <a href="/dashboard" class="text-sm font-medium text-gray-700 hover:text-gray-800">Dashboard</a>
                     </div>
                 @endif
+                @php
+                    $userAgent = request()->header('User-Agent');
+                    $isMobile = $userAgent && preg_match('/Mobile|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini/', $userAgent);
+                @endphp
+
+                @if($isMobile)
+                    @include('app.components.lang.selects')
+                @endif
             </div>
         </div>
     </div>
