@@ -40,7 +40,7 @@ if (isset($site_settings->brand_info)) {
 <div id="mobile-menu"
     class="h-screen fixed top-0 left-0 z-50 bg-white w-full sm:px-10 flex flex-col -translate-x-full transition-all duration-300 ease-in-out lg:hidden shadow-lg">
 
-    <div class="w-full flex justify-between p-4 border-b">
+    <div class="w-full flex justify-between p-4 border-b mt-4">
         <a href="/" class="flex items-center gap-2">
             <img class="h-10 w-auto object-contain" src="{{ $logo ?? '/images/logo.png' }}" alt="Logo">
         </a>
