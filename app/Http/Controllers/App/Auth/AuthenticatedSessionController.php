@@ -4,7 +4,6 @@ namespace App\Http\Controllers\App\Auth;
 
 use App\Http\Controllers\App\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\ShippingSetting;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

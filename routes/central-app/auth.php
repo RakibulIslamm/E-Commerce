@@ -11,16 +11,36 @@ use App\Http\Controllers\CentralApp\Auth\RegisteredUserController;
 use App\Http\Controllers\CentralApp\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-use function Termwind\render;
+Route::post('/mobile/login', [AuthenticatedSessionController::class, 'mobileLogin'])
+     ->name('api.mobile.login');
+
+Route::post('/mobile/logout', [AuthenticatedSessionController::class, 'mobileLogout'])
+     ->name('api.mobile.logout');
+
+Route::post('/mobile/refresh', [AuthenticatedSessionController::class, 'mobileRefresh'])
+     ->name('api.mobile.refresh');
+
+Route::get('/mobile/me', [AuthenticatedSessionController::class, 'mobileMe'])
+     ->name('api.mobile.me');
+
+Route::get('/mobile/test', function () {
+    return response()->json([
+        'success' => true,
+        'message' => 'API Mobile funzionante',
+        'tenant_id' => tenant('id'),
+        'tenant_domain' => tenant('domain'),
+        'timestamp' => now()->toISOString()
+    ]);
+})->name('api.mobile.test');
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
-                ->name('central.register');
+        ->name('central.register');
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-     Route::get('login', [AuthenticatedSessionController::class, 'create'])
-                 ->name('central.login');
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+        ->name('central.login');
 
     Route::get('hello', function () {
         return "Hello....";
@@ -29,37 +49,39 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-                ->name('central.password.request');
+        ->name('central.password.request');
 
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-                ->name('central.password.email');
+        ->name('central.password.email');
 
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-                ->name('central.password.reset');
+        ->name('central.password.reset');
 
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-                ->name('central.password.store');
+    Route::post('reset-password', [NewPasswordController::class, 'store']);
+
+   
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
-                ->name('verification.notice');
+        ->name('verification.notice');
 
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-                ->middleware(['signed', 'throttle:6,1'])
-                ->name('verification.verify');
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
 
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-                ->middleware('throttle:6,1')
-                ->name('central.verification.send');
+        ->middleware('throttle:6,1')
+        ->name('central.verification.send');
 
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-                ->name('central.password.confirm');
+        ->name('central.password.confirm');
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     Route::put('password', [PasswordController::class, 'update'])->name('central.password.update');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->name('central.logout');
+        ->name('central.logout');
 });
+

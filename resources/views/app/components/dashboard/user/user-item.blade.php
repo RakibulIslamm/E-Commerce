@@ -1,17 +1,25 @@
 <tr>
+    <!-- Nome -->
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap break-words">
         {{ $customer->name }}
-
     </td>
+    
+    <!-- Partita IVA -->
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap break-all">
         {{ $customer->vat_number }}
     </td>
+    
+    <!-- Codice Fiscale -->
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4  break-all whitespace-nowrap">
         {{ $customer->tax_id }}
     </td>
+    
+    <!-- Email -->
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap break-all">
         {{ $customer->email }}
     </td>
+    
+    <!-- Stato (Attivo/Inattivo) -->
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
         @if ($customer->active)
             <form action="{{ route('app.dashboard.customers.update', $customer) }}" method="POST">
@@ -34,7 +42,7 @@
         @endif
     </td>
 
-
+    <!-- Verificato -->
     <td class="text-center">
         @if ($customer->email_verified_at)
             <button
@@ -58,12 +66,45 @@
         @endif
     </td>
 
+    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
+        <div class="flex flex-col space-y-1">
+            @if ($customer->mobile_access_enabled)
+                <div class="flex items-center space-x-2">
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded flex items-center">
+                        <x-lucide-smartphone class="w-3 h-3 mr-1" />
+                        Abilitato
+                    </span>
+                </div>
+                @if ($customer->mobile_pin)
+                    <span class="text-gray-600 text-xs">PIN: ****</span>
+                @endif
+                @if ($customer->last_mobile_login)
+                    <span class="text-gray-500 text-xs">
+                        {{ $customer->last_mobile_login->format('d/m H:i') }}
+                    </span>
+                @endif
+            @else
+                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded flex items-center">
+                    Disabilitato
+                </span>
+            @endif
+            
+            <!-- Pulsante gestione mobile -->
+            <button onclick="openMobileModal({{ $customer->id }}, '{{ addslashes($customer->name) }}')" 
+                    class="bg-blue-500 hover:bg-blue-600 text-white text-xs px-2 py-1 rounded transition duration-200"
+                    title="Gestisci accesso mobile">
+                <x-lucide-settings class="w-3 h-3 inline mr-1" />
+                Mobile
+            </button>
+        </div>
+    </td>
 
-    
-
+    <!-- Form per aggiornare Lista e Sconto -->
     <form action="{{ route('app.dashboard.customers.update', $customer) }}" method="POST">
         @csrf
         @method('PUT')
+        
+        <!-- Lista -->
         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
             <select class="py-1 rounded" name="price_list">
                 <option value="1" {{ $customer->price_list == 1 ? 'selected' : '' }}>List 1</option>
@@ -71,9 +112,13 @@
                 <option value="3" {{ $customer->price_list == 3 ? 'selected' : '' }}>List 3</option>
             </select>
         </td>
+        
+        <!-- Sconto -->
         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
             <input class="py-1 rounded w-24" name="discount" value="{{$customer->discount}}"/>
         </td>
+        
+        <!-- Pulsante Update -->
         <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
             <button
                 class="text-gray-100 hover:text-white bg-indigo-500 hover:bg-indigo-600 py-1 px-3 rounded">Update</button>

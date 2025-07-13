@@ -8,7 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-
+use App\Models\Tenant;
+use App\Models\User;
 class AuthenticatedSessionController extends Controller
 {
     
@@ -44,5 +45,78 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+    
+    /**
+     * API Login mobile (solo email + PIN)
+     * Cerca automaticamente in tutti i database tenant
+     */
+    public function mobileLogin(Request $request)
+    {
+        try {
+            $email = $request->input('email');
+            $pin = $request->input('pin');
+
+            $tenants = Tenant::all();
+            
+            foreach ($tenants as $tenant) {
+                try {
+                    // Inizializza il tenant
+                    tenancy()->initialize($tenant);
+                    
+                    // Cerca l'utente nel database di questo tenant
+                    $user = User::findByEmailAndPin($email, $pin);
+                    if ($user && $user->hasMobileAccess()) {
+                        // Aggiorna ultimo accesso mobile
+                        $user->updateLastMobileLogin();
+                        $customClaims = [
+                            'tenant_id' => $tenant->id,
+                            'tenant_domain' => $tenant->domain,
+                            'mobile_login' => true,
+                        ];
+
+
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Login effettuato con successo',
+                            'domain' => $tenant->domain,
+                            'user' => [
+                                'id' => $user->id,
+                                'name' => $user->name,
+                                'email' => $user->email,
+                                'role' => $user->role ?? 'customer',
+                            ],
+                            'tenant' => [
+                                'id' => $tenant->id,
+                                'domain' => $tenant->domain,
+                                'business_name' => $tenant->business_name ?? 'Tenant ' . $tenant->id,
+                            ]
+                        ]);
+                    }
+                    
+                } catch (\Exception $e) {
+                    // Log errore ma continua con il prossimo tenant
+                    \Log::warning("Errore durante login per tenant {$tenant->id}: " . $e->getMessage());
+                    continue;
+                } finally {
+                    // Termina il tenancy per passare al prossimo
+                    tenancy()->end();
+                }
+            }
+
+            // Nessun utente trovato in nessun tenant
+            return response()->json([
+                'success' => false,
+                'message' => 'Credenziali non valide o accesso mobile non autorizzato'
+            ], 401);
+
+        } catch (\Exception $e) {
+            \Log::error('Mobile Login Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore interno del server'
+            ], 500);
+        }
     }
 }
