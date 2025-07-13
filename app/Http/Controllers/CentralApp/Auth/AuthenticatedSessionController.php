@@ -78,19 +78,8 @@ class AuthenticatedSessionController extends Controller
 
                         return response()->json([
                             'success' => true,
-                            'message' => 'Login effettuato con successo',
+                            'message' => 'pin valido',
                             'domain' => $tenant->domain,
-                            'user' => [
-                                'id' => $user->id,
-                                'name' => $user->name,
-                                'email' => $user->email,
-                                'role' => $user->role ?? 'customer',
-                            ],
-                            'tenant' => [
-                                'id' => $tenant->id,
-                                'domain' => $tenant->domain,
-                                'business_name' => $tenant->business_name ?? 'Tenant ' . $tenant->id,
-                            ]
                         ]);
                     }
                     

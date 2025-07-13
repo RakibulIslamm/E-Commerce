@@ -68,28 +68,6 @@
 
     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-[14px] p-4 whitespace-nowrap">
         <div class="flex flex-col space-y-1">
-            @if ($customer->mobile_access_enabled)
-                <div class="flex items-center space-x-2">
-                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded flex items-center">
-                        <x-lucide-smartphone class="w-3 h-3 mr-1" />
-                        Abilitato
-                    </span>
-                </div>
-                @if ($customer->mobile_pin)
-                    <span class="text-gray-600 text-xs">PIN: ****</span>
-                @endif
-                @if ($customer->last_mobile_login)
-                    <span class="text-gray-500 text-xs">
-                        {{ $customer->last_mobile_login->format('d/m H:i') }}
-                    </span>
-                @endif
-            @else
-                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded flex items-center">
-                    Disabilitato
-                </span>
-            @endif
-            
-            <!-- Pulsante gestione mobile -->
             <button onclick="openMobileModal({{ $customer->id }}, '{{ addslashes($customer->name) }}')" 
                     class="bg-blue-500 hover:bg-blue-600 text-white text-xs px-2 py-1 rounded transition duration-200"
                     title="Gestisci accesso mobile">
