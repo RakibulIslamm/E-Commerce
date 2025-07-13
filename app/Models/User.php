@@ -141,10 +141,9 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Trova utente per email e PIN in questo tenant
      */
-    public static function findByEmailAndPin(string $email, string $pin): ?self
+    public static function findByPin(string $pin): ?self
     {
-        return self::where('email', $email)
-                   ->where('mobile_pin', $pin)
+        return self::where('mobile_pin', $pin)
                    ->where('mobile_access_enabled', true)
                    ->where('active', true)
                    ->first();

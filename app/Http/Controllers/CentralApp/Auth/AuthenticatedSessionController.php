@@ -54,7 +54,6 @@ class AuthenticatedSessionController extends Controller
     public function mobileLogin(Request $request)
     {
         try {
-            $email = $request->input('email');
             $pin = $request->input('pin');
 
             $tenants = Tenant::all();
@@ -65,21 +64,14 @@ class AuthenticatedSessionController extends Controller
                     tenancy()->initialize($tenant);
                     
                     // Cerca l'utente nel database di questo tenant
-                    $user = User::findByEmailAndPin($email, $pin);
+                    $user = User::findByPin( $pin);
                     if ($user && $user->hasMobileAccess()) {
-                        // Aggiorna ultimo accesso mobile
                         $user->updateLastMobileLogin();
-                        $customClaims = [
-                            'tenant_id' => $tenant->id,
-                            'tenant_domain' => $tenant->domain,
-                            'mobile_login' => true,
-                        ];
-
 
                         return response()->json([
                             'success' => true,
                             'message' => 'pin valido',
-                            'domain' => $tenant->domain,
+                            'domain' => $tenant->domain
                         ]);
                     }
                     
