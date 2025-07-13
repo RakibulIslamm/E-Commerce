@@ -14,25 +14,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('/mobile/login', [AuthenticatedSessionController::class, 'mobileLogin'])
      ->name('api.mobile.login');
 
-Route::post('/mobile/logout', [AuthenticatedSessionController::class, 'mobileLogout'])
-     ->name('api.mobile.logout');
-
-Route::post('/mobile/refresh', [AuthenticatedSessionController::class, 'mobileRefresh'])
-     ->name('api.mobile.refresh');
-
-Route::get('/mobile/me', [AuthenticatedSessionController::class, 'mobileMe'])
-     ->name('api.mobile.me');
-
-Route::get('/mobile/test', function () {
-    return response()->json([
-        'success' => true,
-        'message' => 'API Mobile funzionante',
-        'tenant_id' => tenant('id'),
-        'tenant_domain' => tenant('domain'),
-        'timestamp' => now()->toISOString()
-    ]);
-})->name('api.mobile.test');
-
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('central.register');
