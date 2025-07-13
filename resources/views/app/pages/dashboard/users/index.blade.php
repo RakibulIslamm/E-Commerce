@@ -178,12 +178,6 @@
                             <span>Abilita</span>
                         </button>
                         
-                        <button onclick="disableMobile(${userId})" 
-                                class="flex items-center justify-center space-x-2 px-4 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-colors font-medium">
-                            <x-lucide-x-circle class="w-4 h-4" />
-                            <span>Disabilita</span>
-                        </button>
-                        
                         <button onclick="regeneratePin(${userId})" 
                                 class="flex items-center justify-center space-x-2 px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl transition-colors font-medium">
                             <x-lucide-refresh-cw class="w-4 h-4" />
@@ -276,58 +270,6 @@
             });
         }
 
-        window.disableMobile = function(userId) {
-            Swal.fire({
-                title: 'Sei sicuro?',
-                text: "L'utente non potrà più accedere dall'app mobile",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#6b7280',
-                confirmButtonText: 'Sì, disabilita',
-                cancelButtonText: 'Annulla'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch(`/dashboard/customers/${userId}/mobile/disable`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Disabilitato!',
-                                text: 'Accesso mobile disabilitato con successo',
-                                confirmButtonColor: '#10b981',
-                                confirmButtonText: 'Ok'
-                            }).then(() => {
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Errore',
-                                text: data.message,
-                                confirmButtonColor: '#ef4444',
-                                confirmButtonText: 'Ok'
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Errore di connessione',
-                            text: 'Si è verificato un errore durante la comunicazione con il server',
-                            confirmButtonColor: '#ef4444',
-                            confirmButtonText: 'Ok'
-                        });
-                    });
-                }
-            });
-        }
 
         window.regeneratePin = function(userId) {
             Swal.fire({

@@ -107,17 +107,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Disabilita accesso mobile
-     */
-    public function disableMobileAccess(): self
-    {
-        $this->mobile_access_enabled = false;
-        $this->save();
-        
-        return $this;
-    }
-
-    /**
      * Rigenera il PIN mobile
      */
     public function regenerateMobilePin(): self
