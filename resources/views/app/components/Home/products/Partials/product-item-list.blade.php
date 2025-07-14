@@ -57,7 +57,7 @@
                     @else
                         <div class="flex items-center">
                             <h3 class="text-xl font-semibold">{{ $price }}€</h3>
-                            <sup class="ml-1 font-bold text-xs text-red-900">ESCUSO IVA</sup>
+                            <sup class="ml-1 font-bold text-xs text-red-900">ESCLUSO IVA</sup>
                         </div>
                     @endif
                         </div>
