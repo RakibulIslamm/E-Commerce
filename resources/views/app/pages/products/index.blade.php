@@ -9,13 +9,13 @@
                     <h2 class="break-keep text-xl font-semibold px-5 py-2 rounded-lg bg-gray-200">{{$selectedCategory?->nome}}</h2>
                 @endif
                 <div
-                    class="py-2 flex-1 flex sm:items-center items-start lg:justify-end justify-center flex-col sm:flex-row sm:gap-5 gap-2 w-full">
+                    class="py-2 flex-1 flex lg:items-center items-start lg:justify-end justify-center flex-col lg:flex-row lg:gap-5 gap-2 w-full">
                     <div class="sm:flex items-center gap-4 hidden">
                         <button onclick="setProductView('grid')"><x-ri-layout-grid-fill
                                 class="w-5 h-5 text-gray-900" /></button>
                         <button onclick="setProductView('list')"><x-ri-list-check-2 class="w-5 h-5 text-gray-600" /></button>
                     </div>
-                    <span class="hidden sm:block">|</span>
+                    <span class="hidden lg:block">|</span>
                     <div class="flex items-center gap-2">
                         <label for="order_by" class="text-sm">Ordina per</label>
                         <select name="" id="order_by" class="text-sm py-1 rounded-md">
@@ -26,7 +26,7 @@
                             <option value="price_high">Dal più alto al più basso (prezzo)</option>
                         </select>
                     </div>
-                    <span class="hidden sm:block">|</span>
+                    <span class="hidden lg:block">|</span>
                     <div class="flex items-center gap-3">
                         <div class="flex items-center gap-2">
                         <label for="items_per_page" class="text-sm">Risultati per pagina</label>
@@ -36,7 +36,7 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
-                        <div>
+                        <div class="lg:hidden">
                             <button id="open-modal-btn" x-data=""
                                 x-on:click.prevent="$dispatch('open-modal', 'search-product')"
                                 class="text-gray-100 hover:text-white bg-indigo-500 hover:bg-indigo-600 p-1 rounded cursor-pointer"
