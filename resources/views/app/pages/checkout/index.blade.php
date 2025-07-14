@@ -12,7 +12,7 @@
                 <div class="mt-4">
                     <x-input-label for="email" :value="__('Email address')" />
                     <x-text-input id="email" class="block w-full mt-1" type="text" name="email"
-                        value="{{ $user->email ?? '' }}" required />
+                        value="{{ auth()?->user()?->email ?? '' }}" required />
                 </div>
             </div>
             <hr class="my-10">
@@ -24,25 +24,25 @@
                         <div class="w-full">
                             <x-input-label for="nominativo" :value="__('Nominativo')" />
                             <x-text-input id="nominativo" class="block w-full mt-1" type="text" name="nominativo"
-                                value="{{ $user->name ?? '' }}" required />
+                                value="{{ auth()?->user()?->name ?? '' }}" required />
                         </div>
                         <div class="w-full">
                             <x-input-label for="telefono" :value="__('Telefono')" />
                             <x-text-input id="telefono" class="block w-full mt-1" type="text" name="telefono"
-                                value="{{ $user->telephone ?? '' }}" required />
+                                value="{{ auth()?->user()?->telephone ?? '' }}" required />
                         </div>
                     </div>
 
                     <div>
                         <x-input-label for="ragione_sociale" :value="__('Ragione Sociale')" />
                         <x-text-input id="ragione_sociale" class="block w-full mt-1" type="text"
-                            name="ragione_sociale" value="{{ $user->business_name ?? '' }}" required />
+                            name="ragione_sociale" value="{{ auth()?->user()?->business_name ?? '' }}" required />
                     </div>
 
                     <div>
                         <x-input-label for="indirizzo" :value="__('Indirizzo')" />
                         <x-text-input id="indirizzo" class="block w-full mt-1" type="text" name="indirizzo"
-                            value="{{ $user->address ?? '' }}" required />
+                            value="{{ auth()?->user()?->address ?? '' }}" required />
                     </div>
                     <div class="w-full">
                         <p class="text-red-500 italic text-sm" id="cap_error"></p>
@@ -51,21 +51,21 @@
                             <div class="w-full">
                                 <x-input-label for="cap" :value="__('Cap')" />
                                 <x-text-input id="cap" class="block w-full mt-1" type="text" name="cap"
-                                    value="{{ $user->postal_code ?? '' }}" required />
+                                    value="{{ auth()?->user()?->postal_code ?? '' }}" required />
                             </div>
 
                             <div class="w-full">
                                 <label for="citta" class="block font-medium text-sm text-gray-700">Citta</label>
                                 <select name="citta" id="citta"
                                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1">
-                                    <option value="{{ $user->city ?? '' }}">{{ $user->city ?? 'Inserisci il codice postale' }}
+                                    <option value="{{ auth()?->user()?->city ?? '' }}">{{ $user->city ?? '' }}
                                     </option>
                                 </select>
                             </div>
                             <div class="w-full">
                                 <x-input-label for="provincia" :value="__('Provincia')" />
                                 <x-text-input id="provincia" class="block w-full mt-1" type="text" name="provincia"
-                                    value="{{ $user->province ?? '' }}" required />
+                                    value="{{ auth()?->user()?->province ?? '' }}" required />
                             </div>
 
                             {{-- <div class="sr-only">

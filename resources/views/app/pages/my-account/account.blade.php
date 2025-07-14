@@ -18,7 +18,7 @@
                         <div class="w-8/12">
                             <x-input-label for="name" :value="__('Nome*')" />
                             <x-text-input id="name" class="block w-full" type="text" name="name"
-                                :value="old('name', $user->name ?? 'Nome non disponibile')" required autofocus autocomplete="name" />
+                                :value="old('name', auth()?->user()?->name ?? '')" required autofocus autocomplete="name" />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
@@ -26,7 +26,7 @@
                         <div class="w-4/12">
                             <x-input-label for="date_of_birth" :value="__('Data di Nascita*')" />
                             <x-text-input id="date_of_birth" class="block w-full" type="date" name="date_of_birth"
-                                :value="old('date_of_birth', $user->date_of_birth ?? '')" required autofocus />
+                                :value="old('date_of_birth', auth()?->user()?->date_of_birth ?? '')" required autofocus />
                             <x-input-error :messages="$errors->get('date_of_birth')" class="mt-2" />
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                         <div class="w-full">
                             <x-input-label for="email" :value="__('Email*')" />
                             <x-text-input id="email" class="block w-full" type="email" name="email"
-                                :value="old('email', $user->email ?? 'Email non disponibile')" required autocomplete="username" disabled />
+                                :value="old('email', auth()?->user()?->email ?? '')" required autocomplete="username" disabled />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
@@ -46,7 +46,7 @@
                         <div class="w-full">
                             <x-input-label for="telephone" :value="__('Telefono*')" />
                             <x-text-input id="telephone" class="block w-full" type="text" name="telephone"
-                                :value="old('telephone', $user->telephone ?? 'Telefono non disponibile')" required autocomplete="username" />
+                                :value="old('telephone', auth()?->user()?->telephone ?? '')" required autocomplete="username" />
                             <x-input-error :messages="$errors->get('telephone')" class="mt-2" />
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                     <div class="w-full">
                         <x-input-label for="address" :value="__('Indirizzo*')" />
                         <x-text-input id="address" class="block w-full" type="text" name="address"
-                            :value="old('address', $user->address ?? 'Indirizzo non disponibile')" required autocomplete="username" />
+                            :value="old('address', auth()?->user()?->address ?? '')" required autocomplete="username" />
                         <x-input-error :messages="$errors->get('address')" class="mt-2" />
                     </div>
 
@@ -69,7 +69,7 @@
                             <div class="w-full">
                                 <x-input-label for="postal_code" :value="__('Codice Postale*')" />
                                 <x-text-input id="postal_code" class="block w-full mt-1" type="text"
-                                    :value="old('postal_code', $user->postal_code ?? '')" name="postal_code" required />
+                                    :value="old('postal_code', auth()?->user()?->postal_code ?? '')" name="postal_code" required />
                             </div>
 
                             <!-- City -->
@@ -77,7 +77,7 @@
                                 <label for="city" class="block font-medium text-sm text-gray-700">Città</label>
                                 <select name="city" id="city"
                                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1">
-                                    <option value="{{ $user->city }}" selected>{{ $user->city ?? 'Città non disponibile' }}</option>
+                                    <option value="{{ auth()?->user()?->city }}" selected>{{ auth()?->user()?->city ?? '' }}</option>
                                 </select>
                             </div>
 
@@ -85,7 +85,7 @@
                             <div class="w-full">
                                 <x-input-label for="province" :value="__('Provincia')" />
                                 <x-text-input id="province" class="block w-full mt-1" type="text" name="province"
-                                    :value="old('province', $user->province ?? 'Provincia non disponibile')" required />
+                                    :value="old('province', auth()?->user()?->province ?? '')" required />
                             </div>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                         <div class="w-full">
                             <x-input-label for="tax_id" :value="__('Codice Fiscale')" />
                             <x-text-input id="tax_id" class="block w-full" type="text" name="tax_id"
-                                :value="old('tax_id', $user->tax_id ?? '')" autocomplete="username" />
+                                :value="old('tax_id', auth()?->user()?->tax_id ?? '')" autocomplete="username" />
                             <x-input-error :messages="$errors->get('tax_id')" class="mt-2" />
                         </div>
 
@@ -107,7 +107,7 @@
                         <div class="w-full">
                             <x-input-label for="business_name" :value="__('Ragione Sociale*')" />
                             <x-text-input id="business_name" class="block w-full" type="text" name="business_name"
-                                :value="old('business_name', $user->business_name ?? '')" required autocomplete="username" />
+                                :value="old('business_name', auth()?->user()?->business_name ?? '')" required autocomplete="username" />
                             <x-input-error :messages="$errors->get('business_name')" class="mt-2" />
                         </div>
 
@@ -119,7 +119,7 @@
                         <div class="w-full">
                             <x-input-label for="vat_number" :value="__('Numero di Partita IVA*')" />
                             <x-text-input id="vat_number" class="block w-full" type="text" name="vat_number"
-                                :value="old('vat_number', $user->vat_number ?? '')" required autocomplete="username" />
+                                :value="old('vat_number', auth()?->user()?->vat_number ?? '')" required autocomplete="username" />
                             <x-input-error :messages="$errors->get('vat_number')" class="mt-2" />
                         </div>
 
@@ -127,7 +127,7 @@
                         <div class="w-full">
                             <x-input-label for="pec_address" :value="__('PEC')" />
                             <x-text-input id="pec_address" class="block w-full" type="text" name="pec_address"
-                                :value="old('pec_address', $user->pec_address ?? '')" autocomplete="username" />
+                                :value="old('pec_address', auth()?->user()?->pec_address ?? '')" autocomplete="username" />
                             <x-input-error :messages="$errors->get('pec_address')" class="mt-2" />
                         </div>
 
@@ -135,7 +135,7 @@
                         <div class="w-full">
                             <x-input-label for="sdi_code" :value="__('Codice SDI*')" />
                             <x-text-input id="sdi_code" class="block w-full" type="text" name="sdi_code"
-                                :value="old('sdi_code', $user->sdi_code ?? '')" autocomplete="username" />
+                                :value="old('sdi_code', auth()?->user()?->sdi_code ?? '')" autocomplete="username" />
                             <x-input-error :messages="$errors->get('sdi_code')" class="mt-2" />
                         </div>
 
