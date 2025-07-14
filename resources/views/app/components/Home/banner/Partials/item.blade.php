@@ -6,7 +6,7 @@
     $img = $slider['img'] ?? 'https://fakeimg.pl/1920x530/dbdbdb/909090?text=Banner+Image';
 @endphp
 
-<div href="{{ $link ?? '#' }}" class="swiper-slide block relative w-full h-full overflow-hidden">
+<div class="swiper-slide block relative w-full h-full overflow-hidden">
     <div class="relative w-full" style="aspect-ratio: 1920 / 530;">
         <img src="{{ $img }}" alt="" class="absolute inset-0 w-full h-full object-contain" />
         @if ($title)
