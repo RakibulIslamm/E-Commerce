@@ -14,7 +14,8 @@ class OrderItem extends Model
         'imponibile',
         'product_id',
         'qta',
-        'ivato'
+        'ivato',
+        'IDARTICOLO'
     ];
 
     public function order()

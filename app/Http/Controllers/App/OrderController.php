@@ -189,7 +189,8 @@ class OrderController
                     'product_id' => $item['product_id'],
                     'ivato' => $item['vat'],
                     'imponibile' => $item['price'],
-                    'qta' => $item['quantity']
+                    'qta' => $item['quantity'],
+                    'IDARTICOLO' => $item['IDARTICOLO']
                 ]);
                 $product = Product::find($item['product_id']);
                 $product->update([
