@@ -4,7 +4,7 @@
     class="w-full flex flex-col justify-start items-start gap-2 p-5 bg-white rounded-lg shadow border">
     @method($mode == 'edit' ? 'PUT' : 'POST')
     @csrf
-
+    {{-- Email per le notifiche --}}
     {{-- value="{{ old('business_name', $ecommerce->business_name ?? '') }}" --}}
 
     <div class="w-full flex items-center gap-3">

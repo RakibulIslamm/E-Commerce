@@ -5,6 +5,7 @@ $mail_port = null;
 $mail_username = null;
 $mail_password = null;
 $mail_from_address = null;
+$secretary_email = null;
 
 if (isset(tenant()?->smtp)) {
     $smtp = tenant()?->smtp;
@@ -13,6 +14,7 @@ if (isset(tenant()?->smtp)) {
     $mail_username = isset($smtp['mail_username']) ? $smtp['mail_username'] : null;
     $mail_password = isset($smtp['mail_password']) ? $smtp['mail_password'] : null;
     $mail_from_address = isset($smtp['mail_from_address']) ? $smtp['mail_from_address'] : null;
+    $secretary_email = isset($smtp['secretary_email']) ? $smtp['secretary_email'] : null;
 }
 
 ?>
@@ -61,7 +63,7 @@ if (isset(tenant()?->smtp)) {
             </div>
         </div>
         <div class="w-full flex justify-between items-start gap-3">
-            <div class="w-8/12">
+            <div class="w-4/12">
                 <label for="mail_password" class="block text-gray-700 text-sm font-bold mb-2">Mail Password</label>
                 <input id="mail_password" name="mail_password" type="text" value="{{ old('mail_password', $mail_password ?? '') }}" 
                     placeholder="password"
@@ -70,6 +72,12 @@ if (isset(tenant()?->smtp)) {
             <div class="w-4/12">
                 <label for="mail_from_address" class="block text-gray-700 text-sm font-bold mb-2">Mail From</label>
                 <input id="mail_from_address" name="mail_from_address" type="mail_from_address" value="{{ old('mail_from_address', $mail_from_address ?? '') }}" 
+                    placeholder="example@gmail.com"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="w-4/12">
+                <label for="secretary_email" class="block text-gray-700 text-sm font-bold mb-2">Secretary Email</label>
+                <input id="secretary_email" name="secretary_email" type="secretary_email" value="{{ old('secretary_email', $secretary_email ?? '') }}" 
                     placeholder="example@gmail.com"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>

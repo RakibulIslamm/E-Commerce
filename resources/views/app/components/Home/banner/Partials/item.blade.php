@@ -6,7 +6,7 @@
     $img = $slider['img'] ?? 'https://fakeimg.pl/1920x530/dbdbdb/909090?text=Banner+Image';
 @endphp
 
-<a href="{{ $link ?? '#' }}" class="swiper-slide block relative w-full overflow-hidden">
+<div href="{{ $link ?? '#' }}" class="swiper-slide block relative w-full h-full overflow-hidden">
     <div class="relative w-full" style="aspect-ratio: 1920 / 530;">
         <img src="{{ $img }}" alt="" class="absolute inset-0 w-full h-full object-contain" />
         @if ($title)
@@ -30,7 +30,7 @@
 
                 @if ($link_text && $link)
                     <a href="{{ $link }}"
-                       class="relative inline-flex items-center gap-1 leading-normal pb-1 text-gray-100 font-thin text-lg sm:text-xl hover:text-neutral-200 transition group mt-4"
+                       class="relative inline-flex items-center gap-1 leading-normal pb-1 text-gray-100 font-thin text-lg sm:text-xl hover:text-neutral-200 transition group mt-4 z-[999]"
                        data-swiper-parallax-duration="2000"
                        data-swiper-parallax-opacity="0">
                         {{ $link_text }}
@@ -41,5 +41,6 @@
                 @endif
             </div>
         </div>
+        <a href="{{ $link ?? '#' }}" class="absolute inset-0 bg-transparent z-[99]"></a>
     </div>
-</a>
+</div>

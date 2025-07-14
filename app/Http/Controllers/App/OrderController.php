@@ -301,7 +301,7 @@ class OrderController
                     $message->subject('Conferma Ordine');
                 });
 
-                $adminEmail = tenant()->email;
+                $adminEmail = tenant()?->smtp['secretary_email'];
                 Mail::send('app.emails.order-admin', $data, function ($message) use ($smtp, $adminEmail) {
                     $message->from($smtp['mail_from_address'], tenant()->business_name);
                     $message->to($adminEmail);

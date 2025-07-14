@@ -151,7 +151,8 @@ class CorporateDataController
             'mail_port' => 'nullable|string',
             'mail_username' => 'nullable|string',
             'mail_password' => 'nullable|string',
-            'mail_from_address' => 'nullable|string'
+            'mail_from_address' => 'nullable|string',
+            'secretary_email' => 'nullable|string'
         ]);
 
         $tenant = tenant();

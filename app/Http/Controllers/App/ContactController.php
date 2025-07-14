@@ -23,20 +23,23 @@ class ContactController
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'phone-number' => 'required|string|max:255',
             'email' => 'required|email',
             'message' => 'required|string',
         ]);
 
         $data = [
             'name' => $validated['name'],
+            'phone' => $validated['phone-number'],
             'email' => $validated['email'],
             'text' => $validated['message'],
             'business_name' => $tenant->business_name,
         ];
 
         $smtp = $tenant->smtp;
+        $adminEmail = $tenant?->smtp['secretary_email'];
 
-        if (isset($smtp) && $smtp['mail_host'] && $smtp['mail_port'] && $smtp['mail_username'] && $smtp['mail_password'] && $smtp['mail_from_address']){
+        if (isset($smtp) && $smtp['mail_host'] && $smtp['mail_port'] && $smtp['mail_username'] && $smtp['mail_password'] && $smtp['mail_from_address'] && $adminEmail){
             Config::set('mail.mailers.smtp.host', $smtp['mail_host']);
             Config::set('mail.mailers.smtp.port', $smtp['mail_port']);
             Config::set('mail.mailers.smtp.username', $smtp['mail_username']);
@@ -57,9 +60,9 @@ class ContactController
 
         // Send the email
         try {
-            Mail::send('app.emails.contact', $data, function ($message) use ($data, $smtp) {
+            Mail::send('app.emails.contact', $data, function ($message) use ($data, $smtp, $adminEmail) {
                 $message->from($smtp['mail_from_address'], $data['business_name']);
-                $message->to($smtp['mail_from_address']);
+                $message->to($adminEmail);
                 $message->subject('Contact Form Message');
             });
 

@@ -57,7 +57,7 @@
                     class="shadow appearance-none border rounded w-full py-2 text-gray-700 disabled:text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
                     onChange="(e) => setData('email', e.target.value)"
                     value="{{ old('email', $ecommerce['email'] ?? '') }}" id="email" type="email"
-                    placeholder="Email" name="email" required>
+                    placeholder="Email" name="email" {{ $mode == 'edit' ? 'disabled':''  }} required>
             </div>
         </div>
 

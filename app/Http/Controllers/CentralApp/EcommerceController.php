@@ -156,7 +156,6 @@ class EcommerceController extends Controller
             'domain' => 'nullable|string',
             'auth_username' => 'nullable|string',
             'auth_password' => 'required|string',
-            'email' => 'required|email',
             'tax_code' => 'required|string',
             'phone' => 'required|string',
             'rest_api_user' => 'required|string',
