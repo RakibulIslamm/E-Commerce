@@ -116,7 +116,7 @@ class EcommerceController extends Controller
                 'domain' => $full_domain
             ]);
 
-            return redirect()->route('ecommerce.index')->with('success', 'New eCommerce created successfully');
+            return redirect()->route('ecommerce.index')->with('success', 'Nuovo eCommerce creato con successo');
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage())->withInput();
         }
@@ -183,7 +183,7 @@ class EcommerceController extends Controller
         $validatedData['accepted_payments'] = json_encode($validatedData['accepted_payments']);
 
         $ecommerce->update($validatedData);
-        return redirect()->route('ecommerce.index')->with('success', 'eCommerce updated successfully');
+        return redirect()->route('ecommerce.index')->with('success', 'eCommerce aggiornato con successo');
     }
 
     public function suspend(Request $request, Tenant $ecommerce)
@@ -201,7 +201,7 @@ class EcommerceController extends Controller
             'suspend_tenant' => 'required|boolean',
         ]);
 
-        $str = $validatedData['suspend_tenant'] ? "Tenant suspended successfully":"Tenant permitted successfully";
+        $str = $validatedData['suspend_tenant'] ? "sospeso con successo":"autorizzato con successo";
 
         $ecommerce->update($validatedData);
         return redirect()->route('ecommerce.index')->with('success', $str);
@@ -222,7 +222,7 @@ class EcommerceController extends Controller
             // $this->plesk->deleteDatabase();
             $ecommerce->delete();
             return redirect()->route('ecommerce.index')
-                ->with('success', 'ecommerce deleted successfully');
+                ->with('success', 'e-commerce eliminato con successo');
 
         } catch (Exception $e) {
             return redirect()->route('ecommerce.index')->with('error', $e->getMessage());

@@ -118,7 +118,7 @@ class CorporateDataController
             "brand_info" => $newData
         ]);
 
-        return redirect()->route('app.corporate-data')->with('success', 'Brand information updated successfully.');
+        return redirect()->route('app.corporate-data')->with('success', 'Informazioni sul marchio aggiornate con successo.');
     }
 
 

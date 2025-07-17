@@ -69,7 +69,7 @@ class MyAccountController
         // dd($validate);
         $user = request()->user();
         $user->update($validate);
-        return redirect()->back()->with('success', "Updated successfully");
+        return redirect()->back()->with('success', "Aggiornato con successo");
 
     }
 

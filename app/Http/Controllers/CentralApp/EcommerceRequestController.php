@@ -56,7 +56,7 @@ class EcommerceRequestController extends Controller
         try {
             $validatedData['user_id'] = auth()->user()->id;
             EcommerceRequest::create($validatedData);
-            return redirect()->route('request.index')->with('success', 'Ecommerce requested successfully');
+            return redirect()->route('request.index')->with('success', 'Ecommerce richiesto con successo');
         } catch (ValidationException $error) {
             // return Inertia::render('EcommerceRequest/RequestForm', [
             //     'errors' => $error->errors(),

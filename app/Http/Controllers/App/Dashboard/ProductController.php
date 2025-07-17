@@ -57,7 +57,7 @@ class ProductController
             return response()->json([
                 "codice" => "OK",
                 "articolo" => $products,
-                "msg" => "Products retrieved successfully",
+                "msg" => "Prodotti recuperati con successo",
                 "numero"=> 200
             ]);
         } catch (\Exception $e) {
@@ -270,7 +270,7 @@ class ProductController
 
         return response()->json([
             'codice' => 'OK',
-            'msg' => 'Image deleted successfully',
+            'msg' => 'Immagine eliminata con successo',
             'FOTO' => $updatedImages
         ]);
     }
@@ -404,10 +404,10 @@ class ProductController
         try {
             if ($product) {
                 $product->update($validated);
-                Log::info("Product updated successfully");
+                Log::info("Prodotto aggiornatosuccessfully");
             } else {
                 $product = Product::create($validated);
-                Log::info("New product added successfully");
+                Log::info("Nuovo prodotto aggiunto con successo");
             }
             
             return response()->json([
@@ -722,7 +722,7 @@ class ProductController
         try {
             $product->update($validated);
             Log::info("Success update product");
-            return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
+            return response()->json(['message' => 'Prodotto aggiornatosuccessfully', 'product' => $product], 200);
         } catch (\Exception $e) {
             
         }

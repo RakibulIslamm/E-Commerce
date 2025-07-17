@@ -57,7 +57,7 @@ class ShippingController
             }
         }
     
-        return redirect()->route('app.shipping-settings')->with('success', 'Shipping settings saved successfully!');
+        return redirect()->route('app.shipping-settings')->with('success', 'Impostazioni di spedizione salvate con successo!');
     }
 
     /**
@@ -110,7 +110,7 @@ class ShippingController
             }
         }
 
-        return redirect()->route('app.shipping-settings')->with('success', 'Shipping settings updated successfully!');
+        return redirect()->route('app.shipping-settings')->with('success', 'Impostazioni di spedizione aggiornate con successo!');
     }
 
     /**

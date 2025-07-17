@@ -77,7 +77,7 @@ class LimitByLocationController
             }
 
             return response()->json([
-                'message' => 'Available locations added successfully',
+                'message' => 'Posizioni disponibili aggiunte correttamente',
                 'locations' => $createdLocations,
                 'code' => 201,
                 'status' => 'success',
@@ -142,6 +142,6 @@ class LimitByLocationController
     public function destroy(AvailableLocation $availableLocation)
     {
         $availableLocation->delete();
-        return redirect()->back()->with('success', "Deleted successfully");
+        return redirect()->back()->with('success', "Eliminato con successo");
     }
 }
