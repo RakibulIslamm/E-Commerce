@@ -10,6 +10,7 @@ use App\Models\ShippingSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -73,8 +74,6 @@ class OrderController
      */
     public function store(Request $request)
     {
-        // dd(request()->all('citta_spedizione'));
-
         $cart = session()->get('cart', []);
 
         if (count($cart) < 1) {
@@ -82,32 +81,31 @@ class OrderController
         }
 
         $validate = $request->validate([
-            'nominativo' => 'required|string', // name
-            'ragione_sociale' => 'nullable|string', // business name
-            'indirizzo' => 'required|string', // address
-            'cap' => 'required|string', // Postal code
-            'citta' => 'required|string', // city
-            'provincia' => 'required|string', // province
+            'nominativo' => 'required|string',
+            'ragione_sociale' => 'nullable|string',
+            'indirizzo' => 'required|string',
+            'cap' => 'required|string',
+            'citta' => 'required|string',
+            'provincia' => 'required|string',
             'email' => 'required|email',
-            'telefono' => 'required|string', // telephone
-            'stato' => 'nullable|integer', // state code
-            'pagamento' => 'nullable|boolean', // payment
-            'totale_netto' => 'nullable|numeric', // total
-            'totale_iva' => 'nullable|numeric', // total vat
-            'spese_spedizione' => 'nullable|numeric', // Shipping costs
-            'cod_fee' => 'nullable|numeric', // Cash on delivery fee
+            'telefono' => 'required|string',
+            'stato' => 'nullable|integer',
+            'pagamento' => 'nullable|boolean',
+            'totale_netto' => 'nullable|numeric',
+            'totale_iva' => 'nullable|numeric',
+            'spese_spedizione' => 'nullable|numeric',
+            'cod_fee' => 'nullable|numeric',
             'promotion_id' => 'nullable|numeric',
-            'nominativo_spedizione' => 'nullable|string', // shipping name
-            'telefono_spedizione' => 'nullable|string', // telephone
-            'ragione_sociale_spedizione' => 'nullable|string', // shipping company name
-            'indirizzo_spedizione' => 'nullable|string', // Shipping address
-            'cap_spedizione' => 'nullable|string', // shipping postal code
-            'citta_spedizione' => 'nullable|string', // shipping city
-            'provincia_spedizione' => 'nullable|string', // shipping province
-            'corriere' => 'nullable|string', // courier
+            'nominativo_spedizione' => 'nullable|string',
+            'telefono_spedizione' => 'nullable|string',
+            'ragione_sociale_spedizione' => 'nullable|string',
+            'indirizzo_spedizione' => 'nullable|string',
+            'cap_spedizione' => 'nullable|string',
+            'citta_spedizione' => 'nullable|string',
+            'provincia_spedizione' => 'nullable|string',
+            'corriere' => 'nullable|string',
             'note' => 'nullable|string',
         ]);
-
 
         $user = auth()?->user();
         $discount = $user?->discount ?? 0;
@@ -116,7 +114,7 @@ class OrderController
         $vat = 0;
 
         foreach ($cart as $item) {
-            $price = $item['price']; // Assuming this is always net price
+            $price = $item['price'];
             $quantity = $item['quantity'];
             $vatPercent = $item['vat'];
 
@@ -128,7 +126,6 @@ class OrderController
             $vat += $itemVat;
         }
 
-
         $validate['totale_netto'] = $total;
         $validate['totale_iva'] = $vat;
 
@@ -137,10 +134,8 @@ class OrderController
         $province = $validate['provincia'];
 
         $allLocations = AvailableLocation::all();
-
         $availableLocations = AvailableLocation::where('postal_code', $postal)->with('location')->get();
 
-        // Check if any location matches the provided city and province
         $locationMatch = $availableLocations->first(function ($location) use ($city, $province) {
             return $location->location->place === $city && $location->location->province === $province;
         });
@@ -151,32 +146,28 @@ class OrderController
                 ->withInput();
         }
 
-        $validate['nominativo_spedizione'] = $validate['nominativo_spedizione'] ? $validate['nominativo_spedizione'] : $validate['nominativo'];
-        $validate['telefono_spedizione'] = $validate['telefono_spedizione'] ? $validate['telefono_spedizione'] : $validate['telefono'];
-        // $validate['ragione_sociale_spedizione'] = $validate['ragione_sociale_spedizione'] ? $validate['ragione_sociale_spedizione'] : $validate['ragione_sociale'];
-        $validate['indirizzo_spedizione'] = $validate['indirizzo_spedizione'] ? $validate['indirizzo_spedizione'] : $validate['indirizzo'];
-        $validate['cap_spedizione'] = $validate['cap_spedizione'] ? $validate['cap_spedizione'] : $validate['cap'];
-        $validate['citta_spedizione'] = $validate['citta_spedizione'] ? $validate['citta_spedizione'] : $validate['citta'];
-        $validate['provincia_spedizione'] = $validate['provincia_spedizione'] ? $validate['provincia_spedizione'] : $validate['provincia'];
+        $validate['nominativo_spedizione'] = $validate['nominativo_spedizione'] ?: $validate['nominativo'];
+        $validate['telefono_spedizione'] = $validate['telefono_spedizione'] ?: $validate['telefono'];
+        $validate['indirizzo_spedizione'] = $validate['indirizzo_spedizione'] ?: $validate['indirizzo'];
+        $validate['cap_spedizione'] = $validate['cap_spedizione'] ?: $validate['cap'];
+        $validate['citta_spedizione'] = $validate['citta_spedizione'] ?: $validate['citta'];
+        $validate['provincia_spedizione'] = $validate['provincia_spedizione'] ?: $validate['provincia'];
         $validate['promo'] = $validate['promo'] ?? '';
 
-        
-
-
         try {
+            DB::beginTransaction();
+
             if (Auth::check()) {
-                $validate['user_id'] = auth()->user()->id;
-                $validate['piva'] = auth()->user()->vat_number;
-                $validate['cf'] = auth()->user()->tax_id;
-                $validate['pec'] = auth()->user()->pec_address;
-                $validate['sdi'] = auth()->user()->pec_address;
+                $validate['user_id'] = $user->id;
+                $validate['piva'] = $user->vat_number;
+                $validate['cf'] = $user->tax_id;
+                $validate['pec'] = $user->pec_address;
+                $validate['sdi'] = $user->pec_address;
             }
-        
-            $filledValues = array_filter($validate, function ($value) {
-                return !is_null($value) && $value !== '';
-            });
+
+            $filledValues = array_filter($validate, fn ($value) => !is_null($value) && $value !== '');
             $filledValues['note'] = $validate['note'] ?? " ";
-            
+
             $order = Order::create($filledValues);
 
             $order->n_ordine = $order->id;
@@ -190,18 +181,29 @@ class OrderController
                     'ivato' => $item['vat'],
                     'imponibile' => $item['price'],
                     'qta' => $item['quantity'],
-                    'IDARTICOLO' => $item['IDARTICOLO']
+                    'IDARTICOLO' => $item['id_articolo']
                 ]);
+
                 $product = Product::find($item['product_id']);
-                $product->update([
-                    "GIACENZA" => $product->GIACENZA - $item['quantity']
-                ]);
+                if ($product) {
+                    $product->update([
+                        'GIACENZA' => $product->GIACENZA - $item['quantity']
+                    ]);
+                }
             }
+
             $order->load('articoli.product');
+
             
             $this->sendOrderConfirmationEmail($order);
+
+            DB::commit();
+
             return redirect()->route('app.confirm-order')->with(['order' => $order, 'success' => true]);
+
         } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
             return redirect()->route('app.confirm-order')->with('message', "Internal Server Error")->with('success', false)->with('error', true);
         }
     }

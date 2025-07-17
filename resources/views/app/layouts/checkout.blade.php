@@ -1,5 +1,8 @@
 @php
-    $favicon = isset($tenant->brand_info['favicon']) ? asset($tenant->brand_info['favicon']) : url('/images/favicon.png');
+    $brand_info = tenant()?->brand_info;
+    $favicon = isset($brand_info['favicon']) ? asset($brand_info['favicon']) : url('/images/favicon.png');
+    $logo = isset($brand_info['logo']) ? $brand_info['logo'] : '/images/logo.png';
+
 @endphp
 
 <!DOCTYPE html>
@@ -19,8 +22,7 @@
     {{-- Navigation Bar --}}
     <div class="px-5 py-2 sm:px-10 lg:px-20 flex items-center justify-between border-b">
         <a href="/" class="flex items-center gap-2">
-            <img class="h-8 sm:h-10 lg:h-12 w-auto object-cover" src="{{ '/images/logo.png' }}" alt="Logo">
-            {{-- <h2 class="text-lg font-bold">Company Name</h2> --}}
+            <img class="h-8 sm:h-10 lg:h-12 w-auto object-cover" src="{{ $logo ?? '/images/logo.png' }}" alt="Logo">
         </a>
 
         <div class="flex items-center gap-3 sm:gap-5 text-xs sm:text-sm text-gray-500">

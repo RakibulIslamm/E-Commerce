@@ -58,7 +58,7 @@
                                 <label for="citta" class="block font-medium text-sm text-gray-700">Citta</label>
                                 <select name="citta" id="citta"
                                     class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1">
-                                    <option value="{{ auth()?->user()?->city ?? '' }}">{{ $user->city ?? '' }}
+                                    <option value="{{ auth()?->user()?->city ?? '' }}">{{ auth()?->user()?->city ?? '' }}
                                     </option>
                                 </select>
                             </div>
@@ -336,6 +336,7 @@
                 firstShipping.checked = true;
                 firstShipping.dispatchEvent(new Event('change'));
             }
+            handleLocation(document.getElementById('cap').value);
         });
 
 
@@ -363,6 +364,8 @@
         document.getElementById('cap').addEventListener('change', (e) => {
             handleLocation(e?.target?.value);
         })
+
+
         const city = document.getElementById('citta');
         const province = document.getElementById('provincia');
         const state_code = document.getElementById('stato');
