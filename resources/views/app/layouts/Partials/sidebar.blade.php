@@ -1,7 +1,7 @@
 <div
     class="overflow-hidden rounded-r-xl flex items-start h-screen w-[320px] bg-white shadow border-r flex-col justify-between overflow-y-auto scrollbar-none sticky top-0 left-0">
     <div class="w-full">
-        <a href="/" class="hidden xl:flex justify-start py-5 px-4 items-center space-x-3 sticky top-0 bg-white">
+        <a href="/" class="flex justify-start py-5 px-4 items-center space-x-3 sticky top-0 bg-white">
             <x-bx-store-alt class="w-6 h-6 text-gray-700" />
             <span
                 class="text-xl leading-6 text-gray-700 font-semibold">{{ !empty($tenant->brand_info['name'] ?? null) ? $tenant->brand_info['name'] : 'Ecommerce' }}</span>
